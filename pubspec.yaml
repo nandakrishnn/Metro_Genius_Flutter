@@ -38,9 +38,12 @@ dependencies:
   firebase_storage: ^12.1.1
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.1.6
   glassmorphism: ^3.0.0
   google_fonts: ^6.2.1
   google_nav_bar: ^5.0.6
+  image_picker: ^1.1.2
+  random_string: ^2.3.1
   ripple_backdrop_animate_route: ^1.1.0
   smooth_page_indicator: ^1.2.0
 

@@ -1,30 +1,33 @@
-part of 'user_login_bloc.dart';
+part of 'user_signup_bloc.dart';
 
-enum FormStatus{
+
+enum FormStatus {
   inital,
   pending,
-  sucess,
-  error
+  success,
+  error,
 }
+
 @immutable
-final class UserLoginState{
-  UserLoginState({
- this.email="",
+final class UserSignupState {
+  UserSignupState({
+     this.email="",
    this.password="",
   this.status=FormStatus.inital,
     this.errorMsg,
   });
-   final String email;
+  final String email;
   final String password;
   final FormStatus status;
   final String? errorMsg;
 
-  UserLoginState copyWith({
-       String? email,
+  UserSignupState copyWith({
+    String? email,
     String? password,
     FormStatus? status,
     String? errorMsg,
-  })=> UserLoginState(
+  }) =>
+      UserSignupState(
           email: email ?? this.email,
           password: password ?? this.password,
           status: status ?? this.status,
