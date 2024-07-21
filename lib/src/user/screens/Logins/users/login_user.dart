@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:metrogeniusapp/animations/route_animations.dart';
 import 'package:metrogeniusapp/bloc/login_bloc/user_login_bloc.dart';
 import 'package:metrogeniusapp/services/auth_signin.dart';
+import 'package:metrogeniusapp/src/admin/bottom_nav_admin/bottom_nav_employe.dart';
 import 'package:metrogeniusapp/src/user/screens/Logins/users/forgot_pass.dart';
 import 'package:metrogeniusapp/src/user/screens/Logins/users/register_now.dart';
 import 'package:metrogeniusapp/src/user/screens/bottomnavigation/bottom_nav.dart';
@@ -21,6 +22,8 @@ class UserLoginPage extends StatelessWidget {
   final TextEditingController passController = TextEditingController();
 
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  final String adminUserName='nandakrishnn@gmail.com';
+  final String adminPassCode='krishnn';
 
   @override
   Widget build(BuildContext context) {
@@ -142,6 +145,9 @@ class UserLoginPage extends StatelessWidget {
                             }
                             if (state.status == FormStatus.pending) {
                               const CupertinoActivityIndicator();
+                            }
+                            if(emailController.text==adminUserName&&passController.text==adminPassCode){
+                              Navigator.of(context).push(createRoute(AdminBottomNavigation()));
                             }
                           },
                           child: LoginContainer(content: 'Login',),

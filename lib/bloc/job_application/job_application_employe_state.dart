@@ -32,7 +32,9 @@ final class JobApplicationEmployeState {
     String? emailUser,
     String? workUser,
     String? proofUser,
+
     String? imgUser,
+
     int? experiUser,
     FormStatus? status,
     String? errorMsg,
@@ -46,6 +48,5 @@ final class JobApplicationEmployeState {
           proofUser: proofUser ?? this.proofUser,
           imgUser: imgUser ?? this.imgUser,
           status: status ?? this.status,
-          
           errorMsg: errorMsg ?? this.errorMsg);
 }

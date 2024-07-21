@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:metrogeniusapp/src/admin/admin_bottomNav/Home/home_admin.dart';
-import 'package:metrogeniusapp/src/admin/admin_bottomNav/category/add_category_admin.dart';
-import 'package:metrogeniusapp/src/admin/admin_bottomNav/employe_List/admin_employe_list.dart';
+import 'package:metrogeniusapp/src/admin/bottom_nav_admin/Home/home_admin.dart';
+import 'package:metrogeniusapp/src/admin/bottom_nav_admin/category/add_category_admin.dart';
+import 'package:metrogeniusapp/src/admin/bottom_nav_admin/employe_List/admin_employe_list.dart';
 import 'package:metrogeniusapp/utils/colors.dart';
 
 class AdminBottomNavigation extends StatefulWidget {
   const AdminBottomNavigation({super.key});
 
   @override
-  State<AdminBottomNavigation> createState() => _BottomNavigationState();
+  State<AdminBottomNavigation> createState() => _AdminBottomNavigationState();
 }
 
-class _BottomNavigationState extends State<AdminBottomNavigation> {
+class _AdminBottomNavigationState extends State<AdminBottomNavigation> {
   int currentIndex = 0;
   final ValueNotifier<bool> bottomNavBarVisible = ValueNotifier(true);
 
@@ -55,7 +55,7 @@ class _BottomNavigationState extends State<AdminBottomNavigation> {
           );
         },
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 15, left: 9, right: 9),
+          padding: const EdgeInsets.only(bottom: 15, left: 40, right: 40),
           child: Container(
            
             decoration: BoxDecoration(
@@ -79,24 +79,24 @@ class _BottomNavigationState extends State<AdminBottomNavigation> {
               onTabChange: setPage,
               padding: const EdgeInsets.all(16),
               textStyle: const TextStyle(color: Colors.white),
-              tabBackgroundColor: AppColors.mainBlueColor,
+              tabBackgroundColor: AppColors.premiumTeal,
               tabs: const [
                 GButton(
-                  icon: Icons.explore,
-                  text: 'Explore',
+                  icon: Icons.home,
+                  text: 'Home',
                 ),
                 GButton(
-                  icon: Icons.calendar_today,
-                  text: 'Booking',
+                  icon: Icons.category,
+                  text: 'Category',
                 ),
                 GButton(
-                  icon: Icons.payment,
-                  text: 'Payment',
+                  icon: Icons.person,
+                  text: 'Employes',
                 ),
-                GButton(
-                  icon: Icons.person_2_sharp,
-                  text: 'Profile',
-                ),
+                // GButton(
+                //   icon: Icons.person_2_sharp,
+                //   text: 'Profile',
+                // ),
               ],
             ),
             

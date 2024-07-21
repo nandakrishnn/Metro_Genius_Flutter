@@ -16,6 +16,9 @@ class AppConstants {
   static const SizedBox kheight30 = SizedBox(
     height: 30,
   );
+    static const SizedBox kheight40 = SizedBox(
+    height: 40,
+  );
   static const SizedBox kheight60 = SizedBox(
     height: 60,
   );
@@ -27,6 +30,9 @@ class AppConstants {
   );
   static const SizedBox kwidth30 = SizedBox(
     width: 30,
+  );
+    static const SizedBox kwidth5 = SizedBox(
+    width: 5,
   );
 }
 

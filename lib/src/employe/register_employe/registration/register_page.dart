@@ -7,12 +7,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:metrogeniusapp/animations/route_animations.dart';
 import 'package:metrogeniusapp/bloc/job_application/job_application_employe_bloc.dart';
 import 'package:metrogeniusapp/functions/project_functions.dart';
+import 'package:metrogeniusapp/services/admin/converters/image_converter.dart';
 import 'package:metrogeniusapp/src/employe/widgets/custom_textfeild.dart';
 import 'package:metrogeniusapp/src/user/screens/Logins/users/login_user.dart';
 import 'package:metrogeniusapp/src/user/screens/Logins/users/users_login.dart';
 import 'package:metrogeniusapp/src/user/widgets/custom_snackbar.dart';
 import 'package:metrogeniusapp/utils/constants.dart';
-
 
 class EmployeeForm extends StatelessWidget {
   const EmployeeForm({super.key});
@@ -173,7 +173,6 @@ class EmployeeForm extends StatelessWidget {
                             ),
                             AppConstants.kheight20,
                             CustomTextFeild2(
-                              
                               onChanged: (p0) => context
                                   .read<JobApplicationEmployeBloc>()
                                   .add(UserEmail(p0)),
@@ -195,7 +194,7 @@ class EmployeeForm extends StatelessWidget {
                             ),
                             AppConstants.kheight20,
                             CustomTextFeild2(
-                             readOnly: true,
+                              readOnly: true,
                               sufixbutton: const Icon(
                                 Icons.arrow_drop_down,
                                 size: 40,
@@ -268,18 +267,16 @@ class EmployeeForm extends StatelessWidget {
                             ),
                             AppConstants.kheight20,
                             CustomTextFeild2(
-                             readOnly: true,
+                              readOnly: true,
                               controller: idProofController,
                               sufixbutton: const Icon(Icons.attachment),
                               tap: () async {
                                 final proofUrl = await ProjectFunctionalites
                                     .imagePickercir();
                                 if (proofUrl != null) {
-                                  final imgurl = proofUrl.path;
-                                  context
-                                      .read<JobApplicationEmployeBloc>()
-                                      .add(IdProof(imgurl));
-                                  idProofController.text = state.proofUser!;
+                                  final File idProofFile = File(proofUrl.path);
+
+                                  idProofController.text = idProofFile.path;
                                 }
                               },
                               hinttext: 'Add Id Proof',
@@ -293,8 +290,28 @@ class EmployeeForm extends StatelessWidget {
                             ),
                             AppConstants.kheight30,
                             GestureDetector(
-                                onTap: () {
+                                onTap: () async {
                                   if (formkey.currentState!.validate()) {
+                                    if(profileimg==null){
+                                      ScaffoldMessenger.of(context).showSnackBar(customSnack('Choose Image', 'Choose an image to continue', Icon(Icons.error,color: Colors.red,), Colors.red));
+                                    }
+                                    String? imageDownloadUrl;
+                                    String? idDownloadUrl;
+                                    imageDownloadUrl =
+                                        await uploadImageToFirebase(
+                                            File(profileimg!));
+                                    idDownloadUrl = await uploadImageToFirebase(
+                                        File(idProofController.text));
+                                    if (imageDownloadUrl != null) {
+                                      context
+                                          .read<JobApplicationEmployeBloc>()
+                                          .add(ImageChanges(imageDownloadUrl));
+                                    }
+                                    if (idDownloadUrl != null) {
+                                      context
+                                          .read<JobApplicationEmployeBloc>()
+                                          .add(IdProof(idDownloadUrl));
+                                    }
                                     context
                                         .read<JobApplicationEmployeBloc>()
                                         .add(FormSubmit());

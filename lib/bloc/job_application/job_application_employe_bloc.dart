@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:metrogeniusapp/services/employe/employe_service.dart';
+import 'package:random_string/random_string.dart';
 
 part 'job_application_employe_event.dart';
 part 'job_application_employe_state.dart';
@@ -72,7 +73,9 @@ class JobApplicationEmployeBloc
   void onFormSubmit(
       FormSubmit event, Emitter<JobApplicationEmployeState> emit) async {
     try {
-      final submitted =  EmployeJobApplication().EmployeApplicationsInfo(
+      String id = randomAlphaNumeric(7);
+      final submitted =  EmployeJobApplication().employeApplicationsInfo(
+        id: id,
           img: state.imgUser!,
           name: state.nameUser!,
           phone: state.phoneUser!,
@@ -81,8 +84,10 @@ class JobApplicationEmployeBloc
           experi: state.experiUser!,
           proof: state.proofUser!);
 
+
+
       final added =
-          await EmployeJobApplication().addEmployeApplications(submitted);
+          await EmployeJobApplication().addEmployeApplications(submitted,id);
       if (added == true) {
         emit(state.copyWith(status: FormStatus.sucess));
       } else {
