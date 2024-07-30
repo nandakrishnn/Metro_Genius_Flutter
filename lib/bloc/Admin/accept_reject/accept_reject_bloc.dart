@@ -32,7 +32,7 @@ class AcceptRejectBloc extends Bloc<AcceptRejectEvent, AcceptRejectState> {
     emit(state.copywith(rejectstatus: FormStatusReject.pending));
     try {
       final rejected = await EmployeJobApplication().deleteCategory(event.id);
-      if (rejected) {
+      if (rejected==true) {
         emit(state.copywith(rejectstatus: FormStatusReject.sucess));
       } else {
         emit(state.copywith(rejectstatus: FormStatusReject.error));

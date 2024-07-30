@@ -4,6 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:metrogeniusapp/bloc/Admin/accept_reject/accept_reject_bloc.dart';
 import 'package:metrogeniusapp/bloc/Admin/application_listing/application_listing_bloc.dart';
+import 'package:metrogeniusapp/bloc/Admin/catgeories_admin/categories_bloc.dart';
+import 'package:metrogeniusapp/bloc/Admin/employes_list/employes_list_bloc.dart';
+import 'package:metrogeniusapp/bloc/Admin/get_category/get_category_bloc.dart';
+import 'package:metrogeniusapp/bloc/forgot_pass/frogot_password_bloc.dart';
 import 'package:metrogeniusapp/bloc/job_application/job_application_employe_bloc.dart';
 import 'package:metrogeniusapp/bloc/login_bloc/user_login_bloc.dart';
 import 'package:metrogeniusapp/bloc/signup_bloc/bloc/user_signup_bloc.dart';
@@ -37,6 +41,22 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context)=>ApplicationListingBloc(AdminServices())),
         BlocProvider(
           create: (context) => AcceptRejectBloc(),
+        ),
+        BlocProvider(
+          create: (context) => CategoriesBloc(),
+   
+        ),
+        BlocProvider(
+          create: (context) => GetCategoryBloc(AdminServices()),
+      
+        ),
+        BlocProvider(
+          create: (context) => EmployesListBloc(AdminServices()),
+
+        ),
+        BlocProvider(
+          create: (context) => FrogotPasswordBloc(),
+        
         )
       ],
       child: MaterialApp(

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:metrogeniusapp/utils/constants.dart';
 
 class HomeCatgeories extends StatelessWidget {
-  String imgurl;
+  final String imgurl;
+  final double scale;
+  final String heading;
 
-  double scale;
-  String heading;
   HomeCatgeories({
     required this.imgurl,
     required this.scale,
@@ -17,23 +17,22 @@ class HomeCatgeories extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          decoration: BoxDecoration(),
-          child: Column(
-            children: [
-              Image.network(
-                imgurl,
-                height: 70,
-                width: 95,
-                fit: BoxFit.cover,
-              ),
-              AppConstants.kheight5,
-              Text(
-                heading,
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
-              ),
-            ],
+        ClipRRect(
+          borderRadius: BorderRadius.circular(45), // Half of height/width to ensure circle
+          child: Container(
+            height: 90, // Ensure height and width are the same
+            width: 90,
+            color: Colors.black12, // Fallback color if image fails to load
+            child: Image.network(
+              imgurl,
+              fit: BoxFit.cover,
+            ),
           ),
+        ),
+        AppConstants.kheight5,
+        Text(
+          heading,
+          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
         ),
       ],
     );

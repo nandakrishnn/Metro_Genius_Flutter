@@ -42,6 +42,7 @@ dependencies:
   glassmorphism: ^3.0.0
   google_fonts: ^6.2.1
   google_nav_bar: ^5.0.6
+  google_sign_in: ^6.2.1
   image_picker: ^1.1.2
   random_string: ^2.3.1
   ripple_backdrop_animate_route: ^1.1.0

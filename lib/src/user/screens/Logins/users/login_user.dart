@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:metrogeniusapp/animations/route_animations.dart';
 import 'package:metrogeniusapp/bloc/login_bloc/user_login_bloc.dart';
 import 'package:metrogeniusapp/services/auth_signin.dart';
@@ -8,11 +10,13 @@ import 'package:metrogeniusapp/src/admin/bottom_nav_admin/bottom_nav_employe.dar
 import 'package:metrogeniusapp/src/user/screens/Logins/users/forgot_pass.dart';
 import 'package:metrogeniusapp/src/user/screens/Logins/users/register_now.dart';
 import 'package:metrogeniusapp/src/user/screens/bottomnavigation/bottom_nav.dart';
+import 'package:metrogeniusapp/src/user/screens/bottomnavigation/explore/home_page.dart';
 import 'package:metrogeniusapp/src/user/widgets/custom_snackbar.dart';
 import 'package:metrogeniusapp/src/user/widgets/social_login_container.dart';
 import 'package:metrogeniusapp/src/user/widgets/textfeild.dart';
 import 'package:metrogeniusapp/utils/colors.dart';
 import 'package:metrogeniusapp/utils/constants.dart';
+import 'package:metrogeniusapp/utils/validators.dart';
 
 class UserLoginPage extends StatelessWidget {
   UserLoginPage({super.key});
@@ -22,8 +26,8 @@ class UserLoginPage extends StatelessWidget {
   final TextEditingController passController = TextEditingController();
 
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
-  final String adminUserName='nandakrishnn@gmail.com';
-  final String adminPassCode='krishnn';
+  final String adminUserName = 'nandakrishnn@gmail.com';
+  final String adminPassCode = 'krishnn';
 
   @override
   Widget build(BuildContext context) {
@@ -47,15 +51,14 @@ class UserLoginPage extends StatelessWidget {
                             builder: (context) => const BottomNavigation()));
                   } else if (state.status == FormStatus.error) {
                     ScaffoldMessenger.of(context).showSnackBar(customSnack(
-                      'Invalid Login',
-                      'Sorry,invalid login credentials',
-                      const Icon(
-                        Icons.error_outline,
-                        color: Colors.red,
-                        size: 28,
-                      ),
-                      Colors.red
-                    ));
+                        'Invalid Login',
+                        'Sorry,invalid login credentials',
+                        const Icon(
+                          Icons.error_outline,
+                          color: Colors.red,
+                          size: 28,
+                        ),
+                        Colors.red));
                   }
                   if (state.status == FormStatus.pending)
                     const Padding(
@@ -86,17 +89,9 @@ class UserLoginPage extends StatelessWidget {
                           obscure: false,
                           hinttext: 'Enter your Email',
                           controller: emailController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Enter the email';
-                            }
-                            String pattern = r'^[^@]+@[^@]+\.[^@]+$';
-                            RegExp regex = RegExp(pattern);
-                            if (!regex.hasMatch(value)) {
-                              return 'Enter a valid email address';
-                            }
-                            return null;
-                          },
+                          validator: (value) =>Validators.validateEmail(value)
+                          
+                          ,
                         ),
                         SizedBox(
                           height: MediaQuery.of(context).size.height * .04,
@@ -146,11 +141,15 @@ class UserLoginPage extends StatelessWidget {
                             if (state.status == FormStatus.pending) {
                               const CupertinoActivityIndicator();
                             }
-                            if(emailController.text==adminUserName&&passController.text==adminPassCode){
-                              Navigator.of(context).push(createRoute(AdminBottomNavigation()));
+                            if (emailController.text == adminUserName &&
+                                passController.text == adminPassCode) {
+                              Navigator.of(context)
+                                  .push(createRoute(AdminBottomNavigation()));
                             }
                           },
-                          child: LoginContainer(content: 'Login',),
+                          child: LoginContainer(
+                            content: 'Login',
+                          ),
                         ),
                         AppConstants.kheight30,
                         const Row(
@@ -191,9 +190,14 @@ class UserLoginPage extends StatelessWidget {
                               imageurl:
                                   'https://clipground.com/images/facebook-icon-logo-8.png',
                             ),
-                            SocialLoginContainer(
-                                imageurl:
-                                    'https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png')
+                            GestureDetector(
+                              onTap: ()async{
+                                _signInWithGoogle(context);
+                              },
+                              child: SocialLoginContainer(
+                                  imageurl:
+                                      'https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png'),
+                            )
                           ],
                         ),
                         AppConstants.kheight60,
@@ -235,11 +239,34 @@ class UserLoginPage extends StatelessWidget {
       ),
     );
   }
+
+  _signInWithGoogle(context) async {
+    final GoogleSignIn _googleSignIn = GoogleSignIn();
+    final UserSigninAuth auth = UserSigninAuth();
+
+    try {
+     
+      final GoogleSignInAccount? googleSignInAccount =
+          await _googleSignIn.signIn();
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication =
+            await googleSignInAccount.authentication;
+        final AuthCredential creadential = GoogleAuthProvider.credential(
+          idToken: googleSignInAuthentication.idToken,
+          accessToken: googleSignInAuthentication.accessToken,
+        );
+        await auth.signInWithGoogle(creadential);
+        Navigator.of(context).push(createRoute(BottomNavigation()));
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 }
 
 class LoginContainer extends StatelessWidget {
   String content;
-   LoginContainer({
+  LoginContainer({
     required this.content,
     super.key,
   });
@@ -252,12 +279,10 @@ class LoginContainer extends StatelessWidget {
       decoration: BoxDecoration(
           color: AppColors.mainBlueColor,
           borderRadius: BorderRadius.circular(7)),
-      child:  Center(
+      child: Center(
           child: Text(
         content,
-        style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w800),
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
       )),
     );
   }

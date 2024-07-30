@@ -9,15 +9,16 @@ import '../../../utils/colors.dart';
 // ignore: must_be_immutable
 class CustomTextFeild2 extends StatelessWidget {
   CustomTextFeild2(
-      {required this.hinttext,
+      {
+      required this.hinttext,
       this.sufixbutton,
-      this.readOnly=false,
+      this.readOnly = false,
       this.prefixIcon,
       this.controller,
       this.keybordtype,
       super.key,
       this.tap,
-      this.enabled=true,
+      this.enabled = true,
       this.onChanged,
       required this.heading,
       this.obscure = false,
@@ -49,7 +50,7 @@ class CustomTextFeild2 extends StatelessWidget {
         AppConstants.kheight10,
         TextFormField(
           readOnly: readOnly,
-          enabled:enabled ,
+          enabled: enabled,
           onChanged: onChanged,
           obscureText: obscure,
           controller: controller,
@@ -88,10 +89,9 @@ class CustomTextFeild2 extends StatelessWidget {
                   const TextStyle(color: Color.fromARGB(255, 174, 169, 169)),
               filled: true,
               fillColor: AppColors.primaryColor,
-              suffixIcon:sufixbutton!=null?
-               GestureDetector(
-                onTap: tap,
-                child: sufixbutton):null,
+              suffixIcon: sufixbutton != null
+                  ? GestureDetector(onTap: tap, child: sufixbutton)
+                  : null,
               prefixIcon: prefixIcon),
         ),
       ],

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:random_string/random_string.dart';
 
 class EmployeJobApplication {
   //This is used for the submission of a job application
@@ -83,4 +82,39 @@ class EmployeJobApplication {
     };
     return accepctedEmployeeInfo;
   }
+
+
+
+  //add category admin
+
+    Future<bool> addCatgeoryAdmin(
+      Map<String, dynamic> adminCatgeoryInfo, dynamic id) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("CatgeoryDetails")
+          .doc(id)
+          .set(adminCatgeoryInfo).whenComplete(
+
+              deleteCategory(id) as FutureOr<void> Function()
+          );
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+   
+  Map<String, dynamic> adminCatgeoryInfo(
+      {required String id,
+      required String img,
+      required String name,
+    }) {
+    Map<String, dynamic> adminCatgeoryInfo = {
+      'Id': id,
+      'CategoryImage': img,
+      'CatgeoryName': name,
+    
+    };
+    return adminCatgeoryInfo;
+  }
+
 }

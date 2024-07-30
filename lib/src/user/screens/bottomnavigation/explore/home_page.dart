@@ -1,5 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:metrogeniusapp/animations/route_animations.dart';
+import 'package:metrogeniusapp/bloc/Admin/get_category/get_category_bloc.dart';
+import 'package:metrogeniusapp/services/admin/applications/admin_services.dart';
 import 'package:metrogeniusapp/src/user/screens/bottomnavigation/data.dart';
+import 'package:metrogeniusapp/src/user/screens/bottomnavigation/explore/all_catgroies.dart';
 import 'package:metrogeniusapp/src/user/widgets/home/carousel.dart';
 import 'package:metrogeniusapp/src/user/widgets/home/categories_container.dart';
 import 'package:metrogeniusapp/src/user/widgets/home/new_notable.dart';
@@ -38,12 +44,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   leading: IconButton(onPressed: (){}, icon: Icon(Icons.menu)),
-      // ),
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
@@ -209,26 +209,58 @@ class _HomeState extends State<Home> {
               ),
             ),
           ),
-          SliverGrid(
-            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 100,
-              crossAxisSpacing: 0,
-              mainAxisSpacing: 20,
-            ),
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return Padding(
-                  padding: const EdgeInsets.only(left: 5, right: 5),
-                  child: HomeCatgeories(
-                    imgurl:
-                        'https://icon2.cleanpng.com/lnd/20240701/brp/a7r41c39y.webp',
-                    scale: 0,
-                    heading: 'Plumbing',
-                  ),
-                );
-              },
-              childCount: 8,
-            ),
+          BlocProvider(
+            create: (context) =>
+                GetCategoryBloc(AdminServices())..add(FetchDataCategory()),
+            child: BlocConsumer<GetCategoryBloc, GetCategoryState>(
+                listener: (context, state) {},
+                builder: (context, state) {
+                  if (state is GetCategoryStateLoading) {
+                    return SliverToBoxAdapter(
+                        child: CupertinoActivityIndicator());
+                  }
+                  if (state is GetCategoryStateLoaded) {
+                    final data = state.data;
+                    return SliverGrid(
+                      gridDelegate:
+                          const SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: 130,
+                        crossAxisSpacing: 9,
+                        mainAxisSpacing: 0,
+                      ),
+                      delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                          if (index < 5) {
+                            return HomeCatgeories(
+                              imgurl: data[index]['CategoryImage'],
+                              scale: 0,
+                              heading: data[index]['CatgeoryName'],
+                            );
+                          } else if (index == 5) {
+                            return GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context)
+                                      .push(createRoute(AllCatgeories()));
+                                },
+                                child: HomeCatgeories(
+                                    imgurl:
+                                        'https://i.pinimg.com/originals/96/28/28/9628288cf4023b3b5dc553421f8507cf.jpg',
+                                    scale: 0,
+                                    heading: 'All Categories'));
+                          }
+                          return SizedBox.shrink(); // Fallback for empty states
+                        },
+                        childCount: 6, // Add 1 for the "See All" item
+                      ),
+                    );
+                  } else {
+                    return SliverToBoxAdapter(
+                      child: Center(
+                        child: Text('hey'),
+                      ),
+                    );
+                  }
+                }),
           ),
           SliverToBoxAdapter(
             child: Padding(

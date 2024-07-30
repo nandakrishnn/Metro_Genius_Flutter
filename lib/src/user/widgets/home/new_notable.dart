@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:metrogeniusapp/utils/constants.dart';
 
 class NewNotable extends StatelessWidget {
   String imageurl;
@@ -19,7 +20,18 @@ class NewNotable extends StatelessWidget {
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
         child: Column(
           children: [
-            SizedBox(
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey,
+                    spreadRadius: .5,
+                    blurRadius: .5,
+                    offset: Offset(0, 0)
+                  )
+                ]
+              ),
               height: 130,
               width: 130,
               child: ClipRRect(
@@ -29,6 +41,7 @@ class NewNotable extends StatelessWidget {
                     fit: BoxFit.cover,
                   )),
             ),
+  
             Text(
               text,
               style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),

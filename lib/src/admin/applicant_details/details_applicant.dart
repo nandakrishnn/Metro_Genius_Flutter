@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -7,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:metrogeniusapp/animations/route_animations.dart';
 import 'package:metrogeniusapp/bloc/Admin/accept_reject/accept_reject_bloc.dart';
 import 'package:metrogeniusapp/src/admin/applicant_details/applicant_deatils.dart';
-import 'package:metrogeniusapp/src/user/widgets/custom_snackbar.dart';
 import 'package:metrogeniusapp/utils/colors.dart';
 import 'package:metrogeniusapp/utils/constants.dart';
 
@@ -29,46 +27,46 @@ class ApplicantDetails extends StatelessWidget {
       ),
       body: BlocConsumer<AcceptRejectBloc, AcceptRejectState>(
         listener: (context, state) {
-          if (state.rejectstatus == FormStatusReject.sucess) {
-            ScaffoldMessenger.of(context).showSnackBar(customSnack(
-                'Deleted',
-                'Application rejected sucessfully!',
-                const Icon(
-                  Icons.delete_forever,
-                  color: Colors.green,
-                ),
-                Colors.green));
-          }
-          if (state.rejectstatus == FormStatusReject.error) {
-            ScaffoldMessenger.of(context).showSnackBar(customSnack(
-                'Not deleted',
-                'Application not rejected !',
-                const Icon(
-                  Icons.delete_forever,
-                  color: Colors.red,
-                ),
-                Colors.red));
-          }
-          if (state.acceptstatus == FormStatusAccpet.sucess) {
-            ScaffoldMessenger.of(context).showSnackBar(customSnack(
-                'Added',
-                'Employee  accpected sucessfully!',
-                const Icon(
-                  Icons.add,
-                  color: Colors.green,
-                ),
-                Colors.green));
-          }
-          if (state.acceptstatus == FormStatusAccpet.error) {
-            ScaffoldMessenger.of(context).showSnackBar(customSnack(
-                'Not added',
-                'Employee not added !',
-                const Icon(
-                  Icons.error,
-                  color: Colors.red,
-                ),
-                Colors.red));
-          }
+          // if (state.rejectstatus == FormStatusReject.sucess) {
+          //   ScaffoldMessenger.of(context).showSnackBar(customSnack(
+          //       'Deleted',
+          //       'Application rejected sucessfully!',
+          //       const Icon(
+          //         Icons.delete_forever,
+          //         color: Colors.green,
+          //       ),
+          //       Colors.green));
+          // }
+          // if (state.rejectstatus == FormStatusReject.error) {
+          //   ScaffoldMessenger.of(context).showSnackBar(customSnack(
+          //       'Error in deletion',
+          //       'Application not rejected !',
+          //       const Icon(
+          //         Icons.delete_forever,
+          //         color: Colors.red,
+          //       ),
+          //       Colors.red));
+          // }
+          // if (state.acceptstatus == FormStatusAccpet.sucess) {
+          //   ScaffoldMessenger.of(context).showSnackBar(customSnack(
+          //       'Added',
+          //       'Employee  accpected sucessfully!',
+          //       const Icon(
+          //         Icons.add,
+          //         color: Colors.green,
+          //       ),
+          //       Colors.green));
+          // }
+          // if (state.acceptstatus == FormStatusAccpet.error) {
+          //   ScaffoldMessenger.of(context).showSnackBar(customSnack(
+          //       'Not added',
+          //       'Employee not added !',
+          //       const Icon(
+          //         Icons.error,
+          //         color: Colors.red,
+          //       ),
+          //       Colors.red));
+          // }
         },
         builder: (context, state) {
           return Column(
@@ -180,61 +178,32 @@ class ApplicantDetails extends StatelessWidget {
                     children: [
                       ElevatedButton(
                           onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext) {
-                                  return AlertDialog(
-                                    title: Text(
-                                        'Are you sure you want to delete this employee request'),
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text('NO')),
-                                      TextButton(
-                                          onPressed: () {
-                                            context
-                                                .read<AcceptRejectBloc>()
-                                                .add(Rejected(data['Id']));
-                                            Navigator.of(context)
-                                                .pushReplacement(createRoute(
-                                                    ApplicantDeatils()));
-                                          },
-                                          child: Text('YES'))
-                                    ],
-                                  );
-                                });
+                            AlertBoxCustom(context,
+                                'Are you sure you want to delete this employee request',
+                                () {
+                              Navigator.of(context).pop();
+                            }, () {
+                              context
+                                  .read<AcceptRejectBloc>()
+                                  .add(Rejected(data['Id']));
+                              Navigator.of(context).pushReplacement(
+                                  createRoute(ApplicantDeatils()));
+                            });
                           },
                           child: const Text('Reject')),
                       AppConstants.kwidth20,
                       ElevatedButton(
                           onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext) {
-                                  return AlertDialog(
-                                    title: Text(
-                                        'Are you sure to appoint this employee'),
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text('No')),
-                                      TextButton(
-                                          onPressed: () {
-                                            context
-                                                .read<AcceptRejectBloc>()
-                                                .add(Accepted(data));
-                                            Navigator.of(context)
-                                                .pushReplacement(createRoute(
-                                                    ApplicantDeatils()));
-                                          },
-                                          child: Text('Yes'))
-                                    ],
-                                  );
-                                });
+                            AlertBoxCustom(context,
+                                'Are you sure to appoint this employee', () {
+                              Navigator.of(context).pop();
+                            }, () {
+                              context
+                                  .read<AcceptRejectBloc>()
+                                  .add(Accepted(data));
+                              Navigator.of(context).pushReplacement(
+                                  createRoute(ApplicantDeatils()));
+                            });
                           },
                           child: const Text('Accept'))
                     ],
@@ -246,5 +215,20 @@ class ApplicantDetails extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Future<dynamic> AlertBoxCustom(BuildContext context, String mainText,
+      void Function()? onPressNo, void Function()? onPressYes) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext) {
+          return AlertDialog(
+            title: Text(mainText),
+            actions: [
+              TextButton(onPressed: onPressNo, child: Text('NO')),
+              TextButton(onPressed: onPressYes, child: Text('YES'))
+            ],
+          );
+        });
   }
 }

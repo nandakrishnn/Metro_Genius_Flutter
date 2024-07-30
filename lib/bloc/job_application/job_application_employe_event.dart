@@ -23,8 +23,8 @@ final class UserEmail extends JobApplicationEmployeEvent {
   final String userEmail;
 }
 
-final class UserWork extends JobApplicationEmployeEvent {
-  UserWork(this.userWork);
+final class UserWorkType extends JobApplicationEmployeEvent {
+  UserWorkType(this.userWork);
   final String userWork;
 }
 

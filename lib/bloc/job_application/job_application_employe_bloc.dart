@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +16,7 @@ class JobApplicationEmployeBloc
     on<UNameChanges>(userNameChanged);
     on<UserPhone>(userPhoneChanged);
     on<UserEmail>(userEmailChanged);
-    on<UserWork>(userWorkChanged);
+    on<UserWorkType>(userWorkChanged);
     on<UserExperience>(userExperiencChanged);
     on<IdProof>(userIdProofChanged);
     on<FormSubmit>(onFormSubmit);
@@ -46,14 +48,16 @@ class JobApplicationEmployeBloc
       UserEmail event, Emitter<JobApplicationEmployeState> emit) {
     final newValueForEmail = event.userEmail;
     final newState = state.copyWith(emailUser: newValueForEmail);
+    print(event.userEmail);
     emit(newState);
   }
 
   void userWorkChanged(
-      UserWork event, Emitter<JobApplicationEmployeState> emit) {
+      UserWorkType event, Emitter<JobApplicationEmployeState> emit) {
     final newValueForWork = event.userWork;
     final newState = state.copyWith(workUser: newValueForWork);
     emit(newState);
+    print(event.userWork);
   }
 
   void userExperiencChanged(
@@ -72,6 +76,7 @@ class JobApplicationEmployeBloc
 
   void onFormSubmit(
       FormSubmit event, Emitter<JobApplicationEmployeState> emit) async {
+        emit(state.copyWith(status: FormStatus.pending));
     try {
       String id = randomAlphaNumeric(7);
       final submitted =  EmployeJobApplication().employeApplicationsInfo(
