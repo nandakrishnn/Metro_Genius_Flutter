@@ -12,5 +12,12 @@ class AdminServices{
    Future<Stream<QuerySnapshot>>getEmployeeAdmin()async{
    return  FirebaseFirestore.instance.collection("EmployeesList").snapshots();
   }
+   Future<Stream<QuerySnapshot>> getSubCategories(String categoryId) async {
+    return FirebaseFirestore.instance
+        .collection("CatgeoryDetails")  
+        .doc(categoryId)          
+        .collection("SubCategories") 
+        .snapshots();            
+  }
 
 }

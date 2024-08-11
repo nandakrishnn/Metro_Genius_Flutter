@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:metrogeniusapp/animations/route_animations.dart';
 import 'package:metrogeniusapp/services/auth_signin.dart';
 import 'package:metrogeniusapp/src/user/screens/Logins/users/users_login.dart';
+import 'package:metrogeniusapp/src/user/screens/bottomnavigation/profile/adress_user/adress_user.dart';
 import 'package:metrogeniusapp/src/user/widgets/profile/profile_container.dart';
 import 'package:metrogeniusapp/src/user/widgets/profile/profile_tiles.dart';
 import 'package:metrogeniusapp/utils/colors.dart';
@@ -108,10 +110,15 @@ class ProfilePage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        ProfileContainers(
-                          text: 'Edit Profile',
-                          imgurl:
-                              'assets/b26797ebb855cd42387411734e28b73c-removebg-preview.png',
+                        GestureDetector(
+                          onTap: (){
+                            Navigator.of(context).push(createRoute(AdressUser()));
+                          },
+                          child: ProfileContainers(
+                            text: 'Edit Adress',
+                            imgurl:
+                                'assets/b26797ebb855cd42387411734e28b73c-removebg-preview.png',
+                          ),
                         ),
                         ProfileContainers(
                           text: 'Invite ',

@@ -10,7 +10,6 @@ import 'package:metrogeniusapp/src/admin/bottom_nav_admin/bottom_nav_employe.dar
 import 'package:metrogeniusapp/src/user/screens/Logins/users/forgot_pass.dart';
 import 'package:metrogeniusapp/src/user/screens/Logins/users/register_now.dart';
 import 'package:metrogeniusapp/src/user/screens/bottomnavigation/bottom_nav.dart';
-import 'package:metrogeniusapp/src/user/screens/bottomnavigation/explore/home_page.dart';
 import 'package:metrogeniusapp/src/user/widgets/custom_snackbar.dart';
 import 'package:metrogeniusapp/src/user/widgets/social_login_container.dart';
 import 'package:metrogeniusapp/src/user/widgets/textfeild.dart';

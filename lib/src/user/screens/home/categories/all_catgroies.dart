@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:metrogeniusapp/animations/route_animations.dart';
 import 'package:metrogeniusapp/bloc/Admin/get_category/get_category_bloc.dart';
 import 'package:metrogeniusapp/services/admin/applications/admin_services.dart';
+import 'package:metrogeniusapp/src/user/screens/home/sub_catgeories/sub_category_view.dart';
 import 'package:metrogeniusapp/src/user/widgets/home/categories_container.dart';
 import 'package:metrogeniusapp/utils/colors.dart';
 
@@ -43,10 +45,15 @@ extendBody: true,
                     ),
                     itemCount: data.length,
                     itemBuilder: (context, index) {
-                      return HomeCatgeories(
-                          imgurl: data[index]['CategoryImage'],
-                          scale: 0,
-                          heading: data[index]['CatgeoryName']);
+                      return GestureDetector(
+                        onTap: (){
+                          Navigator.of(context).push(createRoute(SubCatgeoryDetails(data: data[index],)));
+                        },
+                        child: HomeCatgeories(
+                            imgurl: data[index]['CategoryImage'],
+                            scale: 0,
+                            heading: data[index]['CatgeoryName']),
+                      );
                     });
               }
               return Container();

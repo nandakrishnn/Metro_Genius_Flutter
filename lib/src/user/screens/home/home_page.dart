@@ -5,13 +5,14 @@ import 'package:metrogeniusapp/animations/route_animations.dart';
 import 'package:metrogeniusapp/bloc/Admin/get_category/get_category_bloc.dart';
 import 'package:metrogeniusapp/services/admin/applications/admin_services.dart';
 import 'package:metrogeniusapp/src/user/screens/bottomnavigation/data.dart';
-import 'package:metrogeniusapp/src/user/screens/bottomnavigation/explore/all_catgroies.dart';
+import 'package:metrogeniusapp/src/user/screens/home/categories/all_catgroies.dart';
+import 'package:metrogeniusapp/src/user/screens/home/sub_catgeories/sub_category_view.dart';
 import 'package:metrogeniusapp/src/user/widgets/home/carousel.dart';
 import 'package:metrogeniusapp/src/user/widgets/home/categories_container.dart';
 import 'package:metrogeniusapp/src/user/widgets/home/new_notable.dart';
 import 'package:metrogeniusapp/utils/constants.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../../../../../utils/colors.dart';
+import '../../../../utils/colors.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -231,10 +232,15 @@ class _HomeState extends State<Home> {
                       delegate: SliverChildBuilderDelegate(
                         (BuildContext context, int index) {
                           if (index < 5) {
-                            return HomeCatgeories(
-                              imgurl: data[index]['CategoryImage'],
-                              scale: 0,
-                              heading: data[index]['CatgeoryName'],
+                            return GestureDetector(
+                              onTap: (){
+                                   Navigator.of(context).push(createRoute(SubCatgeoryDetails(data: data[index],)));
+                              },
+                              child: HomeCatgeories(
+                                imgurl: data[index]['CategoryImage'],
+                                scale: 0,
+                                heading: data[index]['CatgeoryName'],
+                              ),
                             );
                           } else if (index == 5) {
                             return GestureDetector(
@@ -319,24 +325,24 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                   AppConstants.kheight15,
-                  CarouselWithBuilder(
-                    itemCount: 3,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        height: 260,
-                        width: 400,
-                        margin: const EdgeInsets.all(0.0),
-                        decoration: const BoxDecoration(),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Image.network(
-                            images[index],
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                  // CarouselWithBuilder(
+                  //   itemCount: 3,
+                  //   itemBuilder: (context, index) {
+                  //     return Container(
+                  //       height: 260,
+                  //       width: 400,
+                  //       margin: const EdgeInsets.all(0.0),
+                  //       decoration: const BoxDecoration(),
+                  //       child: ClipRRect(
+                  //         borderRadius: BorderRadius.circular(12),
+                  //         child: Image.network(
+                  //           images[index],
+                  //           fit: BoxFit.cover,
+                  //         ),
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
                 ],
               ),
             ),

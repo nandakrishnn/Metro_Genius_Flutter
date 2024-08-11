@@ -12,5 +12,8 @@ final class PassChanges extends UserSignupEvent{
   PassChanges(this.password);
   final String password;
 }
-
+final class UserNameChanges extends UserSignupEvent{
+  UserNameChanges(this.userName);
+  final String userName;
+}
 final class FormSubmit extends UserSignupEvent{}

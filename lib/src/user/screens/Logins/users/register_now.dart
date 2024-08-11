@@ -61,6 +61,7 @@ class RegisterNow extends StatelessWidget {
                           ),
                           AppConstants.kheight30,
                           CustomTextFeild(
+                            onChanged: (p0) => context.read<UserSignupBloc>().add(UserNameChanges(p0)),
                             obscure: false,
                             controller: userNameController,
                             hinttext: 'Username',

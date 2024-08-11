@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:metrogeniusapp/src/user/screens/bottomnavigation/booking/booking_page.dart';
-import 'package:metrogeniusapp/src/user/screens/bottomnavigation/explore/home_page.dart';
+import 'package:metrogeniusapp/src/user/screens/home/home_page.dart';
 import 'package:metrogeniusapp/src/user/screens/bottomnavigation/profile/profile.dart';
 import 'package:metrogeniusapp/src/user/screens/bottomnavigation/saved/saved_page.dart';
 import 'package:metrogeniusapp/utils/colors.dart';
@@ -51,7 +51,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         builder: (context, isVisible, child) {
           return AnimatedContainer(
             duration: const Duration(milliseconds: 300),
-            height: isVisible ? kBottomNavigationBarHeight+13 : 0,
+            height: isVisible ? kBottomNavigationBarHeight+15 : 0,
             child: isVisible ? child : const SizedBox.shrink(),
           );
         },
@@ -71,34 +71,37 @@ class _BottomNavigationState extends State<BottomNavigation> {
               color: AppColors.primaryColor,
               borderRadius: BorderRadius.circular(35),
             ),
-            child: GNav(
-              haptic: true,
-              color: AppColors.mainBlueColor,
-              activeColor: Colors.white,
-              
-              gap: 8,
-              onTabChange: setPage,
-              padding: const EdgeInsets.all(16),
-              textStyle: const TextStyle(color: Colors.white),
-              tabBackgroundColor: AppColors.mainBlueColor,
-              tabs: const [
-                GButton(
-                  icon: Icons.explore,
-                  text: 'Explore',
-                ),
-                GButton(
-                  icon: Icons.calendar_today,
-                  text: 'Booking',
-                ),
-                GButton(
-                  icon: Icons.payment,
-                  text: 'Payment',
-                ),
-                GButton(
-                  icon: Icons.person_2_sharp,
-                  text: 'Profile',
-                ),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: GNav(
+                haptic: true,
+                color: AppColors.mainBlueColor,
+                activeColor: Colors.white,
+                
+                gap: 8,
+                onTabChange: setPage,
+                padding: const EdgeInsets.all(16),
+                textStyle: const TextStyle(color: Colors.white),
+                tabBackgroundColor: AppColors.mainBlueColor,
+                tabs: const [
+                  GButton(
+                    icon: Icons.explore,
+                    text: 'Explore',
+                  ),
+                  GButton(
+                    icon: Icons.calendar_today,
+                    text: 'Booking',
+                  ),
+                  GButton(
+                    icon: Icons.backpack,
+                    text: 'Cart',
+                  ),
+                  GButton(
+                    icon: Icons.person_2_sharp,
+                    text: 'Profile',
+                  ),
+                ],
+              ),
             ),
             
           ),

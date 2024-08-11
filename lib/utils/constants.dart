@@ -43,11 +43,11 @@ class AppConstants {
 }
 
 
-// class AppConstants {
-//   static SizedBox kheight10(BuildContext context) => SizedBox(height: MediaQuery.of(context).size.height * 0.01);
-//   static SizedBox kheight15(BuildContext context) => SizedBox(height: MediaQuery.of(context).size.height * 0.015);
-//   static SizedBox kheight20(BuildContext context) => SizedBox(height: MediaQuery.of(context).size.height * 0.02);
-//   static SizedBox kheight5(BuildContext context) => SizedBox(height: MediaQuery.of(context).size.height * 0.005);
-//   static SizedBox kheight30(BuildContext context) => SizedBox(height: MediaQuery.of(context).size.height * 0.03);
-//   static SizedBox kheight60(BuildContext context) => SizedBox(height: MediaQuery.of(context).size.height * 0.06);
-// }
+class AppConstantsfddsf {
+ 
+  static SizedBox kheight15(BuildContext context) => SizedBox(height: MediaQuery.of(context).size.height * 0.015);
+  static SizedBox kheight20(BuildContext context) => SizedBox(height: MediaQuery.of(context).size.height * 0.02);
+  static SizedBox kheight5(BuildContext context) => SizedBox(height: MediaQuery.of(context).size.height * 0.005);
+  static SizedBox kheight30(BuildContext context) => SizedBox(height: MediaQuery.of(context).size.height * 0.03);
+  static SizedBox kheight60(BuildContext context) => SizedBox(height: MediaQuery.of(context).size.height * 0.06);
+}

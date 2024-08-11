@@ -1,0 +1,88 @@
+ Column(
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * .08,
+                  ),
+                  const Text(
+                    'Welcome back Worker! Glad to see you, Again!',
+                    style: TextStyle(fontSize: 31, fontWeight: FontWeight.w800),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * .06,
+                  ),
+                  CustomTextFeild(
+                    controller: _emailController,
+                    obscure: false,
+                    hinttext: 'Enter your Email',
+                    validator: (value) => Validators.validateEmail(value),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * .04,
+                  ),
+                  CustomTextFeild(
+                    obscure: true,
+                    hinttext: 'Enter your EmployeeCode',
+                    controller: _codeController,
+                    sufixbutton: const Icon(Icons.remove_red_eye_sharp),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Enter your EmployeCode';
+                      }
+                      if (value.length < 6) {
+                        return 'Password must be at least 8 characters long';
+                      }
+              
+                      return null;
+                    },
+                  ),
+                  AppConstants.kheight10,
+                  const Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        'Facing Problem Contact Us?',
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700,
+                            color: Color.fromRGBO(106, 112, 124, .99)),
+                      )),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * .04,
+                  ),
+                  AppConstants.kheight30,
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.of(context)
+                            .push(createRoute(const EmployeeHome()));
+                        // if(formkey.currentState!.validate()){
+              
+                        // }
+                      },
+                      child: LoginContainer(content: 'Login')),
+                  AppConstants.kheight30,
+                  AppConstants.kheight60,
+                  AppConstants.kheight30,
+                  AppConstants.kheight30,
+                  AppConstants.kheight30,
+                  const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Plans are only good intentions unless they\n immediately degenerate into hard work.',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Color.fromRGBO(106, 112, 124, .99),
+                        ),
+                      ),
+                      AppConstants.kheight10,
+                      Text(
+                        'Work More Earn More !',
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Color.fromRGBO(53, 194, 193, 1)),
+                      ),
+                    ],
+                  ),
+                ],
+              ),

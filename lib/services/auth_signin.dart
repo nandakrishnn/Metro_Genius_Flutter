@@ -1,5 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class UserSigninAuth {
@@ -88,5 +88,27 @@ class UserSigninAuth {
     } catch (e) {
       print('Error signing out: $e');
     }
+  }
+  Future<bool>userDetails(Map<String,dynamic>userDetailsInfo,String id)async{
+  try {
+    await FirebaseFirestore.instance.collection("UserDetails").doc(id).set(userDetailsInfo);
+    return true;
+  } catch (e) {
+    return false;
+  }
+  }
+  Map<String,dynamic>userDetailsInfo({
+    required String id,
+    required String name,
+    required String cpass,
+    required String email
+  }){
+    Map<String,dynamic>userDetails={
+      'Id':id,
+      'UserName':name,
+      'Password':cpass,
+      'Email':email
+    };
+    return userDetails;
   }
 }

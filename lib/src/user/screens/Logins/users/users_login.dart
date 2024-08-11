@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:metrogeniusapp/animations/route_animations.dart';
+import 'package:metrogeniusapp/src/employe/login_worker/login_employe.dart';
 import 'package:metrogeniusapp/src/employe/register_employe/registration/employe_home.dart';
 import 'package:metrogeniusapp/src/user/screens/Logins/users/login_user.dart';
 import 'package:metrogeniusapp/utils/colors.dart';
@@ -63,6 +64,10 @@ class CommonLoginPage extends StatelessWidget {
               left: MediaQuery.of(context).size.width * 0.031,
               top: MediaQuery.of(context).size.height * 0.76,
               child: LoginCards(
+                action: () {
+                         Navigator.of(context).push(createRoute(const EmployeLogin()));
+                  
+                },
                   heading: 'Currently working\non MetroGenius       ',
                   content: 'This is for the login of\nemployees of MetroGenius',
                   imageurl:

@@ -29,6 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   bloc: ^8.1.4
+  calender_picker: ^2.0.2
   carousel_slider: ^4.2.1
   cloud_firestore: ^5.1.0
   cupertino_icons: ^1.0.6
@@ -44,8 +45,11 @@ dependencies:
   google_nav_bar: ^5.0.6
   google_sign_in: ^6.2.1
   image_picker: ^1.1.2
+  intl: ^0.18.1
   random_string: ^2.3.1
   ripple_backdrop_animate_route: ^1.1.0
+  shared_preferences: ^2.3.1
+  slide_to_act: ^2.0.2
   smooth_page_indicator: ^1.2.0
 
 dev_dependencies:

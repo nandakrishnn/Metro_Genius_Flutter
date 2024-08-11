@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:metrogeniusapp/utils/constants.dart';
 
 class NewNotable extends StatelessWidget {
   String imageurl;
