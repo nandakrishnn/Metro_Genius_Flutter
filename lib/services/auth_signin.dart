@@ -89,26 +89,47 @@ class UserSigninAuth {
       print('Error signing out: $e');
     }
   }
-  Future<bool>userDetails(Map<String,dynamic>userDetailsInfo,String id)async{
-  try {
-    await FirebaseFirestore.instance.collection("UserDetails").doc(id).set(userDetailsInfo);
-    return true;
-  } catch (e) {
-    return false;
+
+  Future<bool> userDetails(
+      Map<String, dynamic> userDetailsInfo, String id) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("UserDetails")
+          .doc(id)
+          .set(userDetailsInfo);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
-  }
-  Map<String,dynamic>userDetailsInfo({
+
+  Map<String, dynamic> userDetailsInfo({
     required String id,
     required String name,
     required String cpass,
-    required String email
-  }){
-    Map<String,dynamic>userDetails={
-      'Id':id,
-      'UserName':name,
-      'Password':cpass,
-      'Email':email
+    required String email,
+    required String image,
+  }) {
+    Map<String, dynamic> userDetails = {
+      'Id': id,
+      'UserName': name,
+      'Password': cpass,
+      'Email': email,
+      'UserImage': image
     };
     return userDetails;
+  }
+
+  Future<bool> updatedUserDetails(
+      String userId, String username, String imageurl) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('UserDetails')
+          .doc(userId)
+          .update({'UserName': username, 'UserImage': imageurl});
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }

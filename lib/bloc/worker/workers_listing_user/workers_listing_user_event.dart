@@ -20,3 +20,9 @@ final class WorkersFetchedData extends WorkersListingUserEvent{
   // Helper method to extract data
   Map<String, dynamic> get data => workerSnapshot.data() as Map<String, dynamic>;
 }
+final class WorkersDataCleared extends WorkersListingUserEvent{
+
+}
+
+
+

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:metrogeniusapp/src/employe/bottom_navigation/home/pages/history.dart';
+import 'package:metrogeniusapp/src/employe/bottom_navigation/home/pages/requests_jobs.dart';
 import 'package:metrogeniusapp/src/employe/bottom_navigation/home/pages/upcomming_work.dart';
 
 import 'package:metrogeniusapp/utils/colors.dart';
@@ -58,7 +58,7 @@ class EmployeeHome extends StatelessWidget {
           ),
         ),
         body: const TabBarView(
-          children: [UpCommingWorks(), WorksHistory()],
+          children: [UpCommingWorks(), WorkRequests()],
         ),
       ),
     );

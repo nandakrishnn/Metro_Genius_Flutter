@@ -1,6 +1,6 @@
 part of 'order_summary_bloc_bloc.dart';
 
-enum RequestStatus { pending, accepted, rejected }
+enum RequestStatus { pending, accepted, rejected, compleated,paymentcompleated }
 
 enum FormStatus { inital, pending, sucess, failure }
 
@@ -13,16 +13,18 @@ final class OrderSummaryBlocState {
       this.serviceTitle = '',
       this.totalPrice = 0,
       this.dateTime = '',
-      this.checkbox='',
+      this.catImage = '',
+      this.checkbox = '',
       this.workerId = '',
       this.machineServiceTitle = '',
       this.adress = '',
-      this.categoryName='',
+      this.categoryName = '',
       this.discountPrice = 0,
       this.status = FormStatus.inital,
       this.requestStatus = RequestStatus.pending,
       this.errorMsg});
   final String adress;
+  final String catImage;
   final String checkbox;
   final String categoryName;
   final String description;
@@ -37,24 +39,26 @@ final class OrderSummaryBlocState {
   final String? errorMsg;
   final FormStatus status;
   final RequestStatus requestStatus;
-  OrderSummaryBlocState copyWith(
-          {String? adress,
-          String? categoryName,
-          String? description,
-          String? machineServiceTitle,
-          String? userId,
-          int? discountPrice,
-          String? createAt,
-          String? serviceTitle,
-           String? checkbox,
-          int? totalPrice,
-          String? dateTime,
-          String? workerId,
-          FormStatus? status,
-          RequestStatus? requestStatus,
-          }) =>
+  OrderSummaryBlocState copyWith({
+    String? adress,
+    String? categoryName,
+    String? catImage,
+    String? description,
+    String? machineServiceTitle,
+    String? userId,
+    int? discountPrice,
+    String? createAt,
+    String? serviceTitle,
+    String? checkbox,
+    int? totalPrice,
+    String? dateTime,
+    String? workerId,
+    FormStatus? status,
+    RequestStatus? requestStatus,
+  }) =>
       OrderSummaryBlocState(
-        checkbox: checkbox??this.checkbox,
+          catImage: catImage ?? this.catImage,
+          checkbox: checkbox ?? this.checkbox,
           discountPrice: discountPrice ?? this.discountPrice,
           adress: adress ?? this.adress,
           categoryName: categoryName ?? this.categoryName,

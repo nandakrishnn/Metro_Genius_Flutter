@@ -4,7 +4,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:metrogeniusapp/src/user/screens/bottomnavigation/booking/booking_page.dart';
 import 'package:metrogeniusapp/src/user/screens/home/home_page.dart';
 import 'package:metrogeniusapp/src/user/screens/bottomnavigation/profile/profile.dart';
-import 'package:metrogeniusapp/src/user/screens/bottomnavigation/saved/saved_page.dart';
+import 'package:metrogeniusapp/src/user/screens/bottomnavigation/saved/cart_user.dart';
 import 'package:metrogeniusapp/utils/colors.dart';
 
 class BottomNavigation extends StatefulWidget {
@@ -21,7 +21,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   final List<Widget> screens = [
     const Home(),
     const BookingsPage(),
-    const SavedTrans(),
+    const UserCart(),
     const ProfilePage()
   ];
 
@@ -93,8 +93,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
                     text: 'Booking',
                   ),
                   GButton(
-                    icon: Icons.backpack,
-                    text: 'Cart',
+                    icon: Icons.favorite,
+                    text: 'Saved',
                   ),
                   GButton(
                     icon: Icons.person_2_sharp,

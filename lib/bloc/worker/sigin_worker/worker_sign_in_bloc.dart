@@ -11,6 +11,7 @@ class WorkerSignInBloc extends Bloc<WorkerSignInEvent, WorkerSignInState> {
      on<WorkerEmailChanges>(emailChanged);
   on<WorkerPassChanges>(passChanges);
   on<WorkerFormSubmit>(formSubmit);
+on<WorkerReset>(reset);
   }
 
 
@@ -18,6 +19,9 @@ class WorkerSignInBloc extends Bloc<WorkerSignInEvent, WorkerSignInState> {
     final newValueForEmail=event.email;
     final newState=state.copyWith(email: newValueForEmail);
     emit(newState);
+  }
+   void reset(WorkerReset event, Emitter<WorkerSignInState> emit) {
+    emit(WorkerSignInState()); // Reset to initial state
   }
   void passChanges(WorkerPassChanges event, Emitter<WorkerSignInState> emit) {
     emit(state.copyWith(password: event.password));
@@ -41,5 +45,6 @@ class WorkerSignInBloc extends Bloc<WorkerSignInEvent, WorkerSignInState> {
       emit(state.copyWith(status: WorkerSigninFormStatus.error, errorMsg: e.toString()));
     }
   }
+
 
 }

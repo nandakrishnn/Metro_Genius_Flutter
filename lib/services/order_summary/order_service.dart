@@ -30,6 +30,7 @@ class UserOrderService {
     required String machineServiceTitle,
     required String categoryName,
     String? requestStatus,
+   required String catimage
     
   }) {
     Map<String, dynamic> userOrderInfo = {
@@ -38,6 +39,7 @@ class UserOrderService {
       'CategoryName': categoryName,
       'OrderDescription': description,
       'UserId': userId,
+      'CatImage':catimage,
       'CreateAt': createAt,
       'ServiceTitle': serviceTitle,
       'TotalPrice': totalPrice,

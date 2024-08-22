@@ -1,13 +1,230 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
+import 'package:metrogeniusapp/bloc/order_summary/order_summary_bloc_bloc.dart';
+import 'package:metrogeniusapp/bloc/worker/get_works/fetch_available_works_bloc.dart';
+import 'package:metrogeniusapp/utils/colors.dart';
+import 'package:metrogeniusapp/utils/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UpCommingWorks extends StatelessWidget {
   const UpCommingWorks({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Column(
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: BlocProvider(
+          create: (context) =>
+              FetchAvailableWorksBloc()..add(FetchAcceptedJobsData()),
+          child:
+              BlocConsumer<FetchAvailableWorksBloc, FetchAvailableWorksState>(
+            listener: (context, state) {},
+            builder: (context, state) {
+              if (state is FetchAvailableWorksLoading) {
+                Center(
+                  child: CupertinoActivityIndicator(
+                    animating: true,
+                  ),
+                );
+              }
+              if (state is FetchAvailableWorksLoaded) {
+                if(state.data.isEmpty){
+                 return Center(child: Text('No Upcomming works'),);
+                }
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListView.builder(
+                      itemCount: state.data.length,
+                      itemBuilder: (context, index) {
+                        final data = state.data;
 
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 12),
+                          child: EmployeRequests2(
+                            id: data[index]['Id'],
+                            ontapChat: () {},
+                            ontapCompleted: () async {
+                              final SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              String? employecode =
+                                  await prefs.getString('EmployeAssigned');
+                              FirebaseFirestore.instance
+                                  .collectionGroup("UserOrders")
+                                  .where('Id', isEqualTo: data[index]['Id'])
+                                  .get()
+                                  .then((QuerySnapshot) {
+                                for (var document in QuerySnapshot.docs) {
+                                  document.reference.update({
+                                    'WorkerId': employecode,
+                                    'RequestStatus':
+                                        RequestStatus.compleated.toString()
+                                  });
+                                }
+                                print('data changed');
+                                ;
+                              });
+                            },
+                            ontapStartWork: () {},
+                            requestTime: data[index]['CreateAt'],
+                            serviceTitile: data[index]['ServiceTitle'],
+                            seriveType: data[index]['ServiceType'],
+                            dateTime: data[index]['DateTime'],
+                            adress: data[index]['AddressLine1'],
+                          ),
+                        );
+                      }),
+                );
+              }
+              return Container(
+                child: Center(),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class EmployeRequests2 extends StatelessWidget {
+  String dateTime;
+  String seriveType;
+  String serviceTitile;
+  String requestTime;
+  String id;
+  String adress;
+  void Function()? ontapChat;
+  void Function()? ontapStartWork;
+  void Function()? ontapCompleted;
+  EmployeRequests2(
+      {required this.id,
+      required this.adress,
+      required this.dateTime,
+      required this.seriveType,
+      required this.serviceTitile,
+      required this.requestTime,
+      super.key,
+      this.ontapChat,
+      this.ontapCompleted,
+      this.ontapStartWork});
+
+  @override
+  Widget build(BuildContext context) {
+     DateTime parsedDateTime = DateTime.parse(requestTime);
+
+     String formattedTime = DateFormat('h:mm a').format(parsedDateTime);
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              offset: Offset(2, 2),
+              blurRadius: 4,
+              spreadRadius: 0,
+            )
+          ],
+          color: AppColors.primaryColor),
+      width: double.infinity,
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  seriveType,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
+                ),
+                Text(
+                  formattedTime,
+                  style: TextStyle(color: Colors.black),
+                ),
+              ],
+            ),
+            AppConstants.kheight5,
+            Row(
+              children: [
+                Icon(
+                  Icons.access_time,
+                  size: 22,
+                ),
+                AppConstants.kwidth5,
+                Text(
+                  dateTime,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14),
+                ),
+              ],
+            ),
+            AppConstants.kheight5,
+            Row(
+              children: [
+                Icon(Icons.work_outline),
+                AppConstants.kwidth5,
+                Text(serviceTitile,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14)),
+              ],
+            ),
+            AppConstants.kheight5,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(Icons.location_city),
+                AppConstants.kwidth5,
+                Expanded(child: Text(adress)),
+              ],
+            ),
+            AppConstants.kheight10,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  onPressed: ontapChat,
+                  child: Text('Chat'),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: AppColors.mainBlueColor, // Text color
+                    splashFactory: InkRipple.splashFactory, // Ink effect
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: ontapStartWork,
+                  child: Text('Start Work'),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.amber, // Text color
+                    splashFactory: InkRipple.splashFactory, // Ink effect
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: ontapCompleted,
+                  child: Text('Completed'),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.green, // Text color
+                    splashFactory: InkRipple.splashFactory, // Ink effect
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

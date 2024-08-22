@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:metrogeniusapp/bloc/add_cart_user/add_cart_user_bloc.dart';
 import 'package:metrogeniusapp/bloc/details_subcategory/details_sub_catgeory_bloc.dart';
 import 'package:metrogeniusapp/src/user/widgets/home/sub_catgeory/custom_checkbox.dart';
 import '../../../../../utils/colors.dart';
@@ -8,11 +9,12 @@ import '../../../../../utils/constants.dart';
 class SubCategoryViewContent extends StatelessWidget {
   SubCategoryViewContent({
     super.key,
+    this.checkBoxData,
     required this.data,
     required this.trueKeys,
     required this.selectedCheckboxNotifier,
   });
-
+  final Map<String, bool>? checkBoxData;
   final dynamic data;
   final ValueNotifier<String?> selectedCheckboxNotifier;
   final List<String> trueKeys;
@@ -91,10 +93,17 @@ class SubCategoryViewContent extends StatelessWidget {
                               selectedCheckboxNotifier.value = null;
                             }
                           }
-                          // Optionally, you can dispatch an event to the Bloc
+            
                           context.read<DetailsSubCatgeoryBloc>().add(
                             CheckBoxChnages(key, value!),
+                            
                           );
+                           context.read<AddCartUserBloc>().add(
+                            CartCheckBoxChnages(key, value),
+                            
+                          );
+                            
+                          // );
                         },
                         activeColor: AppColors.mainBlueColor,
                         checkColor: Colors.white,

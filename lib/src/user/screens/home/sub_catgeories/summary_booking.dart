@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:metrogeniusapp/animations/route_animations.dart';
 import 'package:metrogeniusapp/bloc/get_adress_user/get_user_adresses_bloc.dart';
 import 'package:metrogeniusapp/bloc/order_summary/order_summary_bloc_bloc.dart';
-import 'package:metrogeniusapp/services/adress/address_service.dart';
+import 'package:metrogeniusapp/bloc/payment_user/payment_user_order_bloc.dart';
+import 'package:metrogeniusapp/services/user/user_services.dart';
 import 'package:metrogeniusapp/src/user/screens/Logins/users/login_user.dart';
+import 'package:metrogeniusapp/src/user/screens/home/payment/payment_order.dart';
 
 import 'package:metrogeniusapp/src/user/screens/home/sub_catgeories/widgets/adress_selector.dart';
 import 'package:metrogeniusapp/utils/colors.dart';
@@ -22,29 +22,34 @@ class SummaryBooking extends StatelessWidget {
   SummaryBooking(
       {super.key,
       this.data,
-     required this.selectedDay,
+      required this.selectedDay,
       this.selectedTime,
-      required this.selectedCheckboxNotifier,required this.catgeoryName});
+      required this.selectedCheckboxNotifier,
+      required this.catgeoryName});
 
   @override
   Widget build(BuildContext context) {
     print(catgeoryName);
-    context.read<OrderSummaryBlocBloc>().add(DescriptionChanges(data['CatDes']));
-    context.read<OrderSummaryBlocBloc>().add(UserIdChanges(FirebaseAuth.instance.currentUser!.uid));
-    context.read<OrderSummaryBlocBloc>().add(MachineServiceType(data['CatName']));
-     context.read<OrderSummaryBlocBloc>().add(CatgeoryNameChnages(catgeoryName));
-    context.read<OrderSummaryBlocBloc>().add(ServiceTitileChanges(selectedCheckboxNotifier.value!));
+    context
+        .read<OrderSummaryBlocBloc>()
+        .add(DescriptionChanges(data['CatDes']));
+    context
+        .read<OrderSummaryBlocBloc>()
+        .add(UserIdChanges(FirebaseAuth.instance.currentUser!.uid));
+    context
+        .read<OrderSummaryBlocBloc>()
+        .add(MachineServiceType(data['CatName']));
+    context.read<OrderSummaryBlocBloc>().add(CatgeoryNameChnages(catgeoryName));
+    context
+        .read<OrderSummaryBlocBloc>()
+        .add(ServiceTitileChanges(selectedCheckboxNotifier.value!));
 
-
-    
     return BlocConsumer<OrderSummaryBlocBloc, OrderSummaryBlocState>(
-      
-      listener: (context, state) {
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('Summary'),
+            title: const Text('Summary'),
             centerTitle: true,
           ),
           body: Padding(
@@ -53,21 +58,25 @@ class SummaryBooking extends StatelessWidget {
               child: Column(
                 children: [
                   BlocProvider(
-                    create: (context) =>
-                        GetUserAdressesBloc(AddressServiceUser())
-                          ..add(FetchDataAdress(
-                              FirebaseAuth.instance.currentUser!.uid)),
-                    child:AddressSelector()
-                  ),
+                      create: (context) =>
+                          GetUserAdressesBloc(AddressServiceUser())
+                            ..add(FetchDataAdress(
+                                FirebaseAuth.instance.currentUser!.uid)),
+                      child: const AddressSelector()),
                   AppConstants.kheight20,
                   Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: const Color.fromRGBO(230, 234, 255, 1.0)),
+                    height: 200,
+                    width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           AppConstants.kheight10,
-                          Text(
+                          const Text(
                             'Selected Service',
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
@@ -92,14 +101,14 @@ class SummaryBooking extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
                                     data['CatName'].toUpperCase(),
                                   ),
                                   AppConstants.kheight5,
                                   Text(
                                     '₹ ' + data['CatPrice'].toString(),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: AppColors.mainBlueColor,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18),
@@ -111,11 +120,12 @@ class SummaryBooking extends StatelessWidget {
                           AppConstants.kheight10,
                           Text(
                             data['CatDes'],
-                            style: TextStyle(overflow: TextOverflow.ellipsis),
+                            style: const TextStyle(
+                                overflow: TextOverflow.ellipsis),
                           ),
                           Row(
                             children: [
-                              Text(
+                              const Text(
                                 '•',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 20),
@@ -123,19 +133,14 @@ class SummaryBooking extends StatelessWidget {
                               AppConstants.kwidth10,
                               Text(
                                 selectedCheckboxNotifier.value!,
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
                               ),
-                              
                             ],
                           ),
                         ],
                       ),
                     ),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color.fromRGBO(230, 234, 255, 1.0)),
-                    height: 200,
-                    width: double.infinity,
                   ),
                   AppConstants.kheight20,
                   Container(
@@ -158,7 +163,7 @@ class SummaryBooking extends StatelessWidget {
                         BoxShadow(
                           color: Colors.black.withOpacity(0.1), // Shadow color
                           blurRadius: 10,
-                          offset: Offset(0, 4),
+                          offset: const Offset(0, 4),
                         ),
                       ],
                     ),
@@ -167,7 +172,7 @@ class SummaryBooking extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             'Payment Summary',
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
@@ -183,7 +188,7 @@ class SummaryBooking extends StatelessWidget {
                                 heading: 'Item Total',
                               ),
                               Text('₹' + data['CatPrice'].toString(),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.w600,
                                     fontSize: 16, // Adjust text size
                                     color: Colors.black87,
@@ -208,14 +213,31 @@ class SummaryBooking extends StatelessWidget {
                           AppConstants.kheight20,
                           GestureDetector(
                               onTap: () {
-                               
-                                 context.read<OrderSummaryBlocBloc>().add(CreateAtChnages(DateTime.now().toString()));
-                                 context.read<OrderSummaryBlocBloc>().add(WorkerIdChnages(''));
-                                  context.read<OrderSummaryBlocBloc>().add(DateTimeChnages(selectedDay!));
-                                 context.read<OrderSummaryBlocBloc>().add(TotalPriceChnages(int.parse( (data['CatPrice'] + 50).toString())));
-                                     context.read<OrderSummaryBlocBloc>().add(DiscountChnages(0));
-                                     context.read<OrderSummaryBlocBloc>().add(FormSubmit());
-
+                                context.read<OrderSummaryBlocBloc>().add(
+                                    CreateAtChnages(DateTime.now().toString()));
+                                context
+                                    .read<OrderSummaryBlocBloc>()
+                                    .add(WorkerIdChnages(''));
+                                context
+                                    .read<OrderSummaryBlocBloc>()
+                                    .add(DateTimeChnages(selectedDay));
+                                context.read<OrderSummaryBlocBloc>().add(
+                                    TotalPriceChnages(int.parse(
+                                        (data['CatPrice'] + 50).toString())));
+                                context.read<OrderSummaryBlocBloc>().add(
+                                    CategoryImageChanges(data['CatImage']));
+                                context
+                                    .read<OrderSummaryBlocBloc>()
+                                    .add(DiscountChnages(0));
+                                //  context.read<OrderSummaryBlocBloc>().add(FormSubmit());
+                                showUpiAppsBottomSheet(
+                                  context,
+                                  receiverUpiId: 'nanda@yes',
+                                  transactionRefId: '',
+                                  amount: state.totalPrice.toDouble(),
+                                  receiverName: 'Nanda',
+                                  transactionNote: 'pay',
+                                );
                               },
                               child: LoginContainer(
                                 content: 'Pay   ' +
@@ -254,7 +276,7 @@ class DetailsPaymentSummary extends StatelessWidget {
           heading: item,
         ),
         Text(price.toString(),
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 16, // Adjust text size
               color: Colors.black87,
@@ -274,7 +296,7 @@ class TextSummaryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(heading!,
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.w400,
           fontSize: 16, // Adjust text size
           color: Colors.black87,

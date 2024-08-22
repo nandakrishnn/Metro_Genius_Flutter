@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:metrogeniusapp/src/employe/bottom_navigation/history/history_employe.dart';
+import 'package:metrogeniusapp/src/employe/bottom_navigation/analytics_user.dart';
+import 'package:metrogeniusapp/src/employe/bottom_navigation/history/compleated_jobs.dart';
 import 'package:metrogeniusapp/src/employe/bottom_navigation/home/employe_home.dart';
 import 'package:metrogeniusapp/src/employe/bottom_navigation/profile/profile_worker.dart';
 import 'package:metrogeniusapp/utils/colors.dart';
@@ -20,9 +21,10 @@ class _WorkerBottomNavigation extends State<WorkerBottomNavigation> {
   final PageController _pageController = PageController();
 
   final List<Widget> screens = [
-    HistoryWorker(),
-    EmployeeHome(),
-    ProfileWorker1()
+  const  HistoryWorker(),
+  const  EmployeeHome(),
+  const  AnalyticsWorker(),
+  const  ProfileWorker1(),
   ];
 
   void setPage(int index) {
@@ -50,7 +52,8 @@ class _WorkerBottomNavigation extends State<WorkerBottomNavigation> {
                 setState(() {
                   if (notification.direction == ScrollDirection.reverse) {
                     isBottomNavVisible = false;
-                  } else if (notification.direction == ScrollDirection.forward) {
+                  } else if (notification.direction ==
+                      ScrollDirection.forward) {
                     isBottomNavVisible = true;
                   }
                 });
@@ -96,6 +99,10 @@ class _WorkerBottomNavigation extends State<WorkerBottomNavigation> {
                 GButton(
                   icon: Icons.home,
                   text: 'Home',
+                ),
+                GButton(
+                  icon: Icons.analytics,
+                  text: 'Analytics',
                 ),
                 GButton(
                   icon: Icons.person_2,

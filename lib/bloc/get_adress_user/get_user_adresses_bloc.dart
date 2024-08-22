@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:metrogeniusapp/services/adress/address_service.dart';
+import 'package:metrogeniusapp/services/user/user_services.dart';
 
 part 'get_user_adresses_event.dart';
 part 'get_user_adresses_state.dart';

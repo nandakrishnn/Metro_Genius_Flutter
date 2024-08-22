@@ -8,3 +8,16 @@ sealed class FetchAvailableWorksState extends Equatable {
 }
 
 final class FetchAvailableWorksInitial extends FetchAvailableWorksState {}
+final class FetchAvailableWorksLoading extends FetchAvailableWorksState {}
+final class FetchAvailableWorksLoaded extends FetchAvailableWorksState {
+  final List<DocumentSnapshot>data;
+  FetchAvailableWorksLoaded(this.data);
+    @override
+  List<Object> get props => [data];
+}
+final class FetchAvailableWorksLoadingFailure extends FetchAvailableWorksState {
+  final String errorMsg;
+  FetchAvailableWorksLoadingFailure(this.errorMsg);
+      @override
+  List<Object> get props => [errorMsg];
+}

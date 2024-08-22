@@ -12,5 +12,5 @@ final class WorkerPassChanges extends WorkerSignInEvent{
   WorkerPassChanges(this.password);
   final String password;
 }
-
+final class WorkerReset extends WorkerSignInEvent {}
 final class WorkerFormSubmit extends WorkerSignInEvent{}

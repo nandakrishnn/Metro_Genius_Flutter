@@ -1,9 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:metrogeniusapp/animations/route_animations.dart';
+import 'package:metrogeniusapp/bloc/user_details/get_user_details_bloc.dart';
+import 'package:metrogeniusapp/services/user/user_services.dart';
 import 'package:metrogeniusapp/services/auth_signin.dart';
 import 'package:metrogeniusapp/src/user/screens/Logins/users/users_login.dart';
 import 'package:metrogeniusapp/src/user/screens/bottomnavigation/profile/adress_user/adress_user.dart';
+import 'package:metrogeniusapp/src/user/screens/bottomnavigation/profile/details_profile.dart';
+import 'package:metrogeniusapp/src/user/screens/bottomnavigation/profile/user_service.dart';
 import 'package:metrogeniusapp/src/user/widgets/profile/profile_container.dart';
 import 'package:metrogeniusapp/src/user/widgets/profile/profile_tiles.dart';
 import 'package:metrogeniusapp/utils/colors.dart';
@@ -37,39 +43,76 @@ class ProfilePage extends StatelessWidget {
                     ]),
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * .42,
-                child: const Column(
+                child: Column(
                   children: [
                     Padding(
                       padding:
-                          EdgeInsets.symmetric(vertical: 60, horizontal: 21),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 60,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Nandakrishnan',
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color.fromARGB(249, 250, 250, 250)),
-                              ),
-                              Text(
-                                'nandakrishnan@gmail.com',
-                                style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color.fromARGB(248, 139, 132, 132)),
-                              ),
-                            ],
-                          ),
-                        ],
+                          EdgeInsets.symmetric(vertical: 60, horizontal: 15),
+                      child: BlocProvider(
+                        create: (context) =>
+                            GetUserDetailsBloc(UserServices())
+                              ..add(UserDataFetchData(
+                                  FirebaseAuth.instance.currentUser!.uid)),
+                        child: BlocConsumer<GetUserDetailsBloc,
+                                GetUserDetailsState>(
+                            listener: (context, state) {},
+                            builder: (context, state) {
+                              if (state is GetUserDetailsLoading) {
+                                Center(
+                                  child: CupertinoActivityIndicator(),
+                                );
+                              }
+                              print(FirebaseAuth.instance.currentUser!.uid);
+                              if (state is GetUserDetailsLoaded) {
+                                final data = state.data.first;
+                                return Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 60,
+                                          backgroundImage: NetworkImage(
+                                              data['UserImage']),
+                                        ),
+                                        AppConstants.kwidth10,
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              data['UserName'] ??
+                                                  'No user name',
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight:
+                                                      FontWeight.bold,
+                                                  color: Color.fromARGB(
+                                                      249, 250, 250, 250)),
+                                            ),
+                                            Text(
+                                              data['Email'] ??
+                                                  'Unknown Mail',
+                                              overflow:
+                                                  TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight:
+                                                      FontWeight.bold,
+                                                  color: Color.fromARGB(
+                                                      248, 139, 132, 132)),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    AppConstants.kheight10,
+                                  ],
+                                );
+                              }
+                              return Container();
+                            }),
                       ),
                     ),
                   ],
@@ -111,8 +154,9 @@ class ProfilePage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         GestureDetector(
-                          onTap: (){
-                            Navigator.of(context).push(createRoute(AdressUser()));
+                          onTap: () {
+                            Navigator.of(context)
+                                .push(createRoute(AdressUser()));
                           },
                           child: ProfileContainers(
                             text: 'Edit Adress',
@@ -125,10 +169,16 @@ class ProfilePage extends StatelessWidget {
                           imgurl:
                               'assets/refer-friend-badge-design-template-260nw-2082857296.jpg',
                         ),
-                        ProfileContainers(
-                          text: 'Settings',
-                          imgurl:
-                              'assets/settings-icon-gear-3d-render-png.webp',
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context)
+                                .push(createRoute(UserProfileDetails()));
+                          },
+                          child: ProfileContainers(
+                            text: 'Settings',
+                            imgurl:
+                                'assets/settings-icon-gear-3d-render-png.webp',
+                          ),
                         )
                       ],
                     ),
@@ -193,9 +243,14 @@ class ProfilePage extends StatelessWidget {
                               actions: [
                                 ElevatedButton(
                                   onPressed: () {
-                                    final UserSigninAuth _auth=UserSigninAuth();
-                                    _auth.signOutWithGoogle().then((value){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>CommonLoginPage()));
+                                    final UserSigninAuth _auth =
+                                        UserSigninAuth();
+                                    _auth.signOutWithGoogle().then((value) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CommonLoginPage()));
                                     });
                                     FirebaseAuth.instance
                                         .signOut()

@@ -16,4 +16,9 @@ final class UserNameChanges extends UserSignupEvent{
   UserNameChanges(this.userName);
   final String userName;
 }
+final class UserImageChanges extends UserSignupEvent{
+  UserImageChanges(this.userImage);
+  final String userImage;
+}
+final class UpdateFormSubmit extends UserSignupEvent{}
 final class FormSubmit extends UserSignupEvent{}

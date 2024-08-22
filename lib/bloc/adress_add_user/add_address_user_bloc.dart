@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:metrogeniusapp/services/adress/address_service.dart';
+import 'package:metrogeniusapp/services/user/user_services.dart';
 import 'package:random_string/random_string.dart';
 
 part 'add_address_user_event.dart';

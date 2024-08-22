@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:metrogeniusapp/animations/route_animations.dart';
+import 'package:metrogeniusapp/bloc/worker/sigin_worker/worker_sign_in_bloc.dart';
 import 'package:metrogeniusapp/bloc/worker/workers_listing_user/workers_listing_user_bloc.dart';
 import 'package:metrogeniusapp/src/employe/bottom_navigation/profile/details_worker.dart';
 import 'package:metrogeniusapp/src/user/screens/Logins/users/users_login.dart';
@@ -22,7 +24,11 @@ class ProfileWorker1 extends StatelessWidget {
       child: BlocConsumer<WorkersListingUserBloc, WorkersListingUserState>(
         listener: (context, state) {},
         builder: (context, state) {
+        if(state is WorkersListingUserLoading){
+          Center(child: CupertinoActivityIndicator(),);
+        }
           if (state is WorkersListingUserLoaded) {
+            
             final data = state.data;
             return Scaffold(
               body: Stack(
@@ -207,21 +213,13 @@ class ProfileWorker1 extends StatelessWidget {
                                         ElevatedButton(
                                           onPressed: () async {
                                             try {
-                                              SharedPreferences prefs =
-                                                  await SharedPreferences
-                                                      .getInstance();
-                                              await prefs.remove('WorkerId');
-                                              await prefs
-                                                  .remove('EmployeeEmail');
-                                              Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          CommonLoginPage()));
+                                             await logoutUser(context);
+
+                                             
                                             } catch (e) {
                                               print(
                                                   'Error removing preferences: $e');
-                                              // Handle the error, e.g., show an error message to the user
+                                       
                                             }
                                           },
                                           style: ElevatedButton.styleFrom(
@@ -282,4 +280,29 @@ class ProfileWorker1 extends StatelessWidget {
       ),
     );
   }
-}
+  Future<void> logoutUser(BuildContext context) async {
+ try {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool removed = await prefs.remove('WorkerId');
+    
+    if (removed) {
+      print('WorkerId removed successfully');
+    } else {
+      print('Failed to remove WorkerId');
+    }
+  bool exists = prefs.containsKey('WorkerId');
+    print('WorkerId exists after removal attempt: $exists');
+    // Ensure any BLoC or state management is reset
+    context.read<WorkersListingUserBloc>().add(WorkersDataCleared());
+
+    // Navigate to login page and clear the navigation stack
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => CommonLoginPage()),
+      (route) => false, // Clear all previous routes
+    );
+  } catch (e) {
+    print('Error during logout: $e');
+  }
+
+}}

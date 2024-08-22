@@ -10,7 +10,6 @@ import 'package:metrogeniusapp/utils/constants.dart';
 import 'package:metrogeniusapp/utils/validators.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class EmployeLogin extends StatelessWidget {
   const EmployeLogin({super.key});
 
@@ -23,17 +22,20 @@ class EmployeLogin extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: BlocConsumer<WorkerSignInBloc, WorkerSignInState>(
-        listener: (context, state) async{
-        if (state.status == WorkerSigninFormStatus.sucess) {
-          // String email=_emailController.text;
-          // String pass=_codeController.text;
-          // await saveUserDetails(pass, email);
-            Navigator.of(context).push(createRoute(const WorkerBottomNavigation()));
-          }
-              if(state.status==WorkerSigninFormStatus.pending){
-            
-          }
+        listener: (context, state) async {
+          if (state.status == WorkerSigninFormStatus.sucess) {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+
+          await prefs.setString('EmployeAssigned', _codeController.text);
+               _emailController.clear();
+                _codeController.clear();
+                  context.read<WorkerSignInBloc>().add(WorkerReset());
+            Navigator.of(context)
+                .push(createRoute(const WorkerBottomNavigation()));
         
+          }
+          if (state.status == WorkerSigninFormStatus.pending) {}
+
           if (state.status == WorkerSigninFormStatus.error) {
             ScaffoldMessenger.of(context).showSnackBar(customSnack(
                 'Invalid Login',
@@ -47,7 +49,6 @@ class EmployeLogin extends StatelessWidget {
           }
         },
         builder: (context, state) {
-      
           return Padding(
               padding: const EdgeInsets.all(12.0),
               child: SingleChildScrollView(
@@ -91,7 +92,6 @@ class EmployeLogin extends StatelessWidget {
                             if (value == null || value.isEmpty) {
                               return 'Enter your EmployeCode';
                             }
-                        
 
                             return null;
                           },
@@ -116,7 +116,6 @@ class EmployeLogin extends StatelessWidget {
                                 context
                                     .read<WorkerSignInBloc>()
                                     .add(WorkerFormSubmit());
-                                    
                               }
                             },
                             child: LoginContainer(content: 'Login')),
@@ -152,9 +151,7 @@ class EmployeLogin extends StatelessWidget {
         },
       ),
     );
-  // } Future<void> saveUserDetails(String employeeCode, String email) async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   await prefs.setString('WorkerId', employeeCode);
-  //   await prefs.setString('EmployeeEmail', email);
-  // }
-  }}
+  }
+
+
+}

@@ -56,6 +56,10 @@ final class DiscountChnages extends OrderSummaryBlocEvent {
   DiscountChnages(this.discountPrice);
   final int discountPrice;
 }
+final class CategoryImageChanges extends OrderSummaryBlocEvent {
+  CategoryImageChanges(this.catImage);
+  final String catImage;
+}
 // final class UserCheckboxChanges extends OrderSummaryBlocEvent {
 //   UserCheckboxChanges(this.usercheckboxChanges);
 //   final String usercheckboxChanges;

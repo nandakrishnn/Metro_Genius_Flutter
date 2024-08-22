@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:metrogeniusapp/bloc/details_subcategory/details_sub_catgeory_bloc.dart';
 import 'package:metrogeniusapp/services/order_summary/order_service.dart';
 import 'package:random_string/random_string.dart';
 
@@ -22,8 +21,8 @@ class OrderSummaryBlocBloc
     on<WorkerIdChnages>(_workerIdChanges);
     on<CatgeoryNameChnages>(_catgeoryNameChanges);
     on<DiscountChnages>(_discountChanges);
-     on<MachineServiceType>(_machineTypeChanges);
-    //  on<UserCheckboxChanges>(_checkBoxChanges);
+    on<MachineServiceType>(_machineTypeChanges);
+    on<CategoryImageChanges>(_catImageChanges);
     on<FormSubmit>(_formSubmit);
   }
   void _adressChanges(
@@ -75,9 +74,15 @@ class OrderSummaryBlocBloc
       DiscountChnages event, Emitter<OrderSummaryBlocState> emit) {
     emit(state.copyWith(discountPrice: event.discountPrice));
   }
-    void _machineTypeChanges(
+
+  void _machineTypeChanges(
       MachineServiceType event, Emitter<OrderSummaryBlocState> emit) {
     emit(state.copyWith(machineServiceTitle: event.machineServiceTitle));
+  }
+
+  void _catImageChanges(
+      CategoryImageChanges event, Emitter<OrderSummaryBlocState> emit) {
+    emit(state.copyWith(catImage: event.catImage));
   }
   //   void _checkBoxChanges(
   //     UserCheckboxChanges event, Emitter<OrderSummaryBlocState> emit) {
@@ -89,6 +94,7 @@ class OrderSummaryBlocBloc
     try {
       final randomId = randomAlphaNumeric(10);
       final details = userOrderService.userOrderInfo(
+          catimage: state.catImage,
           id: randomId,
           adress: state.adress,
           description: state.description,
@@ -101,14 +107,14 @@ class OrderSummaryBlocBloc
           workerId: state.workerId,
           machineServiceTitle: state.machineServiceTitle,
           requestStatus: RequestStatus.pending.toString(),
-       
           categoryName: state.categoryName);
-          final added=UserOrderService.userOrderDetails(details, randomId, FirebaseAuth.instance.currentUser!.uid);
-          if(added==true){
-            emit(state.copyWith(status: FormStatus.sucess));
-          }else{
-            emit(state.copyWith(status: FormStatus.failure));
-          }
+      final added = UserOrderService.userOrderDetails(
+          details, randomId, FirebaseAuth.instance.currentUser!.uid);
+      if (added == true) {
+        emit(state.copyWith(status: FormStatus.sucess));
+      } else {
+        emit(state.copyWith(status: FormStatus.failure));
+      }
     } catch (e) {
       emit(state.copyWith(status: FormStatus.failure));
     }

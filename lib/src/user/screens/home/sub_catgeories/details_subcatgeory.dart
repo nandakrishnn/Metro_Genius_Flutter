@@ -14,23 +14,27 @@ import '../widgets/footer_subcategory.dart';
 class InsideSubCatgeory extends StatelessWidget {
   final data;
   final String categoryType;
-   final ValueNotifier<String?> selectedCheckboxNotifier = ValueNotifier<String?>(null);
-   InsideSubCatgeory({super.key, this.data, required this.categoryType});
+    final Map<String, bool>? checkBoxData;
+  final ValueNotifier<String?> selectedCheckboxNotifier =
+      ValueNotifier<String?>(null);
+  InsideSubCatgeory({super.key, this.data, required this.categoryType,this.checkBoxData});
 
   @override
   Widget build(BuildContext context) {
     List<String> _generateTimeSlots() {
-    List<String> timeSlots = [];
-    DateTime startTime = DateTime(0, 1, 1, 8, 0); // Start at 8:00 AM
-    DateTime endTime = DateTime(0, 1, 1, 18, 0); // End at 6:00 PM
-    while (startTime.isBefore(endTime) || startTime == endTime) {
-      String time = DateFormat('hh:mm a').format(startTime); // 12-hour format with AM/PM
-      timeSlots.add(time);
-      startTime = startTime.add(const Duration(minutes: 60));
+      List<String> timeSlots = [];
+      DateTime startTime = DateTime(0, 1, 1, 8, 0); // Start at 8:00 AM
+      DateTime endTime = DateTime(0, 1, 1, 18, 0); // End at 6:00 PM
+      while (startTime.isBefore(endTime) || startTime == endTime) {
+        String time = DateFormat('hh:mm a')
+            .format(startTime); // 12-hour format with AM/PM
+        timeSlots.add(time);
+        startTime = startTime.add(const Duration(minutes: 60));
+      }
+      return timeSlots;
     }
-    return timeSlots;
-  }
-  List<String> timeSlots=_generateTimeSlots();
+
+    List<String> timeSlots = _generateTimeSlots();
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User? user = auth.currentUser;
     final String userId = user?.uid ?? 'NO User ID';
@@ -58,23 +62,32 @@ class InsideSubCatgeory extends StatelessWidget {
           return Stack(
             children: [
               SubCatgeoryViewHeader(data: data),
-              SubCategoryViewContent(data: data, trueKeys: trueKeys,selectedCheckboxNotifier: selectedCheckboxNotifier,),
-              
+              SubCategoryViewContent(
+                checkBoxData: checkBoxData,
+                data: data,
+                trueKeys: trueKeys,
+                selectedCheckboxNotifier: selectedCheckboxNotifier,
+              ),
               SubCategoryViewFooter(
                 bookNow: () {
-                final selectedCheckbox = selectedCheckboxNotifier.value;
+                  final selectedCheckbox = selectedCheckboxNotifier.value;
                   if (selectedCheckbox != null) {
-                    SlotSelectionUserBottomModel(context, timeSlots, selectedCheckbox);
+                    SlotSelectionUserBottomModel(
+                        context, timeSlots, selectedCheckbox
+                        
+                        );
                   } else {
-                    customSnack('Select an option', 'You must select an option to continue', Icon(Icons.error), Colors.black);
+                    customSnack(
+                        'Select an option',
+                        'You must select an option to continue',
+                        Icon(Icons.error),
+                        Colors.black);
                   }
-                
-
-            
                 },
                 cartNow: () {},
                 data: data,
                 state: state,
+                categoryHeading: categoryType,
               )
             ],
           );
@@ -83,19 +96,26 @@ class InsideSubCatgeory extends StatelessWidget {
     );
   }
 
-  Future<dynamic> SlotSelectionUserBottomModel(BuildContext context, List<String> timeSlots,String selectedCheckbox) {
+  Future<dynamic> SlotSelectionUserBottomModel(
+      BuildContext context, List<String> timeSlots, String selectedCheckbox) {
     return showModalBottomSheet(
-                  backgroundColor: AppColors.primaryColor,
-                  isScrollControlled: true,
-                  enableDrag: true,
-                  isDismissible: true,
-                  context: context,
-                  builder: (context) {
-                    return  SlotSelectionBottomSheet(timeSlots: timeSlots,data: data,selectedCheckboxNotifier: selectedCheckboxNotifier,catgeoryName: categoryType,);
-                  },
-                );
+      backgroundColor: AppColors.primaryColor,
+      isScrollControlled: true,
+      enableDrag: true,
+      isDismissible: true,
+      context: context,
+      builder: (context) {
+        return SlotSelectionBottomSheet(
+          timeSlots: timeSlots,
+          data: data,
+          selectedCheckboxNotifier: selectedCheckboxNotifier,
+          catgeoryName: categoryType,
+        );
+      },
+    );
   }
 }
+
 class TimeSelector extends StatelessWidget {
   final List<String> timeSlots;
   final String? selectedTime;
@@ -186,7 +206,8 @@ class DayContainerBottomSheet extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(DateFormat('EEEE').format(date),
-                      style: TextStyle(color: isSelected ? Colors.white : Colors.black)),
+                      style: TextStyle(
+                          color: isSelected ? Colors.white : Colors.black)),
                   AppConstants.kheight10,
                   Text(DateFormat('dd').format(date),
                       style: TextStyle(
@@ -202,4 +223,3 @@ class DayContainerBottomSheet extends StatelessWidget {
     );
   }
 }
-

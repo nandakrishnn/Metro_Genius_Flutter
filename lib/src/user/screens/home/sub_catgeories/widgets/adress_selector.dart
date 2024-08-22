@@ -73,7 +73,7 @@ class _AddressSelectorState extends State<AddressSelector> {
                       ),
                       onTap: () {
                         final oneline =
-                            '${address['AddressName']}\n ${address['AddressLine1']}, ${address['AddressCity']}, ${address['AddressState']}, ${address['AddressPostCode']}, ${address['AddressPhone']}';
+                            '${address['AddressName']}\nAddress : ${address['AddressLine1']}, ${address['AddressCity']}, ${address['AddressState']}, ${address['AddressPostCode']}, ${address['AddressPhone']}';
                         context.read<OrderSummaryBlocBloc>().add(AddressChanges(oneline));
                         setState(() {
                           selectedAddressId = address.id;

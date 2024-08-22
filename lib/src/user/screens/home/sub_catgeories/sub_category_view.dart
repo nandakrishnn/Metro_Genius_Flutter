@@ -64,7 +64,8 @@ class SubCatgeoryDetails extends StatelessWidget {
                               return GestureDetector(
                                 onTap: () {
                                   Navigator.of(context)
-                                      .push(createRoute(InsideSubCatgeory(
+                                      .push(createRoute(
+                                        InsideSubCatgeory(
                                     data: data[index],
                                     categoryType: catgeoryName,
                                   )));

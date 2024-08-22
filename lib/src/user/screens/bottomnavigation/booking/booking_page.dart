@@ -67,10 +67,10 @@ class BookingsPage extends StatelessWidget {
           dividerColor: Colors.transparent,
           indicator: BoxDecoration(
             shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(10), // Rounded corners
+            borderRadius: BorderRadius.circular(5), // Rounded corners
             color: AppColors.lightPurple // Background color of the selected tab
           ),
-           indicatorPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+           indicatorPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
            indicatorSize: TabBarIndicatorSize.tab,
           ),
         ),

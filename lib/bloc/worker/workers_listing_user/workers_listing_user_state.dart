@@ -9,6 +9,7 @@ sealed class WorkersListingUserState extends Equatable {
 
 final class WorkersListingUserInitial extends WorkersListingUserState {}
 final class WorkersListingUserLoading extends WorkersListingUserState {}
+
 final class WorkersListingUserLoaded extends WorkersListingUserState {
 DocumentSnapshot data;
   WorkersListingUserLoaded(this.data);
@@ -21,4 +22,8 @@ final class WorkersListingUserFailure extends WorkersListingUserState {
   WorkersListingUserFailure(this.errroMsg);
     @override
   List<Object> get props => [errroMsg];
+}
+final class WorkersListingUserClear extends WorkersListingUserState {
+  final WorkerSigninFormStatus status;
+  WorkersListingUserClear(this.status);
 }

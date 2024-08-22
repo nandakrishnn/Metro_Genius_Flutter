@@ -139,6 +139,7 @@ class RegisterNow extends StatelessWidget {
                           GestureDetector(
                             onTap: () {
                               if (formkey.currentState!.validate()) {
+                                context.read<UserSignupBloc>().add(UserImageChanges(''));
                                 context
                                     .read<UserSignupBloc>()
                                     .add(FormSubmit());
