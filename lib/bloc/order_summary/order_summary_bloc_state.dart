@@ -1,6 +1,12 @@
 part of 'order_summary_bloc_bloc.dart';
 
-enum RequestStatus { pending, accepted, rejected, compleated,paymentcompleated }
+enum RequestStatus {
+  pending,
+  accepted,
+  rejected,
+  compleated,
+  paymentcompleated
+}
 
 enum FormStatus { inital, pending, sucess, failure }
 
@@ -19,12 +25,14 @@ final class OrderSummaryBlocState {
       this.machineServiceTitle = '',
       this.adress = '',
       this.categoryName = '',
+      this.paymentMeathod = '',
       this.discountPrice = 0,
       this.status = FormStatus.inital,
       this.requestStatus = RequestStatus.pending,
       this.errorMsg});
   final String adress;
   final String catImage;
+  final String paymentMeathod;
   final String checkbox;
   final String categoryName;
   final String description;
@@ -42,6 +50,7 @@ final class OrderSummaryBlocState {
   OrderSummaryBlocState copyWith({
     String? adress,
     String? categoryName,
+    String? paymentMeathod,
     String? catImage,
     String? description,
     String? machineServiceTitle,
@@ -57,6 +66,7 @@ final class OrderSummaryBlocState {
     RequestStatus? requestStatus,
   }) =>
       OrderSummaryBlocState(
+          paymentMeathod: paymentMeathod ?? this.paymentMeathod,
           catImage: catImage ?? this.catImage,
           checkbox: checkbox ?? this.checkbox,
           discountPrice: discountPrice ?? this.discountPrice,

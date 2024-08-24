@@ -18,6 +18,7 @@ import 'package:metrogeniusapp/bloc/get_subcategory/get_sub_catgeory_data_bloc.d
 import 'package:metrogeniusapp/bloc/job_application/job_application_employe_bloc.dart';
 import 'package:metrogeniusapp/bloc/login_bloc/user_login_bloc.dart';
 import 'package:metrogeniusapp/bloc/order_summary/order_summary_bloc_bloc.dart';
+import 'package:metrogeniusapp/bloc/add_ratings_user/ratings_user_bloc.dart';
 import 'package:metrogeniusapp/bloc/signup_bloc/bloc/user_signup_bloc.dart';
 import 'package:metrogeniusapp/bloc/user_details/get_user_details_bloc.dart';
 import 'package:metrogeniusapp/bloc/worker/get_works/fetch_available_works_bloc.dart';
@@ -109,7 +110,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => GetCartDetailsUserBloc(AddressServiceUser()),
          
-        )
+        ),
+          BlocProvider(create: (context)=>RatingsUserBloc(AddressServiceUser())
+          )
       ],
       child: MaterialApp(
           theme: ThemeData(fontFamily: GoogleFonts.poppins().fontFamily),

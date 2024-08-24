@@ -60,6 +60,10 @@ final class CategoryImageChanges extends OrderSummaryBlocEvent {
   CategoryImageChanges(this.catImage);
   final String catImage;
 }
+final class PaymentMeathod extends OrderSummaryBlocEvent {
+  PaymentMeathod(this.paymentMeathod);
+  final String paymentMeathod;
+}
 // final class UserCheckboxChanges extends OrderSummaryBlocEvent {
 //   UserCheckboxChanges(this.usercheckboxChanges);
 //   final String usercheckboxChanges;

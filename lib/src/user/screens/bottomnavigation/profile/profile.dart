@@ -25,110 +25,112 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          Column(
-            children: [
-              Container(
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(30),
-                      bottomRight: Radius.circular(30),
-                    ),
-                    color: AppColors.mainBlueColor,
-                    boxShadow: [
-                      BoxShadow(
-                          color: Color.fromARGB(250, 142, 144, 149),
-                          offset: Offset(0, 0),
-                          spreadRadius: 2.5,
-                          blurRadius: 1)
-                    ]),
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height * .42,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 60, horizontal: 15),
-                      child: BlocProvider(
-                        create: (context) =>
-                            GetUserDetailsBloc(UserServices())
-                              ..add(UserDataFetchData(
-                                  FirebaseAuth.instance.currentUser!.uid)),
-                        child: BlocConsumer<GetUserDetailsBloc,
-                                GetUserDetailsState>(
-                            listener: (context, state) {},
-                            builder: (context, state) {
-                              if (state is GetUserDetailsLoading) {
-                                Center(
-                                  child: CupertinoActivityIndicator(),
-                                );
-                              }
-                              print(FirebaseAuth.instance.currentUser!.uid);
-                              if (state is GetUserDetailsLoaded) {
-                                final data = state.data.first;
-                                return Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 60,
-                                          backgroundImage: NetworkImage(
-                                              data['UserImage']),
-                                        ),
-                                        AppConstants.kwidth10,
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              data['UserName'] ??
-                                                  'No user name',
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight:
-                                                      FontWeight.bold,
-                                                  color: Color.fromARGB(
-                                                      249, 250, 250, 250)),
-                                            ),
-                                            Text(
-                                              data['Email'] ??
-                                                  'Unknown Mail',
-                                              overflow:
-                                                  TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight:
-                                                      FontWeight.bold,
-                                                  color: Color.fromARGB(
-                                                      248, 139, 132, 132)),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    AppConstants.kheight10,
-                                  ],
-                                );
-                              }
-                              return Container();
-                            }),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(30),
+                        bottomRight: Radius.circular(30),
                       ),
-                    ),
-                  ],
+                      color: AppColors.mainBlueColor,
+                      boxShadow: [
+                        BoxShadow(
+                            color: Color.fromARGB(250, 142, 144, 149),
+                            offset: Offset(0, 0),
+                            spreadRadius: 2.5,
+                            blurRadius: 1)
+                      ]),
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height * .42,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 60, horizontal: 15),
+                        child: BlocProvider(
+                          create: (context) =>
+                              GetUserDetailsBloc(UserServices())
+                                ..add(UserDataFetchData(
+                                    FirebaseAuth.instance.currentUser!.uid)),
+                          child: BlocConsumer<GetUserDetailsBloc,
+                                  GetUserDetailsState>(
+                              listener: (context, state) {},
+                              builder: (context, state) {
+                                if (state is GetUserDetailsLoading) {
+                                  Center(
+                                    child: CupertinoActivityIndicator(),
+                                  );
+                                }
+                                print(FirebaseAuth.instance.currentUser!.uid);
+                                if (state is GetUserDetailsLoaded) {
+                                  final data = state.data.first;
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          CircleAvatar(
+                                            radius: 60,
+                                            backgroundImage: NetworkImage(
+                                                data['UserImage']),
+                                          ),
+                                          AppConstants.kwidth10,
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                data['UserName'] ??
+                                                    'No user name',
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.bold,
+                                                    color: Color.fromARGB(
+                                                        249, 250, 250, 250)),
+                                              ),
+                                              Text(
+                                                data['Email'] ??
+                                                    'Unknown Mail',
+                                                overflow:
+                                                    TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight:
+                                                        FontWeight.bold,
+                                                    color: Color.fromARGB(
+                                                        248, 139, 132, 132)),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      AppConstants.kheight10,
+                                    ],
+                                  );
+                                }
+                                return Container();
+                              }),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Container(
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(30),
-                      bottomRight: Radius.circular(30),
-                    ),
-                    color: AppColors.primaryColor),
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height * .58,
-              ),
-            ],
+                Container(
+                  decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(30),
+                        bottomRight: Radius.circular(30),
+                      ),
+                      color: AppColors.primaryColor),
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height * .58,
+                ),
+              ],
+            ),
           ),
           Positioned(
             top: screenHeight * 0.28,

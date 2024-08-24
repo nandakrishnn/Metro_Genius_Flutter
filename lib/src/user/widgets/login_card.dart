@@ -42,7 +42,8 @@ class LoginCards extends StatelessWidget {
                 children: [
                   Text(
                     heading,
-                    style: const TextStyle(fontSize: 23, fontWeight: FontWeight.bold,shadows:[Shadow(
+                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold,
+                    shadows:[Shadow(
                           offset: Offset(1.0, 1.0),
                       color: AppColors.primaryColor
                     )]),
@@ -52,12 +53,12 @@ class LoginCards extends StatelessWidget {
                   ),
                   Text(
                     content,
-                    style: const TextStyle(fontSize: 14.5, fontWeight: FontWeight.w500,color: Color.fromARGB(255, 107, 104, 104)),
+                    style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w500,color: Color.fromARGB(255, 107, 104, 104)),
                   )
                 ],
               ),
             ),
-           const SizedBox(width: 0,),
+      
             Image.asset(imageurl,fit: BoxFit.cover,)
           ],
         ),

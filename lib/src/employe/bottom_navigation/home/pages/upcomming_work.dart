@@ -130,101 +130,110 @@ class EmployeRequests2 extends StatelessWidget {
           ],
           color: AppColors.primaryColor),
       width: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  seriveType,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16),
-                ),
-                Text(
-                  formattedTime,
-                  style: TextStyle(color: Colors.black),
-                ),
-              ],
-            ),
-            AppConstants.kheight5,
-            Row(
-              children: [
-                Icon(
-                  Icons.access_time,
-                  size: 22,
-                ),
-                AppConstants.kwidth5,
-                Text(
-                  dateTime,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14),
-                ),
-              ],
-            ),
-            AppConstants.kheight5,
-            Row(
-              children: [
-                Icon(Icons.work_outline),
-                AppConstants.kwidth5,
-                Text(serviceTitile,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14)),
-              ],
-            ),
-            AppConstants.kheight5,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.location_city),
-                AppConstants.kwidth5,
-                Expanded(child: Text(adress)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      seriveType,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),
+                    ),
+                    Text(
+                      formattedTime,
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ],
+                ),
+                AppConstants.kheight5,
+                Row(
+                  children: [
+                    Icon(
+                      Icons.access_time,
+                      size: 22,
+                    ),
+                    AppConstants.kwidth5,
+                    Text(
+                      dateTime,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14),
+                    ),
+                  ],
+                ),
+                AppConstants.kheight5,
+                Row(
+                  children: [
+                    Icon(Icons.work_outline),
+                    AppConstants.kwidth5,
+                    Text(serviceTitile,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14)),
+                  ],
+                ),
+                AppConstants.kheight5,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(Icons.location_city),
+                    AppConstants.kwidth5,
+                    Expanded(child: Text(adress)),
+                  ],
+                ),
+                AppConstants.kheight10,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: ontapChat,
+                      child: Text('Chat'),
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: AppColors.mainBlueColor, // Text color
+                        splashFactory: InkRipple.splashFactory, // Ink effect
+                            padding: EdgeInsets.symmetric(vertical:5,horizontal: 10),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: ontapStartWork,
+                      child: Text('Start Work'),
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.amber, // Text color
+                        splashFactory: InkRipple.splashFactory, // Ink effect
+                          padding: EdgeInsets.symmetric(vertical:5,horizontal: 10), // Adjust padding here
+
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: ontapCompleted,
+                      child: Text('Completed'),
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.green, // Text color
+                        splashFactory: InkRipple.splashFactory, 
+                            padding: EdgeInsets.symmetric(vertical:5,horizontal: 10),
+                        // Ink effect
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
-            AppConstants.kheight10,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton(
-                  onPressed: ontapChat,
-                  child: Text('Chat'),
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: AppColors.mainBlueColor, // Text color
-                    splashFactory: InkRipple.splashFactory, // Ink effect
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: ontapStartWork,
-                  child: Text('Start Work'),
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.amber, // Text color
-                    splashFactory: InkRipple.splashFactory, // Ink effect
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: ontapCompleted,
-                  child: Text('Completed'),
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.green, // Text color
-                    splashFactory: InkRipple.splashFactory, // Ink effect
-                  ),
-                ),
-              ],
-            )
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

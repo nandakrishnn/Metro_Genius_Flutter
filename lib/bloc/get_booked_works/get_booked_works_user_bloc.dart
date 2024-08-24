@@ -12,11 +12,24 @@ class GetBookedWorksUserBloc extends Bloc<GetBookedWorksUserEvent, GetBookedWork
   GetBookedWorksUserBloc() : super(GetBookedWorksUserInitial()) {
     on<FetchOrderSummaryUser>(_fetchorderDetails);
     on<FetchedOrderSummaryUser>(_fetchedUserOrderDetails);
+    on<FetchOrderSummaryUserHistory>(_fetchorderHistory);
   }
   void _fetchorderDetails(FetchOrderSummaryUser event,Emitter<GetBookedWorksUserState>emit)async{
       try{
         emit(GetBookedWorksUserLoading());
   Stream<QuerySnapshot<Object?>>?catgeoryStream=await AddressServiceUser.getUserRequests(FirebaseAuth.instance.currentUser!.uid);
+      catgeoryStream.listen((snapshots){
+        final data=snapshots.docs;
+        add(FetchedOrderSummaryUser(data));
+      });
+      }catch(e){
+            emit(GetBookedWorksUserFailure());
+      }
+  }
+    void _fetchorderHistory(FetchOrderSummaryUserHistory event,Emitter<GetBookedWorksUserState>emit)async{
+      try{
+        emit(GetBookedWorksUserLoading());
+  Stream<QuerySnapshot<Object?>>?catgeoryStream=await AddressServiceUser.getUserOrderHistory(FirebaseAuth.instance.currentUser!.uid);
       catgeoryStream.listen((snapshots){
         final data=snapshots.docs;
         add(FetchedOrderSummaryUser(data));

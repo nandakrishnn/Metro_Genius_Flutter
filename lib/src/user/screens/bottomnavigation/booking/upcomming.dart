@@ -21,7 +21,11 @@ class UpComming extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           if (state is GetBookedWorksUserLoaded) {
+              
             final data = state.data;
+            if(data.isEmpty){
+            return  Center(child: Text('No Upcomming orders'),);
+            }
             return Padding(
                 padding: const EdgeInsets.only(
                     left: 0, right: 0, bottom: 0, top: 10),
@@ -42,7 +46,7 @@ class UpComming extends StatelessWidget {
                     }));
           }
           return Container(
-            child: Text('Error'),
+            child:Center(child: CupertinoActivityIndicator(),)
           );
         },
       ),

@@ -80,9 +80,10 @@ class ProfileWorker1 extends StatelessWidget {
                                                 249, 250, 250, 250)),
                                       ),
                                       Text(
+                                      
                                         data['ApplicantEmail'],
                                         style: TextStyle(
-                                            fontSize: 13,
+                                            fontSize: 10,
                                             fontWeight: FontWeight.bold,
                                             color: Color.fromARGB(
                                                 248, 139, 132, 132)),

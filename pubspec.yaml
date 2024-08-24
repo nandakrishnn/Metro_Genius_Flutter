@@ -41,6 +41,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.6
+  flutter_custom_clippers: ^2.1.0
   glassmorphism: ^3.0.0
   google_fonts: ^6.2.1
   google_nav_bar: ^5.0.6
@@ -48,6 +49,7 @@ dependencies:
   image_picker: ^1.1.2
   intl: ^0.18.1
   like_button: ^2.0.5
+  lottie: ^3.1.2
   random_string: ^2.3.1
   ripple_backdrop_animate_route: ^1.1.0
   shared_preferences: ^2.3.1

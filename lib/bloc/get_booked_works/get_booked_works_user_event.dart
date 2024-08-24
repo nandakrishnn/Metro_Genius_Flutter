@@ -10,6 +10,10 @@ final class FetchOrderSummaryUser extends GetBookedWorksUserEvent{
 final String userId;
 FetchOrderSummaryUser(this.userId);
 }
+final class FetchOrderSummaryUserHistory extends GetBookedWorksUserEvent{
+final String userId;
+FetchOrderSummaryUserHistory(this.userId);
+}
 final class FetchedOrderSummaryUser extends GetBookedWorksUserEvent{
 List<DocumentSnapshot>data;
 FetchedOrderSummaryUser(this.data);

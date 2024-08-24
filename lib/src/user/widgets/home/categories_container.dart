@@ -32,6 +32,7 @@ class HomeCatgeories extends StatelessWidget {
         AppConstants.kheight5,
         Text(
           heading,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
         ),
       ],

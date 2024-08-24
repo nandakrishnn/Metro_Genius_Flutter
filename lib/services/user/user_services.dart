@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 
 class AddressServiceUser {
   Future<bool> addAddressUser(
@@ -59,6 +60,24 @@ class AddressServiceUser {
       final List<String> statuses = [
         'RequestStatus.pending',
         'RequestStatus.accepted'
+      ];
+
+      return FirebaseFirestore.instance
+          .collectionGroup('UserOrders')
+          .where('UserId', isEqualTo: userId)
+          .where('RequestStatus', whereIn: statuses)
+          .snapshots();
+    } catch (e) {
+      print('Error fetching requests: $e');
+      return Stream.empty();
+    }
+  }
+  
+  static Future<Stream<QuerySnapshot>> getUserOrderHistory(String userId) async {
+    try {
+      final List<String> statuses = [
+        'RequestStatus.compleated',
+       
       ];
 
       return FirebaseFirestore.instance
@@ -156,5 +175,70 @@ Stream<QuerySnapshot<Object?>> getUserCartDetails(String userId) {
     print("Error checking favorite: $e");
     return false;
   }
+}
+  Future<bool> addUserRating(
+      Map<String, dynamic> userRatingInfo, dynamic id) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("UserRatings")
+          .doc(id)
+          .set(userRatingInfo);
+            // Fetch all ratings for the given service
+      final snapshot = await FirebaseFirestore.instance.collection('UserRatings').where('CatName', isEqualTo: userRatingInfo['CatName']).get();
+
+      final ratings = snapshot.docs.map((doc) => doc['RatingStarCount'] as double).toList();
+
+      if (ratings.isNotEmpty) {
+        final averageRating = ratings.reduce((a, b) => a + b) / ratings.length;
+
+
+        final subcategorySnapshot = await FirebaseFirestore.instance.collectionGroup('SubCategories').where('CatName', isEqualTo: userRatingInfo['CatName']).get();
+
+        for (var doc in subcategorySnapshot.docs) {
+          await FirebaseFirestore.instance.collection(doc.reference.parent.path).doc(doc.id).update({'CatRating': averageRating});
+        }
+
+        debugPrint('SubCategory rating updated successfully');
+      } else {
+        debugPrint('No ratings found for this service');
+      }
+
+      return true;
+    } catch (e) {
+      debugPrint('Error adding rating and updating subcategory: $e');
+      return false;
+}
+
+    
+  }
+
+  Map<String, dynamic> userRatingInfo({
+    required String id,
+    required int index,
+    required String userId,
+    required String categoryName,
+    required double ratingStarCount,
+    required String ratingDes,
+    required String workerId,
+    required DateTime dateTime
+
+  }) {
+    Map<String, dynamic> userRatingInfo = {
+      'Id':id,
+      'ItemIndex':index,
+      'UserId': userId,
+      'DateTime':dateTime,
+      'CatName': categoryName,
+      'RatingStarCount': ratingStarCount,
+      'RatingDes': ratingDes,
+      'WorkerId': workerId,
+    };
+    return userRatingInfo;
+  }
+Stream<QuerySnapshot<Object?>> getUserRatings(String categoryType) {
+  return FirebaseFirestore.instance
+      .collection("UserRatings")
+      .where("CatName", isEqualTo: categoryType)
+      .snapshots();
 }
 }

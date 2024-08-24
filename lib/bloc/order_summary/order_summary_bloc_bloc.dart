@@ -23,6 +23,7 @@ class OrderSummaryBlocBloc
     on<DiscountChnages>(_discountChanges);
     on<MachineServiceType>(_machineTypeChanges);
     on<CategoryImageChanges>(_catImageChanges);
+        on<PaymentMeathod>(_paymentMeathodChanges);
     on<FormSubmit>(_formSubmit);
   }
   void _adressChanges(
@@ -79,6 +80,11 @@ class OrderSummaryBlocBloc
       MachineServiceType event, Emitter<OrderSummaryBlocState> emit) {
     emit(state.copyWith(machineServiceTitle: event.machineServiceTitle));
   }
+  
+  void _paymentMeathodChanges(
+      PaymentMeathod event, Emitter<OrderSummaryBlocState> emit) {
+    emit(state.copyWith(paymentMeathod: event.paymentMeathod));
+  }
 
   void _catImageChanges(
       CategoryImageChanges event, Emitter<OrderSummaryBlocState> emit) {
@@ -94,6 +100,7 @@ class OrderSummaryBlocBloc
     try {
       final randomId = randomAlphaNumeric(10);
       final details = userOrderService.userOrderInfo(
+        paymentMeathod: state.paymentMeathod,
           catimage: state.catImage,
           id: randomId,
           adress: state.adress,

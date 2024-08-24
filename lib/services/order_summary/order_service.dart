@@ -18,7 +18,7 @@ class UserOrderService {
   Map<String, dynamic> userOrderInfo({
     required String id,
     required String adress,
-    
+    required String paymentMeathod,
     required String description,
     required String userId,
     required String createAt,
@@ -36,6 +36,7 @@ class UserOrderService {
     Map<String, dynamic> userOrderInfo = {
       'Id': id,
       'AddressLine1': adress,
+      'PaymentMeathod':paymentMeathod,
       'CategoryName': categoryName,
       'OrderDescription': description,
       'UserId': userId,

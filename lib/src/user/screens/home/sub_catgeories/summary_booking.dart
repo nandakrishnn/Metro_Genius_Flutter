@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:metrogeniusapp/bloc/get_adress_user/get_user_adresses_bloc.dart';
 import 'package:metrogeniusapp/bloc/order_summary/order_summary_bloc_bloc.dart';
-import 'package:metrogeniusapp/bloc/payment_user/payment_user_order_bloc.dart';
 import 'package:metrogeniusapp/services/user/user_services.dart';
 import 'package:metrogeniusapp/src/user/screens/Logins/users/login_user.dart';
 import 'package:metrogeniusapp/src/user/screens/home/payment/payment_order.dart';
@@ -229,14 +228,14 @@ class SummaryBooking extends StatelessWidget {
                                 context
                                     .read<OrderSummaryBlocBloc>()
                                     .add(DiscountChnages(0));
-                                //  context.read<OrderSummaryBlocBloc>().add(FormSubmit());
+                                
                                 showUpiAppsBottomSheet(
                                   context,
-                                  receiverUpiId: 'nanda@yes',
+                                  receiverUpiId: 'unandakrishnan@okaxis',
                                   transactionRefId: '',
                                   amount: state.totalPrice.toDouble(),
-                                  receiverName: 'Nanda',
-                                  transactionNote: 'pay',
+                                  receiverName: 'Metrogenius.Pvt.Ltd',
+                                  transactionNote: 'Payment',
                                 );
                               },
                               child: LoginContainer(

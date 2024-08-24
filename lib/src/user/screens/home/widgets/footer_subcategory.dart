@@ -9,6 +9,8 @@ import 'package:metrogeniusapp/src/user/widgets/home/sub_catgeory/sub_catgeory.d
 import 'package:metrogeniusapp/utils/colors.dart';
 import 'package:metrogeniusapp/utils/constants.dart';
 
+
+
 class SubCategoryViewFooter extends StatelessWidget {
   SubCategoryViewFooter({
     super.key,
@@ -32,7 +34,7 @@ class SubCategoryViewFooter extends StatelessWidget {
       left: 0,
       right: 0,
       child: Container(
-        height: 130,
+        
         width: double.infinity,
         decoration: const BoxDecoration(
           boxShadow: [
@@ -52,17 +54,17 @@ class SubCategoryViewFooter extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 30, top: 15),
-              child: Text(
-                'Total: INR ${data['CatPrice'] * state.numberOfUnits}',
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(left: 30, top: 15),
+            //   child: Text(
+            //     'Total: INR ${data['CatPrice'] * state.numberOfUnits}',
+            //     style: const TextStyle(
+            //       color: Colors.black,
+            //       fontWeight: FontWeight.bold,
+            //       fontSize: 18,
+            //     ),
+            //   ),
+            // ),
             AppConstants.kheight10,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -152,8 +154,10 @@ class SubCategoryViewFooter extends StatelessWidget {
                   onTap: bookNow,
                   content: 'Book Now',
                 ),
+                
               ],
             ),
+            AppConstants.kheight15
           ],
         ),
       ),
