@@ -1,10 +1,14 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:metrogeniusapp/animations/route_animations.dart';
 import 'package:metrogeniusapp/bloc/order_summary/order_summary_bloc_bloc.dart';
 import 'package:metrogeniusapp/bloc/worker/get_works/fetch_available_works_bloc.dart';
+import 'package:metrogeniusapp/src/employe/bottom_navigation/home/pages/chat_employe.dart';
+
 import 'package:metrogeniusapp/utils/colors.dart';
 import 'package:metrogeniusapp/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -46,7 +50,19 @@ class UpCommingWorks extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 12),
                           child: EmployeRequests2(
                             id: data[index]['Id'],
-                            ontapChat: () {},
+                          
+                            ontapChat: ()async {
+                        
+                              final SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                                  print(data[index]['Id'],
+                          );
+                              String? employecode =
+                                  await prefs.getString('EmployeAssigned');
+                                        print(employecode);
+                              // ignore: use_build_context_synchronously
+                              Navigator.of(context).push(createRoute(ChatScreenEmploye(userId: data[index]['UserId'], workerId: employecode!,)));
+                            },
                             ontapCompleted: () async {
                               final SharedPreferences prefs =
                                   await SharedPreferences.getInstance();

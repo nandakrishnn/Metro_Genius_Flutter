@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:metrogeniusapp/animations/route_animations.dart';
 import 'package:metrogeniusapp/bloc/user_details/get_user_details_bloc.dart';
-import 'package:metrogeniusapp/services/user/user_services.dart';
 import 'package:metrogeniusapp/services/auth_signin.dart';
 import 'package:metrogeniusapp/src/user/screens/Logins/users/users_login.dart';
 import 'package:metrogeniusapp/src/user/screens/bottomnavigation/profile/adress_user/adress_user.dart';

@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,6 +20,7 @@ import 'package:metrogeniusapp/bloc/job_application/job_application_employe_bloc
 import 'package:metrogeniusapp/bloc/login_bloc/user_login_bloc.dart';
 import 'package:metrogeniusapp/bloc/order_summary/order_summary_bloc_bloc.dart';
 import 'package:metrogeniusapp/bloc/add_ratings_user/ratings_user_bloc.dart';
+import 'package:metrogeniusapp/bloc/send_message_user/message_sending_bloc_bloc.dart';
 import 'package:metrogeniusapp/bloc/signup_bloc/bloc/user_signup_bloc.dart';
 import 'package:metrogeniusapp/bloc/user_details/get_user_details_bloc.dart';
 import 'package:metrogeniusapp/bloc/worker/get_works/fetch_available_works_bloc.dart';
@@ -41,6 +43,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseDatabase.instance.setPersistenceEnabled(true);
+  FirebaseDatabase.instance.setLoggingEnabled(true);
   runApp(const MyApp());
 }
 
@@ -105,14 +109,15 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => GetBookedWorksUserBloc()),
         BlocProvider(
           create: (context) => AddCartUserBloc(AddressServiceUser()),
-       
         ),
         BlocProvider(
           create: (context) => GetCartDetailsUserBloc(AddressServiceUser()),
-         
         ),
-          BlocProvider(create: (context)=>RatingsUserBloc(AddressServiceUser())
-          )
+        BlocProvider(
+            create: (context) => RatingsUserBloc(AddressServiceUser())),
+        BlocProvider(
+          create: (context) => ChatBloc(),
+        )
       ],
       child: MaterialApp(
           theme: ThemeData(fontFamily: GoogleFonts.poppins().fontFamily),

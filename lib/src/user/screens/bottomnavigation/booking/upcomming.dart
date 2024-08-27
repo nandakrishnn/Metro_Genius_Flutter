@@ -2,8 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:metrogeniusapp/animations/route_animations.dart';
 import 'package:metrogeniusapp/bloc/get_booked_works/get_booked_works_user_bloc.dart';
 import 'package:metrogeniusapp/services/user/user_services.dart';
+import 'package:metrogeniusapp/src/user/screens/bottomnavigation/booking/chat_screen_user.dart';
 import 'package:metrogeniusapp/src/user/screens/bottomnavigation/booking/search.dart';
 import 'package:metrogeniusapp/utils/colors.dart';
 import 'package:metrogeniusapp/utils/constants.dart';
@@ -230,23 +232,28 @@ class UpcommingUserBookingWidget extends StatelessWidget {
                       Spacer(),
                       Padding(
                         padding: const EdgeInsets.only(right: 7),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            
-                            borderRadius: BorderRadius.circular(18),
-                            color: AppColors.mainBlueColor,
+                        child: GestureDetector(
+                          onTap: (){
+                            Navigator.of(context).push(createRoute(ChatScreenUser(userId:FirebaseAuth.instance.currentUser!.uid, workerId: workerId!,employename: employeeData['ApplicantName'],)));
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              
+                              borderRadius: BorderRadius.circular(18),
+                              color: AppColors.mainBlueColor,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.chat_sharp,color: Colors.white,),
+                                AppConstants.kwidth5,
+                                Text("Chat",style: TextStyle(color: Colors.white),)
+                                                 
+                              ],
+                            ),
+                            height: 40,
+                            width: 100,
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.chat_sharp,color: Colors.white,),
-                              AppConstants.kwidth5,
-                              Text("Chat",style: TextStyle(color: Colors.white),)
-                       
-                            ],
-                          ),
-                          height: 40,
-                          width: 100,
                         ),
                       ),
                     ],
