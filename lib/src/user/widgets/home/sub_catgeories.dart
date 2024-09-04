@@ -10,10 +10,12 @@ class SubCatgeoryContainer extends StatelessWidget {
   String categoryDes;
   String categoryHeading;
   String mainCatgeoryName;
+String SubCategoryRating;
    SubCatgeoryContainer({
     required this.mainCatgeoryName,
    required this.categoryPrice,
     required this.categoryDes,
+    required this.SubCategoryRating,
      required this.categoryHeading,
      required this.catgeoryImage,
     super.key,
@@ -115,13 +117,24 @@ class SubCatgeoryContainer extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 16),
-              Text(
-                'Description',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
+              Row(
+                children: [
+                  Text(
+                    'Description',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
+   AppConstants.kwidth10,
+                  Row(
+                    children: [
+                      Icon(Icons.star,color: Colors.amber,size: 15,),
+                      Text('(${(SubCategoryRating)})')
+                    ],
+                  )
+                ],
               ),
               SizedBox(height: 8),
               Text(

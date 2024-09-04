@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:metrogeniusapp/src/user/screens/bottomnavigation/bottom_nav.dart';
 
 
 
@@ -56,7 +57,10 @@ void showBookingConfirmationDialog(BuildContext context) {
                 SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+   Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => BottomNavigation()), 
+      (Route<dynamic> route) => false,
+    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF283891),

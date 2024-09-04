@@ -121,12 +121,12 @@ class UserSigninAuth {
   }
 
   Future<bool> updatedUserDetails(
-      String userId, String username, String imageurl) async {
+      String userId, String username, String imageurl,String password) async {
     try {
       await FirebaseFirestore.instance
           .collection('UserDetails')
           .doc(userId)
-          .update({'UserName': username, 'UserImage': imageurl});
+          .update({'UserName': username, 'UserImage': imageurl,'Password':password});
       return true;
     } catch (e) {
       return false;

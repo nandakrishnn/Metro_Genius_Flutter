@@ -5,7 +5,8 @@ enum RequestStatus {
   accepted,
   rejected,
   compleated,
-  paymentcompleated
+  paymentcompleated,
+  ordercancelled
 }
 
 enum FormStatus { inital, pending, sucess, failure }

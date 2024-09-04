@@ -33,6 +33,9 @@ class _SubCategoryViewContentState extends State<SubCategoryViewContent> {
 
   @override
   Widget build(BuildContext context) {
+    // if(widget.data.isEmpty){
+   
+    // }
     return Positioned(
       top: 285,
       child: Container(
@@ -60,31 +63,39 @@ class _SubCategoryViewContentState extends State<SubCategoryViewContent> {
                 ),
                 AppConstants.kheight10,
                 Row(
+                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text(
+                     
                       '${widget.data['CatName']}',
+                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                       ),
                     ),
+                    AppConstants.kwidth20,
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+             
                       children: [
-                        AppConstants.kwidth20,
+             
+                            Icon(
+                          Icons.star,
+                          size: 18,
+                          color: Colors.amber,
+                        ),
                         Text(
-                          '${widget.data['CatRating']}',
+                                           
+                          '(${(widget.data['CatRating'])})',
+                              
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
                           ),
                         ),
-                        Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
+                    
                       ],
                     ),
                   ],
@@ -162,6 +173,16 @@ class _SubCategoryViewContentState extends State<SubCategoryViewContent> {
                     listener: (context, state) {},
                     builder: (context, state) {
                       if (state is GetUserRatingLoaded) {
+                        if(state.data.isEmpty){
+                        
+                                       return Column(
+                                         children: [
+                                          AppConstants.kheight20,
+                                           Center(child: Text('Order and be the first one to rate ;)',style: TextStyle(fontWeight: FontWeight.bold,color: AppColors.greyColor),),),
+                                         ],
+                                       );
+                                  
+                        }
                         final ratingsData = state.data;
                         final int ratingsToShow = _showAllRatings
                             ? ratingsData.length
@@ -181,7 +202,9 @@ class _SubCategoryViewContentState extends State<SubCategoryViewContent> {
                                       return Center(child: Text('Error: ${snapshot.error}'));
                                     } else if (!snapshot.hasData || snapshot.data == null) {
                                       return Center(child: Text('User not found'));
-                                    } else {
+                                    }
+                                    
+                                     else {
                                       final userData = snapshot.data!;
                                       return ListTile(
                                         leading: CircleAvatar(
@@ -226,7 +249,8 @@ class _SubCategoryViewContentState extends State<SubCategoryViewContent> {
                   ),
                 ),
                 AppConstants.kheight60,
-                AppConstants.kheight60
+                AppConstants.kheight60,
+           
               ],
             ),
           ),

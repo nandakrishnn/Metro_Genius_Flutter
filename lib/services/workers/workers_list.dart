@@ -40,32 +40,33 @@ class WorkersDetails {
         .snapshots();
   }
 
-  static Future<Stream<QuerySnapshot>> getRequests() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final id = prefs.getString('WorkerId');
+static Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getRequests() async {
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    final id = prefs.getString('WorkerId');
 
-      DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
-          .collection('EmployeesList')
-          .doc(id)
-          .get();
+    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+        .collection('EmployeesList')
+        .doc(id)
+        .get();
 
-      Map<String, dynamic> data =
-          documentSnapshot.data() as Map<String, dynamic>;
-      final workType = data['ApplicantWorkType'];
-      final formStatus = 'RequestStatus.pending';
+    Map<String, dynamic> data = documentSnapshot.data() as Map<String, dynamic>;
+    final workType = data['ApplicantWorkType'];
+    final formStatus = 'RequestStatus.pending';
 
-      return FirebaseFirestore.instance
-          .collectionGroup('UserOrders')
-          .where('CategoryName', isEqualTo: workType)
-          .where('RequestStatus', isEqualTo: formStatus)
-          .snapshots();
-    } catch (e) {
-      print('Error fetching requests: $e');
-
-      return Stream.empty();
-    }
+    // Explicitly cast the stream to the desired type
+    return FirebaseFirestore.instance
+        .collectionGroup('UserOrders')
+        .where('CategoryName', isEqualTo: workType)
+        .where('RequestStatus', isEqualTo: formStatus)
+        .snapshots()
+        .cast<QuerySnapshot<Map<String, dynamic>>>(); // Cast here
+  } catch (e) {
+    print('Error fetching requests: $e');
+    return Stream.empty();
   }
+}
+
     static Future<Stream<QuerySnapshot>>getAcceptedRequests() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -118,4 +119,28 @@ class WorkersDetails {
       return Stream.empty();
     }
   }
+static Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getRequestsByDate(String dateString) async {
+  try {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? workerId = prefs.getString('EmployeAssigned');
+    String status='RequestStatus.accepted';
+    // Print to verify the date string and worker ID
+    print('Fetching works for date: $dateString for worker $workerId');
+
+    // Firestore query: Matching documents where DateTime field starts with the date string
+    return FirebaseFirestore.instance
+        .collectionGroup('UserOrders')
+        .where('DateTime', isGreaterThanOrEqualTo: dateString)  // Assuming 'DateTime' field is stored as string
+        .where('DateTime', isLessThan: dateString + '\uf8ff') // Range query to match dates starting with dateString
+        .where('WorkerId', isEqualTo: workerId).where('RequestStatus',isEqualTo: status)
+        .snapshots()
+        .cast<QuerySnapshot<Map<String, dynamic>>>();
+  } catch (e) {
+    print('Error fetching requests: $e');
+    return Stream.empty();
+  }
+}
+
+
+
 }

@@ -20,6 +20,7 @@ class JobApplicationEmployeBloc
     on<UserExperience>(userExperiencChanged);
     on<IdProof>(userIdProofChanged);
     on<FormSubmit>(onFormSubmit);
+      // on<FormUpdate>(__onUpdateFormSubmit);
     on<FormReset>(onFormRest);
   }
 
@@ -93,6 +94,7 @@ class JobApplicationEmployeBloc
 
       final added =
           await EmployeJobApplication().addEmployeApplications(submitted,id);
+          print(added);
       if (added == true) {
         emit(state.copyWith(status: FormStatus.sucess));
       } else {
@@ -105,4 +107,5 @@ class JobApplicationEmployeBloc
   void onFormRest(FormReset event,Emitter<JobApplicationEmployeState>emit){
     emit(state.copyWith(status: FormStatus.inital));
   }
+
 }

@@ -10,7 +10,7 @@ sealed class FetchAvailableWorksState extends Equatable {
 final class FetchAvailableWorksInitial extends FetchAvailableWorksState {}
 final class FetchAvailableWorksLoading extends FetchAvailableWorksState {}
 final class FetchAvailableWorksLoaded extends FetchAvailableWorksState {
-  final List<DocumentSnapshot>data;
+ final List<DocumentSnapshot<Map<String, dynamic>>> data;
   FetchAvailableWorksLoaded(this.data);
     @override
   List<Object> get props => [data];

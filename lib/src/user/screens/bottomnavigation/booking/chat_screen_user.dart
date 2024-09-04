@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:metrogeniusapp/bloc/send_message_user/message_sending_bloc_bloc.dart';
+import 'package:metrogeniusapp/src/user/screens/bottomnavigation/booking/refac_chat.dart';
 
 class ChatScreenUser extends StatelessWidget {
   final String userId;
@@ -40,7 +41,7 @@ class ChatScreenUser extends StatelessWidget {
                   Expanded(
                     child: MessageList(messages: state.messages, workerId: workerId,userId: userId,eemployeName: employename,),
                   ),
-                  _MessageInput(userId: userId, workerId: workerId, chatId: chatId!),
+                  MessageInput(userId: userId, workerId: workerId, chatId: chatId!),
                 ],
               ),
             );
@@ -56,19 +57,20 @@ class ChatScreenUser extends StatelessWidget {
   }
 }
 
+
 class MessageList extends StatefulWidget {
   final dynamic messages;
   final String workerId;
   final String userId;
   final String eemployeName;
 
-  const MessageList({required this.messages, required this.workerId, required this.userId, required this.eemployeName});
+   const MessageList({super.key, required this.messages, required this.workerId, required this.userId, required this.eemployeName});
 
   @override
-  _MessageListState createState() => _MessageListState();
+  MessageListState createState() => MessageListState();
 }
 
-class _MessageListState extends State<MessageList> {
+class MessageListState extends State<MessageList> {
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -149,57 +151,6 @@ class _MessageListState extends State<MessageList> {
           ],
         );
       },
-    );
-  }
-}
-
-
- class _MessageInput extends StatefulWidget {
-  final String userId;
-  final String workerId;
-  final String chatId;
-
-  const _MessageInput({required this.userId, required this.workerId, required this.chatId});
-
-  @override
-  _MessageInputState createState() => _MessageInputState();
-}
-
-class _MessageInputState extends State<_MessageInput> {
-  final TextEditingController _controller = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: _controller,
-              decoration: InputDecoration(
-                hintText: 'Enter your message...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-              ),
-            ),
-          ),
-          IconButton(
-            icon: Icon(Icons.send),
-            onPressed: () {
-              if (_controller.text.isNotEmpty) {
-                BlocProvider.of<ChatBloc>(context).add(UserSendMessage(
-                  userId: widget.userId,
-                  message: _controller.text,
-                  chatId: widget.chatId,
-                ));
-                _controller.clear();
-              }
-            },
-          ),
-        ],
-      ),
     );
   }
 }

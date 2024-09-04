@@ -1,15 +1,20 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:metrogeniusapp/animations/route_animations.dart';
 import 'package:metrogeniusapp/bloc/Admin/get_category/get_category_bloc.dart';
+import 'package:metrogeniusapp/bloc/fetch_rating_new_notable.dart/new_notable_ratings_fetch_bloc.dart';
 import 'package:metrogeniusapp/services/admin/applications/admin_services.dart';
-import 'package:metrogeniusapp/src/user/screens/bottomnavigation/data.dart';
+import 'package:metrogeniusapp/services/home/home_service.dart';
+import 'package:metrogeniusapp/src/user/screens/home/animated_text.dart';
 import 'package:metrogeniusapp/src/user/screens/home/categories/all_catgroies.dart';
+import 'package:metrogeniusapp/src/user/screens/home/sub_catgeories/details_subcatgeory.dart';
 import 'package:metrogeniusapp/src/user/screens/home/sub_catgeories/sub_category_view.dart';
 import 'package:metrogeniusapp/src/user/widgets/home/carousel.dart';
 import 'package:metrogeniusapp/src/user/widgets/home/categories_container.dart';
-import 'package:metrogeniusapp/src/user/widgets/home/new_notable.dart';
+import 'package:metrogeniusapp/src/user/widgets/home/sub_catgeory/home_new_notable.dart';
 import 'package:metrogeniusapp/utils/constants.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../../utils/colors.dart';
@@ -68,7 +73,7 @@ class _HomeState extends State<Home> {
                         ],
                       ),
                       width: double.infinity,
-                      height: MediaQuery.of(context).size.height * .35,
+                      height: MediaQuery.of(context).size.height * .30,
                       child: ClipRRect(
                         borderRadius: const BorderRadius.only(
                           bottomLeft: Radius.circular(32),
@@ -79,9 +84,22 @@ class _HomeState extends State<Home> {
                           scrollDirection: Axis.horizontal,
                           itemCount: images.length,
                           itemBuilder: (context, index) {
-                            return Image.network(
-                              images[index],
-                              fit: BoxFit.cover,
+                            return Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                Image.network(
+                                  images[index],
+                                  fit: BoxFit.cover,
+                                ),
+                                BackdropFilter(
+                                  filter: ImageFilter.blur(
+                                      sigmaX: 3.5, sigmaY: 3.5),
+                                  child: Container(
+                                    color: Colors
+                                        .transparent, // This maintains the blur effect
+                                  ),
+                                ),
+                              ],
                             );
                           },
                         ),
@@ -95,7 +113,7 @@ class _HomeState extends State<Home> {
                   ],
                 ),
                 Positioned(
-                  bottom: 70,
+                  bottom: 60,
                   left: 0,
                   right: 0,
                   child: Padding(
@@ -105,16 +123,16 @@ class _HomeState extends State<Home> {
                         controller: _pageController,
                         count: images.length,
                         effect: const ScaleEffect(
-                          dotHeight: 7,
+                          dotHeight: 4,
                           activeDotColor: AppColors.mainBlueColor,
-                          dotWidth: 7,
+                          dotWidth: 4,
                         ),
                       ),
                     ),
                   ),
                 ),
                 Positioned(
-                  top: MediaQuery.of(context).size.height * .31,
+                  top: MediaQuery.of(context).size.height * .26,
                   left: MediaQuery.of(context).size.width * .06,
                   right: MediaQuery.of(context).size.width * .06,
                   child: Align(
@@ -166,27 +184,14 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 Positioned(
-                  top: 40,
-                  left: 10,
-                  child: Row(
-                    children: [
-                      IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.menu_rounded)),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      const Text(
-                        'HELLO NANDA 👋🏻',
-                        style: TextStyle(
-                          color: Color.fromRGBO(0, 0, 0, 1),
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                    top: 140,
+                    left: 10,
+                    right: 10,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: AnimatedTextKitWidgetHome(),
+                    ))
+               
               ],
             ),
           ),
@@ -205,7 +210,7 @@ class _HomeState extends State<Home> {
                       color: Color.fromARGB(255, 0, 0, 0),
                     ),
                   ),
-                  AppConstants.kheight20
+                  AppConstants.kheight5
                 ],
               ),
             ),
@@ -233,13 +238,20 @@ class _HomeState extends State<Home> {
                         (BuildContext context, int index) {
                           if (index < 5) {
                             return GestureDetector(
-                              onTap: (){
-                                   Navigator.of(context).push(createRoute(SubCatgeoryDetails(data: data[index],)));
+                              onTap: () {
+                                Navigator.of(context)
+                                    .push(createRoute(SubCatgeoryDetails(
+                                  data: data[index],
+                                )));
                               },
-                              child: HomeCatgeories(
-                                imgurl: data[index]['CategoryImage'],
-                                scale: 0,
-                                heading: data[index]['CatgeoryName'],
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 15, right: 15),
+                                child: HomeCategories(
+                                  imgurl: data[index]['CategoryImage'],
+                                  scale: 0,
+                                  heading: data[index]['CatgeoryName'],
+                                ),
                               ),
                             );
                           } else if (index == 5) {
@@ -248,15 +260,15 @@ class _HomeState extends State<Home> {
                                   Navigator.of(context)
                                       .push(createRoute(AllCatgeories()));
                                 },
-                                child: HomeCatgeories(
+                                child: HomeCategories(
                                     imgurl:
                                         'https://i.pinimg.com/originals/96/28/28/9628288cf4023b3b5dc553421f8507cf.jpg',
                                     scale: 0,
                                     heading: 'All Categories'));
                           }
-                          return SizedBox.shrink(); // Fallback for empty states
+                          return SizedBox.shrink();
                         },
-                        childCount: 6, // Add 1 for the "See All" item
+                        childCount: 6,
                       ),
                     );
                   } else {
@@ -270,11 +282,39 @@ class _HomeState extends State<Home> {
           ),
           SliverToBoxAdapter(
             child: Padding(
+              padding: EdgeInsets.only(
+                left: 10,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  AppConstants.kheight20,
+                  Text(
+                    'Recently Added',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 19,
+                      color: Color.fromARGB(255, 0, 0, 0),
+                    ),
+                  ),
+                  AppConstants.kheight10,
+                ],
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: SizedBox(
+                height: MediaQuery.of(context).size.height * .24,
+                width: double.infinity,
+                child: AnimatedCarousel()),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AppConstants.kheight20,
+                  AppConstants.kheight10,
                   const Text(
                     'New And Notable',
                     style: TextStyle(
@@ -282,33 +322,52 @@ class _HomeState extends State<Home> {
                         fontSize: 19,
                         color: Color.fromARGB(255, 0, 0, 0)),
                   ),
-                  AppConstants.kheight20,
-                  AppConstants.kheight5,
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        NewNotable(
-                          imageurl:
-                              'https://s3-ap-southeast-1.amazonaws.com/urbanclap-prod/images/growth/home-screen/1602245928963-5094c6.jpeg',
-                          text: 'Home Painting',
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        NewNotable(
-                            imageurl:
-                                'https://img.freepik.com/free-photo/man-florist-working-green-house_1303-29878.jpg',
-                            text: 'Gardening'),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        NewNotable(
-                            imageurl:
-                                'https://media.istockphoto.com/id/1128872850/photo/repairman-fixing-refrigerator-with-screwdriver.jpg?s=612x612&w=0&k=20&c=F6fgkzj1e_2x-diaozUqVhHuN967oY5bmlbaO5kD5Xk=',
-                            text: 'Fridge')
-                      ],
+                  AppConstants.kheight10,
+                  BlocProvider(
+                    create: (context) =>
+                        NewNotableRatingsFetchBloc(HomeService())
+                          ..add(FetchRatingData()),
+                    child: BlocConsumer<NewNotableRatingsFetchBloc,
+                        NewNotableRatingsFetchState>(
+                      listener: (context, state) {},
+                      builder: (context, state) {
+                        if (state is NewNotableRatingsFetchLoaded) {
+                          return SizedBox(
+                            height: 160,
+                            child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: state.data.length,
+                                itemBuilder: (context, index) {
+                                  final data = state.data;
+                                  final Map<String, bool>? checkBoxData =
+                                      data[index]['CheckBox'] != null
+                                          ? Map<String, bool>.from(
+                                              data[index]['CheckBox'])
+                                          : null;
+                                  return Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 0, right: 5),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).push(createRoute(
+                                            InsideSubCatgeory(
+                                                data: data[index],
+                                                checkBoxData: checkBoxData,
+                                                categoryType: data[index]
+                                                    ['Category'])));
+                                      },
+                                      child: NewNotableHome(
+                                          rating: data[index]['CatRating']
+                                              .toString(),
+                                          imageurl: data[index]['CatImage'],
+                                          text: data[index]['CatName']),
+                                    ),
+                                  );
+                                }),
+                          );
+                        }
+                        return Container();
+                      },
                     ),
                   ),
                   AppConstants.kheight20,
@@ -325,24 +384,6 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                   AppConstants.kheight15,
-                  // CarouselWithBuilder(
-                  //   itemCount: 3,
-                  //   itemBuilder: (context, index) {
-                  //     return Container(
-                  //       height: 260,
-                  //       width: 400,
-                  //       margin: const EdgeInsets.all(0.0),
-                  //       decoration: const BoxDecoration(),
-                  //       child: ClipRRect(
-                  //         borderRadius: BorderRadius.circular(12),
-                  //         child: Image.network(
-                  //           images[index],
-                  //           fit: BoxFit.cover,
-                  //         ),
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
                 ],
               ),
             ),

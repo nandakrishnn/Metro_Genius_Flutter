@@ -23,6 +23,7 @@ class OrderSummaryBlocBloc
     on<DiscountChnages>(_discountChanges);
     on<MachineServiceType>(_machineTypeChanges);
     on<CategoryImageChanges>(_catImageChanges);
+    on<OrderCancel>(_onCancel);
         on<PaymentMeathod>(_paymentMeathodChanges);
     on<FormSubmit>(_formSubmit);
   }
@@ -125,5 +126,9 @@ class OrderSummaryBlocBloc
     } catch (e) {
       emit(state.copyWith(status: FormStatus.failure));
     }
+  }
+    void _onCancel(
+      OrderCancel event, Emitter<OrderSummaryBlocState> emit) {
+          
   }
 }

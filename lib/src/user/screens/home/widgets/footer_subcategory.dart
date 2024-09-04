@@ -9,8 +9,6 @@ import 'package:metrogeniusapp/src/user/widgets/home/sub_catgeory/sub_catgeory.d
 import 'package:metrogeniusapp/utils/colors.dart';
 import 'package:metrogeniusapp/utils/constants.dart';
 
-
-
 class SubCategoryViewFooter extends StatelessWidget {
   SubCategoryViewFooter({
     super.key,
@@ -34,7 +32,6 @@ class SubCategoryViewFooter extends StatelessWidget {
       left: 0,
       right: 0,
       child: Container(
-        
         width: double.infinity,
         decoration: const BoxDecoration(
           boxShadow: [
@@ -96,7 +93,6 @@ class SubCategoryViewFooter extends StatelessWidget {
                                   isFavorited: isFavorited,
                                   onLikeButtonTapped: (bool isLiked) async {
                                     if (isLiked) {
-                
                                       final removalSuccess =
                                           await AddressServiceUser()
                                               .removeUserSaved(data['Id']);
@@ -125,6 +121,12 @@ class SubCategoryViewFooter extends StatelessWidget {
                                       context
                                           .read<AddCartUserBloc>()
                                           .add(CategoryDes(data['CatDes']));
+                                      double rating = double.parse(
+                                          data['CatRating'].toString());
+                                      context.read<AddCartUserBloc>().add(
+                                            SubCategoryRating(rating),
+                                          );
+
                                       context
                                           .read<AddCartUserBloc>()
                                           .add(FormSubmit());
@@ -154,7 +156,6 @@ class SubCategoryViewFooter extends StatelessWidget {
                   onTap: bookNow,
                   content: 'Book Now',
                 ),
-                
               ],
             ),
             AppConstants.kheight15

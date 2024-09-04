@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:metrogeniusapp/src/user/screens/bottomnavigation/booking/history_purchase.dart';
 import 'package:metrogeniusapp/src/user/screens/bottomnavigation/booking/upcomming.dart';
 import 'package:metrogeniusapp/utils/colors.dart';
+import 'package:metrogeniusapp/utils/constants.dart';
 
 class BookingsPage extends StatelessWidget {
   const BookingsPage({super.key});
@@ -15,63 +16,64 @@ class BookingsPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
-          
           title: Column(
             children: [
-              Row(children: [
-                Container(
-                  height: 20,
-                  decoration: BoxDecoration(
-                      color: const Color.fromRGBO(202, 189, 255, 1.0),
-                      borderRadius: BorderRadius.circular(14)),
-                  width: 5,
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                const Text(
-                  'Bookings',
-                  style: TextStyle(
+              Row(
+                children: [
+                  Container(
+                    height: 20,
+                    decoration: BoxDecoration(
+                      color: AppColors.mainBlueColor,
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    width: 5,
+                  ),
+                  AppConstants.kwidth10,
+                  const Text(
+                    'Bookings',
+                    style: TextStyle(
                       fontWeight: FontWeight.w800,
-                      color: Color.fromARGB(255, 0, 0, 0)),
-                )
-              ]),
-              
+                      color: Color.fromARGB(255, 0, 0, 0),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
           automaticallyImplyLeading: false,
           backgroundColor: const Color.fromARGB(255, 255, 255, 255),
           toolbarHeight: 60,
-          bottom:  TabBar(tabs: const [
-            Tab(
-              child: Text(
-                'Upcoming',
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold,
-                  color:AppColors.greyColor
+          bottom: TabBar(
+            tabs: const [
+              Tab(
+                child: Text(
+                  'Upcoming',
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
+              Tab(
+                child: Text(
+                  'History',
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+            labelColor: Colors.white, // Color for selected tab text
+            unselectedLabelColor: AppColors.greyColor, // Color for unselected tab text
+            dividerColor: Colors.transparent,
+            indicator: BoxDecoration(
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.circular(5), // Rounded corners
+              color: AppColors.mainBlueColor.withOpacity(.4), // Background color of the selected tab
             ),
-            Tab(
-             child: Text('History',
-              style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold,
-                  color:AppColors.greyColor
-                ),),
-              
-              
-            )
-          ],
-          dividerColor: Colors.transparent,
-          indicator: BoxDecoration(
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(5), // Rounded corners
-            color: AppColors.lightPurple // Background color of the selected tab
-          ),
-           indicatorPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-           indicatorSize: TabBarIndicatorSize.tab,
+            indicatorPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+            indicatorSize: TabBarIndicatorSize.tab,
           ),
         ),
         body: const TabBarView(
@@ -81,5 +83,3 @@ class BookingsPage extends StatelessWidget {
     );
   }
 }
-
-

@@ -42,4 +42,6 @@ final class IdProof extends JobApplicationEmployeEvent {
 
 final class FormSubmit extends JobApplicationEmployeEvent {}
 
+final class FormUpdate extends JobApplicationEmployeEvent {}
+
 final class FormReset extends JobApplicationEmployeEvent {}

@@ -14,6 +14,7 @@ class SubCatgeoryDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+      FocusNode searchFocusNode = FocusNode();
     String catgeoryName = data['CatgeoryName'];
     return BlocProvider(
       create: (context) => GetSubCatgeoryDataBloc(AdminServices())
@@ -43,6 +44,7 @@ class SubCatgeoryDetails extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: CustomTextFeild(
+                          focusNode: searchFocusNode,
                           hinttext: 'Search',
                           obscure: false,
                           prefixIcon: Icon(Icons.search),
@@ -55,10 +57,10 @@ class SubCatgeoryDetails extends StatelessWidget {
                         child: GridView.builder(
                             gridDelegate:
                                 const SliverGridDelegateWithMaxCrossAxisExtent(
-                                    maxCrossAxisExtent: 410,
+                                    maxCrossAxisExtent: 400,
                                     crossAxisSpacing: 10,
                                     mainAxisSpacing: 0,
-                                    mainAxisExtent: 270),
+                                    mainAxisExtent: 258),
                             itemCount: data.length,
                             itemBuilder: (context, index) {
                               return GestureDetector(
@@ -73,6 +75,7 @@ class SubCatgeoryDetails extends StatelessWidget {
                                 child: SubCatgeoryContainer(
                                   mainCatgeoryName: catgeoryName,
                                   categoryPrice: data[index]['CatPrice'],
+                                  SubCategoryRating: data[index]['CatRating'].toString(),
                                   categoryDes: data[index]['CatDes'],
                                   categoryHeading: data[index]['CatName'],
                                   catgeoryImage: data[index]['CatImage'],

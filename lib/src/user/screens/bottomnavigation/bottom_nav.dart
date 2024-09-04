@@ -16,6 +16,7 @@ class BottomNavigation extends StatefulWidget {
 
 class _BottomNavigationState extends State<BottomNavigation> {
   int currentIndex = 0;
+  
   final ValueNotifier<bool> bottomNavBarVisible = ValueNotifier(true);
 
   final List<Widget> screens = [
@@ -44,21 +45,24 @@ class _BottomNavigationState extends State<BottomNavigation> {
           }
           return true;
         },
-        child: screens[currentIndex],
+        // Use IndexedStack to keep the state of each screen
+        child: IndexedStack(
+          index: currentIndex,
+          children: screens,
+        ),
       ),
       bottomNavigationBar: ValueListenableBuilder<bool>(
         valueListenable: bottomNavBarVisible,
         builder: (context, isVisible, child) {
           return AnimatedContainer(
             duration: const Duration(milliseconds: 300),
-            height: isVisible ? kBottomNavigationBarHeight+15 : 0,
+            height: isVisible ? kBottomNavigationBarHeight + 15 : 0,
             child: isVisible ? child : const SizedBox.shrink(),
           );
         },
         child: Padding(
           padding: const EdgeInsets.only(bottom: 15, left: 9, right: 9),
           child: Container(
-           
             decoration: BoxDecoration(
               boxShadow: const [
                 BoxShadow(
@@ -77,12 +81,12 @@ class _BottomNavigationState extends State<BottomNavigation> {
                 haptic: true,
                 color: AppColors.mainBlueColor,
                 activeColor: Colors.white,
-                
                 gap: 8,
                 onTabChange: setPage,
                 padding: const EdgeInsets.all(16),
                 textStyle: const TextStyle(color: Colors.white),
                 tabBackgroundColor: AppColors.mainBlueColor,
+                selectedIndex: currentIndex, // Ensure correct tab is highlighted
                 tabs: const [
                   GButton(
                     icon: Icons.explore,
@@ -103,11 +107,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
                 ],
               ),
             ),
-            
           ),
         ),
       ),
     );
   }
 }
- 

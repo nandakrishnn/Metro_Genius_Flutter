@@ -131,7 +131,7 @@ void showUpiAppsBottomSheet(
                                   .read<OrderSummaryBlocBloc>()
                                   .add(FormSubmit());
 
-                              Navigator.pop(context);
+                           
                               showBookingConfirmationDialog(context);
                             } else if (selectedIndex != null &&
                                 state is UpiAppsFetched) {

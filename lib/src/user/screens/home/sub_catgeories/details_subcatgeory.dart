@@ -14,10 +14,12 @@ import '../widgets/footer_subcategory.dart';
 class InsideSubCatgeory extends StatelessWidget {
   final data;
   final String categoryType;
-    final Map<String, bool>? checkBoxData;
+  final Map<String, bool>? checkBoxData;
   final ValueNotifier<String?> selectedCheckboxNotifier =
       ValueNotifier<String?>(null);
-  InsideSubCatgeory({super.key, this.data, required this.categoryType,this.checkBoxData});
+
+  InsideSubCatgeory(
+      {super.key, this.data, required this.categoryType, this.checkBoxData});
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +52,7 @@ class InsideSubCatgeory extends StatelessWidget {
         .where((entry) => entry.value)
         .map((entry) => entry.key)
         .toList();
+
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
@@ -72,23 +75,26 @@ class InsideSubCatgeory extends StatelessWidget {
                 bookNow: () {
                   final selectedCheckbox = selectedCheckboxNotifier.value;
                   if (selectedCheckbox != null) {
+                    // Proceed with booking if a checkbox is selected
                     SlotSelectionUserBottomModel(
-                        context, timeSlots, selectedCheckbox
-                        
-                        );
+                      context,
+                      timeSlots,
+                      selectedCheckbox,
+                    );
                   } else {
-                    customSnack(
+                    // Show snackbar if no checkbox is selected
+                    ScaffoldMessenger.of(context).showSnackBar(customSnack(
                         'Select an option',
                         'You must select an option to continue',
                         Icon(Icons.error),
-                        Colors.black);
+                        Colors.black));
                   }
                 },
                 cartNow: () {},
                 data: data,
                 state: state,
                 categoryHeading: categoryType,
-              )
+              ),
             ],
           );
         },
@@ -199,8 +205,8 @@ class DayContainerBottomSheet extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: AppColors.mainBlueColor),
               ),
-              height: 80,
-              width: 80,
+              height: 84,
+              width: 85,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,

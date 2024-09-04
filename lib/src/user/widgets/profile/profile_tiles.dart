@@ -7,11 +7,13 @@ class ProfileTiles extends StatelessWidget {
   String Subtitle;
   Icon icons;
   VoidCallback? action;
+  void Function()?ontap;
    ProfileTiles({
     required this.title,
     required this.Subtitle,
     required this.icons,
      this.action,
+     this.ontap,
     super.key,
   });
 
@@ -20,7 +22,7 @@ class ProfileTiles extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
-        onTap: action,
+        onTap: ontap,
         child: Container(
           height: MediaQuery.of(context).size.height * .111,
           width: double.infinity,

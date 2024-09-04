@@ -49,10 +49,13 @@ extendBody: true,
                         onTap: (){
                           Navigator.of(context).push(createRoute(SubCatgeoryDetails(data: data[index],)));
                         },
-                        child: HomeCatgeories(
-                            imgurl: data[index]['CategoryImage'],
-                            scale: 0,
-                            heading: data[index]['CatgeoryName']),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15,right: 15),
+                          child: HomeCategories(
+                              imgurl: data[index]['CategoryImage'],
+                              scale: 0,
+                              heading: data[index]['CatgeoryName']),
+                        ),
                       );
                     });
               }

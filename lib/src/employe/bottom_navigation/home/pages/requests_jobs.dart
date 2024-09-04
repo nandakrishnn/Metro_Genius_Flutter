@@ -11,6 +11,7 @@ import 'package:metrogeniusapp/src/user/screens/Logins/users/login_user.dart';
 import 'package:metrogeniusapp/utils/colors.dart';
 import 'package:metrogeniusapp/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 
 class WorkRequests extends StatelessWidget {
   const WorkRequests({super.key});
@@ -29,14 +30,15 @@ class WorkRequests extends StatelessWidget {
             },
             builder: (context, state) {
                if (state is FetchAvailableWorksLoading) {
-                Center(
-                  child: CupertinoActivityIndicator(),
+               return Center(
+                  child: EmployeRequestsShimmer(),
                 );
               }
               if (state is FetchAvailableWorksLoaded) {
                 if(state.data.isEmpty){
                 return  Center(child: Text('No work requests at the moment'),);
                 }
+                
                 final documents = state.data as List<QueryDocumentSnapshot<Map<String, dynamic>>>;
                 final requests = documents.map((doc) => doc.data()).toList();
                 
@@ -119,20 +121,79 @@ class EmployeRequests extends StatelessWidget {
                 onTap: ()async {
                       final SharedPreferences prefs = await SharedPreferences.getInstance();
                   String? employecode=await prefs.getString('EmployeAssigned');
-                  FirebaseFirestore.instance.collectionGroup("UserOrders").where('Id',isEqualTo: id).get().then((QuerySnapshot){
-                    for(var document in QuerySnapshot.docs){
-                      document.reference.update({
-                        'WorkerId':employecode,
-                        'RequestStatus':RequestStatus.accepted.toString()
-                      });
-                    }
-                    print('data changed');;
-                  });
-                },
+                                 },
                 child: LoginContainer(
                   content: 'Accept',
                 )),
             AppConstants.kheight5
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class EmployeRequestsShimmer extends StatelessWidget {
+  const EmployeRequestsShimmer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          color: Colors.white,
+        ),
+        width: double.infinity,
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: 100,
+                  height: 15,
+                  color: Colors.grey[200],  // Slightly darker shade
+                ),
+                Container(
+                  width: 60,
+                  height: 15,
+                  color: Colors.grey[300],  // Base shade
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Container(
+              width: double.infinity,
+              height: 15,
+              color: Colors.grey[350],  // Another slight variation
+            ),
+            const SizedBox(height: 10),
+            Container(
+              width: double.infinity,
+              height: 15,
+              color: Colors.grey[300],  // Base shade
+            ),
+            const SizedBox(height: 10),
+            Container(
+              width: double.infinity,
+              height: 15,
+              color: Colors.grey[250],  // Slightly different
+            ),
+            const SizedBox(height: 20),
+            Container(
+              width: double.infinity,
+              height: 40,
+              decoration: BoxDecoration(
+                color: Colors.grey[200],  // Different shade for button
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            const SizedBox(height: 5),
           ],
         ),
       ),

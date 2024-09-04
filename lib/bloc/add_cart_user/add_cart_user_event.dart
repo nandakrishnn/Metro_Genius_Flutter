@@ -28,6 +28,10 @@ final class SubCategoryIdChanges  extends AddCartUserEvent{
   final String catId;
   SubCategoryIdChanges(this.catId);
 }
+final class SubCategoryRating  extends AddCartUserEvent{
+  final double catrating;
+  SubCategoryRating(this.catrating);
+}
 final class CartCheckBoxChnages extends AddCartUserEvent{
   final String id; 
   final bool isChecked;

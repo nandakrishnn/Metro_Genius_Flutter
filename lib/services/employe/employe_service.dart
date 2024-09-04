@@ -116,5 +116,17 @@ class EmployeJobApplication {
     };
     return adminCatgeoryInfo;
   }
+Future<bool> updateEmployeeDetails(
+  String applicantCode,Map<String,dynamic>updated) async {
+try {
+  final documentRef= FirebaseFirestore.instance.collection("EmployeesList").doc(applicantCode);
+  await documentRef.update(updated);
+  return true;
+
+} catch (e) {
+  return false;
+}
+}
+
 
 }

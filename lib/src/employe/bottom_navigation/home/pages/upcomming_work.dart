@@ -8,10 +8,15 @@ import 'package:metrogeniusapp/animations/route_animations.dart';
 import 'package:metrogeniusapp/bloc/order_summary/order_summary_bloc_bloc.dart';
 import 'package:metrogeniusapp/bloc/worker/get_works/fetch_available_works_bloc.dart';
 import 'package:metrogeniusapp/src/employe/bottom_navigation/home/pages/chat_employe.dart';
-
+import 'package:metrogeniusapp/src/employe/bottom_navigation/home/pages/shim_upcomming.dart';
+import 'package:redacted/redacted.dart';
 import 'package:metrogeniusapp/utils/colors.dart';
 import 'package:metrogeniusapp/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+
+
+
 
 class UpCommingWorks extends StatelessWidget {
   const UpCommingWorks({super.key});
@@ -24,80 +29,90 @@ class UpCommingWorks extends StatelessWidget {
         child: BlocProvider(
           create: (context) =>
               FetchAvailableWorksBloc()..add(FetchAcceptedJobsData()),
-          child:
-              BlocConsumer<FetchAvailableWorksBloc, FetchAvailableWorksState>(
-            listener: (context, state) {},
+          child: BlocConsumer<FetchAvailableWorksBloc, FetchAvailableWorksState>(
+            listener: (context, state) {
+          
+            },
             builder: (context, state) {
               if (state is FetchAvailableWorksLoading) {
-                Center(
-                  child: CupertinoActivityIndicator(
-                    animating: true,
-                  ),
+            
+                return const Center(
+                  child: EmployeRequests2Shimmer(),
                 );
               }
+
               if (state is FetchAvailableWorksLoaded) {
-                if(state.data.isEmpty){
-                 return Center(child: Text('No Upcomming works'),);
+                if (state.data.isEmpty) {
+              
+                  return const Center(child: Text('No Upcoming works'));
                 }
+
+              
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ListView.builder(
-                      itemCount: state.data.length,
-                      itemBuilder: (context, index) {
-                        final data = state.data;
+                    itemCount: state.data.length,
+                    itemBuilder: (context, index) {
+                      final data = state.data;
 
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 12),
-                          child: EmployeRequests2(
-                            id: data[index]['Id'],
-                          
-                            ontapChat: ()async {
-                        
-                              final SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
-                                  print(data[index]['Id'],
-                          );
-                              String? employecode =
-                                  await prefs.getString('EmployeAssigned');
-                                        print(employecode);
-                              // ignore: use_build_context_synchronously
-                              Navigator.of(context).push(createRoute(ChatScreenEmploye(userId: data[index]['UserId'], workerId: employecode!,)));
-                            },
-                            ontapCompleted: () async {
-                              final SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
-                              String? employecode =
-                                  await prefs.getString('EmployeAssigned');
-                              FirebaseFirestore.instance
-                                  .collectionGroup("UserOrders")
-                                  .where('Id', isEqualTo: data[index]['Id'])
-                                  .get()
-                                  .then((QuerySnapshot) {
-                                for (var document in QuerySnapshot.docs) {
-                                  document.reference.update({
-                                    'WorkerId': employecode,
-                                    'RequestStatus':
-                                        RequestStatus.compleated.toString()
-                                  });
-                                }
-                                print('data changed');
-                                ;
-                              });
-                            },
-                            ontapStartWork: () {},
-                            requestTime: data[index]['CreateAt'],
-                            serviceTitile: data[index]['ServiceTitle'],
-                            seriveType: data[index]['ServiceType'],
-                            dateTime: data[index]['DateTime'],
-                            adress: data[index]['AddressLine1'],
-                          ),
-                        );
-                      }),
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 12),
+                        child: EmployeRequests2(
+                          id: data[index]['Id'],
+                          ontapChat: () async {
+                            final SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            print(data[index]['Id']);
+                            String? employecode =
+                                await prefs.getString('EmployeAssigned');
+                            print(employecode);
+
+                            // Navigate to chat screen
+                            // ignore: use_build_context_synchronously
+                            Navigator.of(context).push(
+                              createRoute(
+                                ChatScreenEmploye(
+                                  userId: data[index]['UserId'],
+                                  workerId: employecode!,
+                                ),
+                              ),
+                            );
+                          },
+                          ontapCompleted: () async {
+                            final SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+                            String? employecode =
+                                await prefs.getString('EmployeAssigned');
+                            FirebaseFirestore.instance
+                                .collectionGroup("UserOrders")
+                                .where('Id', isEqualTo: data[index]['Id'])
+                                .get()
+                                .then((QuerySnapshot) {
+                              for (var document in QuerySnapshot.docs) {
+                                document.reference.update({
+                                  'WorkerId': employecode,
+                                  'RequestStatus':
+                                      RequestStatus.compleated.toString(),
+                                });
+                              }
+                              print('data changed');
+                            });
+                          },
+                          ontapStartWork: () {},
+                          requestTime: data[index]['CreateAt'],
+                          serviceTitile: data[index]['ServiceTitle'],
+                          seriveType: data[index]['ServiceType'],
+                          dateTime: data[index]['DateTime'],
+                          adress: data[index]['AddressLine1'],
+                        ),
+                      );
+                    },
+                  ),
                 );
               }
-              return Container(
-                child: Center(),
-              );
+
+              // Default widget when no specific state is met
+              return const Center();
             },
           ),
         ),
@@ -105,6 +120,7 @@ class UpCommingWorks extends StatelessWidget {
     );
   }
 }
+
 
 class EmployeRequests2 extends StatelessWidget {
   String dateTime;

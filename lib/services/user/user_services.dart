@@ -77,7 +77,7 @@ class AddressServiceUser {
     try {
       final List<String> statuses = [
         'RequestStatus.compleated',
-       
+          'RequestStatus.ordercancelled'
       ];
 
       return FirebaseFirestore.instance
@@ -127,6 +127,7 @@ class AddressServiceUser {
   Map<String, dynamic> usercartInfo({
     required String catName,
     required String id,
+    required double rating,
     required String catImage,
     required String catDes,
     required String cathead,
@@ -143,6 +144,7 @@ class AddressServiceUser {
       'CatDes':catDes,
       'UserId': userId,
       'CheckBox': selectedCheckboxes,
+      'CatRating':rating
     };
     return usercartInfo;
   }
@@ -176,41 +178,56 @@ Stream<QuerySnapshot<Object?>> getUserCartDetails(String userId) {
     return false;
   }
 }
-  Future<bool> addUserRating(
-      Map<String, dynamic> userRatingInfo, dynamic id) async {
-    try {
-      await FirebaseFirestore.instance
-          .collection("UserRatings")
-          .doc(id)
-          .set(userRatingInfo);
-            // Fetch all ratings for the given service
-      final snapshot = await FirebaseFirestore.instance.collection('UserRatings').where('CatName', isEqualTo: userRatingInfo['CatName']).get();
+Future<bool> addUserRating(
+    Map<String, dynamic> userRatingInfo, dynamic id) async {
+  try {
+    await FirebaseFirestore.instance
+        .collection("UserRatings")
+        .doc(id)
+        .set(userRatingInfo);
 
-      final ratings = snapshot.docs.map((doc) => doc['RatingStarCount'] as double).toList();
+    // Fetch all ratings for the given service
+    final snapshot = await FirebaseFirestore.instance
+        .collection('UserRatings')
+        .where('CatName', isEqualTo: userRatingInfo['CatName'])
+        .get();
 
-      if (ratings.isNotEmpty) {
-        final averageRating = ratings.reduce((a, b) => a + b) / ratings.length;
+    final ratings = snapshot.docs
+        .map((doc) => (doc['RatingStarCount'] as num).toDouble())
+        .toList();
 
+    if (ratings.isNotEmpty) {
+      // Calculate the average rating and format to one decimal place
+      final averageRating = ratings.reduce((a, b) => a + b) / ratings.length;
 
-        final subcategorySnapshot = await FirebaseFirestore.instance.collectionGroup('SubCategories').where('CatName', isEqualTo: userRatingInfo['CatName']).get();
+      // Format the average rating to one decimal place
+      final formattedAverageRating =
+          double.parse(averageRating.toStringAsFixed(1));
 
-        for (var doc in subcategorySnapshot.docs) {
-          await FirebaseFirestore.instance.collection(doc.reference.parent.path).doc(doc.id).update({'CatRating': averageRating});
-        }
+      // Fetch subcategories and update the 'CatRating' field
+      final subcategorySnapshot = await FirebaseFirestore.instance
+          .collectionGroup('SubCategories')
+          .where('CatName', isEqualTo: userRatingInfo['CatName'])
+          .get();
 
-        debugPrint('SubCategory rating updated successfully');
-      } else {
-        debugPrint('No ratings found for this service');
+      for (var doc in subcategorySnapshot.docs) {
+        await FirebaseFirestore.instance
+            .doc(doc.reference.path)
+            .update({'CatRating': formattedAverageRating});
       }
 
-      return true;
-    } catch (e) {
-      debugPrint('Error adding rating and updating subcategory: $e');
-      return false;
+      debugPrint('SubCategory rating updated successfully');
+    } else {
+      debugPrint('No ratings found for this service');
+    }
+
+    return true;
+  } catch (e) {
+    debugPrint('Error adding rating and updating subcategory: $e');
+    return false;
+  }
 }
 
-    
-  }
 
   Map<String, dynamic> userRatingInfo({
     required String id,

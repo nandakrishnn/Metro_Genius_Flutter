@@ -8,14 +8,15 @@ import 'package:metrogeniusapp/bloc/login_bloc/user_login_bloc.dart';
 import 'package:metrogeniusapp/services/auth_signin.dart';
 import 'package:metrogeniusapp/src/admin/bottom_nav_admin/bottom_nav_employe.dart';
 import 'package:metrogeniusapp/src/user/screens/Logins/users/forgot_pass.dart';
+import 'package:metrogeniusapp/src/user/screens/Logins/users/google_button.dart';
 import 'package:metrogeniusapp/src/user/screens/Logins/users/register_now.dart';
 import 'package:metrogeniusapp/src/user/screens/bottomnavigation/bottom_nav.dart';
 import 'package:metrogeniusapp/src/user/widgets/custom_snackbar.dart';
-import 'package:metrogeniusapp/src/user/widgets/social_login_container.dart';
 import 'package:metrogeniusapp/src/user/widgets/textfeild.dart';
 import 'package:metrogeniusapp/utils/colors.dart';
 import 'package:metrogeniusapp/utils/constants.dart';
 import 'package:metrogeniusapp/utils/validators.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserLoginPage extends StatelessWidget {
   UserLoginPage({super.key});
@@ -42,12 +43,18 @@ class UserLoginPage extends StatelessWidget {
             child: Form(
               key: formkey,
               child: BlocConsumer<UserLoginBloc, UserLoginState>(
-                listener: (context, state) {
+                listener: (context, state) async {
                   if (state.status == FormStatus.sucess) {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const BottomNavigation()));
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+
+                await prefs.setString('UserId',
+                        FirebaseAuth.instance.currentUser!.uid);
+
                   } else if (state.status == FormStatus.error) {
                     ScaffoldMessenger.of(context).showSnackBar(customSnack(
                         'Invalid Login',
@@ -88,9 +95,7 @@ class UserLoginPage extends StatelessWidget {
                           obscure: false,
                           hinttext: 'Enter your Email',
                           controller: emailController,
-                          validator: (value) =>Validators.validateEmail(value)
-                          
-                          ,
+                          validator: (value) => Validators.validateEmail(value),
                         ),
                         SizedBox(
                           height: MediaQuery.of(context).size.height * .04,
@@ -182,22 +187,10 @@ class UserLoginPage extends StatelessWidget {
                           ],
                         ),
                         AppConstants.kheight30,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            SocialLoginContainer(
-                              imageurl:
-                                  'https://clipground.com/images/facebook-icon-logo-8.png',
-                            ),
-                            GestureDetector(
-                              onTap: ()async{
-                                _signInWithGoogle(context);
-                              },
-                              child: SocialLoginContainer(
-                                  imageurl:
-                                      'https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png'),
-                            )
-                          ],
+                        GoogleButton(
+                          onPressed: () async {
+                            _signInWithGoogle(context);
+                          },
                         ),
                         AppConstants.kheight60,
                         AppConstants.kheight30,
@@ -244,7 +237,6 @@ class UserLoginPage extends StatelessWidget {
     final UserSigninAuth auth = UserSigninAuth();
 
     try {
-     
       final GoogleSignInAccount? googleSignInAccount =
           await _googleSignIn.signIn();
       if (googleSignInAccount != null) {
@@ -267,7 +259,7 @@ class LoginContainer extends StatelessWidget {
   String content;
   void Function()? ontap;
   LoginContainer({
-this.ontap,
+    this.ontap,
     required this.content,
     super.key,
   });

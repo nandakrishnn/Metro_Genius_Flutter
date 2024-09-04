@@ -63,7 +63,7 @@ class UserSignupBloc extends Bloc<UserSignupEvent, UserSignupState> {
     }
   }
         Future<void> udpateFormSubmit(UpdateFormSubmit event, Emitter<UserSignupState> emit) async{
-          final added=await UserSigninAuth().updatedUserDetails(FirebaseAuth.instance.currentUser!.uid, state.userName, state.userImage);
+          final added=await UserSigninAuth().updatedUserDetails(FirebaseAuth.instance.currentUser!.uid, state.userName, state.userImage,state.password);
           print(state.userImage);
           print(state.userName);
           if(added==true){

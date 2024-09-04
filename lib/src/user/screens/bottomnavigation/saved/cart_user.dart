@@ -6,7 +6,6 @@ import 'package:metrogeniusapp/animations/route_animations.dart';
 import 'package:metrogeniusapp/bloc/add_cart_user/add_cart_user_bloc.dart';
 import 'package:metrogeniusapp/bloc/get_cart_user/get_cart_details_user_bloc.dart';
 import 'package:metrogeniusapp/services/user/user_services.dart';
-import 'package:metrogeniusapp/src/user/screens/bottomnavigation/saved/like_button.dart';
 import 'package:metrogeniusapp/src/user/screens/home/sub_catgeories/details_subcatgeory.dart';
 import 'package:metrogeniusapp/utils/colors.dart';
 import 'package:metrogeniusapp/utils/constants.dart';
@@ -55,6 +54,7 @@ class UserCart extends StatelessWidget {
                                       FirebaseAuth.instance.currentUser!.uid));
                             },
                             data: data[index],
+                              catRating: data[index]['CatRating'],
                             des: data[index]['CatDes'],
                             categorytype: data[index]['CatName'],
                             heading: data[index]['ServiceType'],
@@ -79,8 +79,10 @@ class CartUserViewWidget extends StatelessWidget {
   int price;
   String image;
   String categorytype;
+  double catRating;
   void Function()? onTap;
   CartUserViewWidget({
+    required this.catRating,
     this.onTap,
     required this.data,
     this.des,
@@ -145,16 +147,33 @@ class CartUserViewWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    categorytype,
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                  Row(
+                    children: [
+                      Text(
+                        categorytype,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      AppConstants.kwidth10,
+                    
+                    ],
                   ),
                   AppConstants.kheight5,
-                  Text(
-                    '₹' + price.toString(),
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.mainBlueColor),
+                  Row(
+                    children: [
+                      Text(
+                        '₹' + price.toString(),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.mainBlueColor),
+                      ),
+                      AppConstants.kwidth10,
+                        Row(
+                        children: [
+                          Icon(Icons.star,color: Colors.amber,),
+                          Text(catRating.toString())
+                        ],
+                      )
+                    ],
                   ),
                   Text(
                       style: TextStyle(color: AppColors.greyColor),

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:metrogeniusapp/bloc/Admin/get_category/get_category_bloc.dart';
 import 'package:metrogeniusapp/bloc/add_cart_user/add_cart_user_bloc.dart';
 import 'package:metrogeniusapp/bloc/adress_add_user/add_address_user_bloc.dart';
 import 'package:metrogeniusapp/bloc/details_subcategory/details_sub_catgeory_bloc.dart';
+import 'package:metrogeniusapp/bloc/fetch_rating_new_notable.dart/new_notable_ratings_fetch_bloc.dart';
 import 'package:metrogeniusapp/bloc/forgot_pass/frogot_password_bloc.dart';
 import 'package:metrogeniusapp/bloc/get_adress_user/get_user_adresses_bloc.dart';
 import 'package:metrogeniusapp/bloc/get_booked_works/get_booked_works_user_bloc.dart';
@@ -23,20 +25,25 @@ import 'package:metrogeniusapp/bloc/add_ratings_user/ratings_user_bloc.dart';
 import 'package:metrogeniusapp/bloc/send_message_user/message_sending_bloc_bloc.dart';
 import 'package:metrogeniusapp/bloc/signup_bloc/bloc/user_signup_bloc.dart';
 import 'package:metrogeniusapp/bloc/user_details/get_user_details_bloc.dart';
+import 'package:metrogeniusapp/bloc/worker/edit_details_worker/edit_employe_details_bloc.dart';
 import 'package:metrogeniusapp/bloc/worker/get_works/fetch_available_works_bloc.dart';
 import 'package:metrogeniusapp/bloc/worker/sigin_worker/worker_sign_in_bloc.dart';
 import 'package:metrogeniusapp/bloc/worker/workers_listing_user/workers_listing_user_bloc.dart';
 import 'package:metrogeniusapp/firebase_options.dart';
 import 'package:metrogeniusapp/services/admin/applications/admin_services.dart';
+import 'package:metrogeniusapp/services/employe/employe_service.dart';
+import 'package:metrogeniusapp/services/home/home_service.dart';
 import 'package:metrogeniusapp/services/user/user_services.dart';
 import 'package:metrogeniusapp/services/auth.dart';
 import 'package:metrogeniusapp/services/auth_signin.dart';
 import 'package:metrogeniusapp/services/order_summary/order_service.dart';
 import 'package:metrogeniusapp/services/workers/workers_list.dart';
+import 'package:metrogeniusapp/src/employe/bottom_navigation/employe_bottom_nav.dart';
 import 'package:metrogeniusapp/src/user/screens/Logins/users/users_login.dart';
 import 'package:metrogeniusapp/src/user/screens/bottomnavigation/profile/user_service.dart';
 import 'package:metrogeniusapp/utils/colors.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'src/user/screens/bottomnavigation/bottom_nav.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -45,11 +52,33 @@ void main() async {
   );
   FirebaseDatabase.instance.setPersistenceEnabled(true);
   FirebaseDatabase.instance.setLoggingEnabled(true);
-  runApp(const MyApp());
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+     final String? workerId=  prefs.getString('EmployeAssigned');
+       final String? userId=  prefs.getString('UserId');
+String initialRoute;
+
+  if (userId != null) {
+    initialRoute = '/home';
+  } else if (workerId != null) {
+    initialRoute = '/employee_home';
+  } else {
+    initialRoute = '/login';
+  }
+  runApp(
+    MyApp(
+      initialRoute: initialRoute,
+    ),
+  );
 }
 
+
+
+
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+    final String initialRoute;
+
+  const MyApp({super.key, required this.initialRoute});
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -117,13 +146,33 @@ class MyApp extends StatelessWidget {
             create: (context) => RatingsUserBloc(AddressServiceUser())),
         BlocProvider(
           create: (context) => ChatBloc(),
+        ),
+        BlocProvider(
+          create: (context) => EditEmployeDetailsBloc(EmployeJobApplication()),
+
+        ),
+        BlocProvider(
+          create: (context) => NewNotableRatingsFetchBloc(HomeService()),
+       
         )
       ],
       child: MaterialApp(
           theme: ThemeData(fontFamily: GoogleFonts.poppins().fontFamily),
           debugShowCheckedModeBanner: false,
+            initialRoute: initialRoute,
+        routes: {
+          '/login': (context) => const CommonLoginPage(),
+          '/home': (context) => const BottomNavigation(),
+          '/employee_home': (context) => const WorkerBottomNavigation(),
+        },
+
           color: AppColors.primaryColor,
-          home: CommonLoginPage()),
+       ),
+          
     );
   }
+
 }
+
+
+

@@ -68,7 +68,10 @@ final class PaymentMeathod extends OrderSummaryBlocEvent {
 //   UserCheckboxChanges(this.usercheckboxChanges);
 //   final String usercheckboxChanges;
 // }
-
+final class OrderCancel extends OrderSummaryBlocEvent {
+  final String id;
+  OrderCancel(this.id);
+}
 final class OrderStatus extends OrderSummaryBlocEvent {}
 
 final class FormSubmit extends OrderSummaryBlocEvent {}

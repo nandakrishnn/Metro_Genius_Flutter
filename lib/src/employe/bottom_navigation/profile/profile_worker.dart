@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:metrogeniusapp/animations/route_animations.dart';
-import 'package:metrogeniusapp/bloc/worker/sigin_worker/worker_sign_in_bloc.dart';
 import 'package:metrogeniusapp/bloc/worker/workers_listing_user/workers_listing_user_bloc.dart';
 import 'package:metrogeniusapp/src/employe/bottom_navigation/profile/details_worker.dart';
 import 'package:metrogeniusapp/src/user/screens/Logins/users/users_login.dart';
@@ -34,79 +33,81 @@ class ProfileWorker1 extends StatelessWidget {
               body: Stack(
                 children: [
         
-                  Column(
-                    children: [
-                      Container(
-                        decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(30),
-                              bottomRight: Radius.circular(30),
-                            ),
-                            color: AppColors.mainBlueColor,
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Color.fromARGB(250, 142, 144, 149),
-                                  offset: Offset(0, 0),
-                                  spreadRadius: 2.5,
-                                  blurRadius: 1)
-                            ]),
-                        width: double.infinity,
-                        height: MediaQuery.of(context).size.height * .42,
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 60, horizontal: 21),
-                              child: Row(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 60,
-                                    backgroundImage:
-                                        NetworkImage(data['ApplicantImage']),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        data['ApplicantName'],
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color.fromARGB(
-                                                249, 250, 250, 250)),
-                                      ),
-                                      Text(
-                                      
-                                        data['ApplicantEmail'],
-                                        style: TextStyle(
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color.fromARGB(
-                                                248, 139, 132, 132)),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Container(
+                          decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(30),
+                                bottomRight: Radius.circular(30),
                               ),
-                            ),
-                          ],
+                              color: AppColors.mainBlueColor,
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Color.fromARGB(250, 142, 144, 149),
+                                    offset: Offset(0, 0),
+                                    spreadRadius: 2.5,
+                                    blurRadius: 1)
+                              ]),
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height * .42,
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 60, horizontal: 21),
+                                child: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 60,
+                                      backgroundImage:
+                                          NetworkImage(data['ApplicantImage']),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          data['ApplicantName'],
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color.fromARGB(
+                                                  249, 250, 250, 250)),
+                                        ),
+                                        Text(
+                                        
+                                          data['ApplicantEmail'],
+                                          style: TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color.fromARGB(
+                                                  248, 139, 132, 132)),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Container(
-                        decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(30),
-                              bottomRight: Radius.circular(30),
-                            ),
-                            color: AppColors.primaryColor),
-                        width: double.infinity,
-                        height: MediaQuery.of(context).size.height * .58,
-                      ),
-                    ],
+                        Container(
+                          decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(30),
+                                bottomRight: Radius.circular(30),
+                              ),
+                              color: AppColors.primaryColor),
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height * .58,
+                        ),
+                      ],
+                    ),
                   ),
                   Positioned(
                     top: screenHeight * 0.28,
@@ -172,7 +173,7 @@ class ProfileWorker1 extends StatelessWidget {
                               title: 'Logout',
                               Subtitle: 'Logging Out From MetroGenius',
                               icons: const Icon(Icons.logout),
-                              action: () {
+                              ontap: () {
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {

@@ -11,12 +11,19 @@ class SlotSelectionBottomSheet extends StatefulWidget {
   final data;
   final String catgeoryName;
   final List<String> timeSlots;
-    // final List<String> selectedCheckboxes; 
- final ValueNotifier<String?> selectedCheckboxNotifier;
-  const SlotSelectionBottomSheet({Key? key, required this.timeSlots,required this.data, required this.selectedCheckboxNotifier, required this.catgeoryName}) : super(key: key);
+  // final List<String> selectedCheckboxes;
+  final ValueNotifier<String?> selectedCheckboxNotifier;
+  const SlotSelectionBottomSheet(
+      {Key? key,
+      required this.timeSlots,
+      required this.data,
+      required this.selectedCheckboxNotifier,
+      required this.catgeoryName})
+      : super(key: key);
 
   @override
-  _SlotSelectionBottomSheetState createState() => _SlotSelectionBottomSheetState();
+  _SlotSelectionBottomSheetState createState() =>
+      _SlotSelectionBottomSheetState();
 }
 
 class _SlotSelectionBottomSheetState extends State<SlotSelectionBottomSheet> {
@@ -47,7 +54,10 @@ class _SlotSelectionBottomSheetState extends State<SlotSelectionBottomSheet> {
               padding: EdgeInsets.only(left: 8),
               child: Text(
                 'Your Service will take approx.2 hrs 20 mins',
-                style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.greyColor, fontSize: 15),
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.greyColor,
+                    fontSize: 15),
               ),
             ),
             AppConstants.kheight20,
@@ -74,35 +84,47 @@ class _SlotSelectionBottomSheetState extends State<SlotSelectionBottomSheet> {
                 });
               },
             ),
-            AppConstants.kheight10,
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20, left: 8, right: 8),
+              child: Text(
+                'Bookings can only be made for the next day or later. Same-day bookings are not available. If booking today, please select a service starting tomorrow.',
+                style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.greyColor),
+              ),
+            ),
             GestureDetector(
-              onTap: (){
-               
-                if(selectedDay!=null&&selectedTime!=null){
- Navigator.of(context).push(createRoute(SummaryBooking(data: widget.data,selectedDay: getFormattedDateTime(),selectedTime: selectedTime,selectedCheckboxNotifier: widget.selectedCheckboxNotifier,catgeoryName: widget.catgeoryName,)));
-                }
-               
-              },
-              child: LoginContainer(content: 'Continue'))
+                onTap: () {
+                  if (selectedDay != null && selectedTime != null) {
+                    Navigator.of(context).push(createRoute(SummaryBooking(
+                      data: widget.data,
+                      selectedDay: getFormattedDateTime(),
+                      selectedTime: selectedTime,
+                      selectedCheckboxNotifier: widget.selectedCheckboxNotifier,
+                      catgeoryName: widget.catgeoryName,
+                    )));
+                  }
+                },
+                child: LoginContainer(content: 'Continue'))
           ],
         ),
       ),
     );
   }
-String getFormattedDateTime() {
-  if (selectedDay == null || selectedTime == null) return '';
 
-  try {
-    final dateFormat = DateFormat('yyyy-MM-dd'); // Match this format
-    final date = dateFormat.parse(selectedDay!);
-    final formattedDate = DateFormat('E, MMM dd').format(date);
+  String getFormattedDateTime() {
+    if (selectedDay == null || selectedTime == null) return '';
 
-    return '$formattedDate - $selectedTime';
-  } catch (e) {
-    print('Error formatting date: $e'); // Debug print
-    return '';
+    try {
+      final dateFormat = DateFormat('yyyy-MM-dd'); // Match this format
+      final date = dateFormat.parse(selectedDay!);
+      final formattedDate = DateFormat('E, MMM dd').format(date);
+
+      return '$formattedDate - $selectedTime';
+    } catch (e) {
+      print('Error formatting date: $e'); // Debug print
+      return '';
+    }
   }
-}
-
-
 }
