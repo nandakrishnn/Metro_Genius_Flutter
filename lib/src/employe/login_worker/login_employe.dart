@@ -18,12 +18,13 @@ class EmployeLogin extends StatelessWidget {
     final TextEditingController _emailController = TextEditingController();
     final TextEditingController _codeController = TextEditingController();
     final GlobalKey<FormState> formkey = GlobalKey<FormState>();
-
+    bool _snackBarShown = false;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: BlocConsumer<WorkerSignInBloc, WorkerSignInState>(
         listener: (context, state) async {
           if (state.status == WorkerSigninFormStatus.sucess) {
+               _snackBarShown = false;
                 SharedPreferences prefs = await SharedPreferences.getInstance();
 
           await prefs.setString('EmployeAssigned', _codeController.text);
@@ -36,7 +37,8 @@ class EmployeLogin extends StatelessWidget {
           }
           if (state.status == WorkerSigninFormStatus.pending) {}
 
-          if (state.status == WorkerSigninFormStatus.error) {
+          if (state.status == WorkerSigninFormStatus.error&& !_snackBarShown) {
+      _snackBarShown = true; 
             ScaffoldMessenger.of(context).showSnackBar(customSnack(
                 'Invalid Login',
                 'Sorry,invalid login credentials',
@@ -113,6 +115,7 @@ class EmployeLogin extends StatelessWidget {
                         GestureDetector(
                             onTap: () {
                               if (formkey.currentState!.validate()) {
+                                 _snackBarShown = false; 
                                 context
                                     .read<WorkerSignInBloc>()
                                     .add(WorkerFormSubmit());

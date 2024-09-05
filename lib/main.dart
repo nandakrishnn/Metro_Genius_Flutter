@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +38,8 @@ import 'package:metrogeniusapp/services/auth_signin.dart';
 import 'package:metrogeniusapp/services/order_summary/order_service.dart';
 import 'package:metrogeniusapp/services/workers/workers_list.dart';
 import 'package:metrogeniusapp/src/employe/bottom_navigation/employe_bottom_nav.dart';
-import 'package:metrogeniusapp/src/user/screens/Logins/users/users_login.dart';
+import 'package:metrogeniusapp/src/splash/get_startted_1.dart';
+import 'package:metrogeniusapp/src/splash/splash_screen.dart';
 import 'package:metrogeniusapp/src/user/screens/bottomnavigation/profile/user_service.dart';
 import 'package:metrogeniusapp/utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -50,24 +50,24 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  FirebaseDatabase.instance.setPersistenceEnabled(true);
-  FirebaseDatabase.instance.setLoggingEnabled(true);
+//   FirebaseDatabase.instance.setPersistenceEnabled(true);
+//   FirebaseDatabase.instance.setLoggingEnabled(true);
 
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-     final String? workerId=  prefs.getString('EmployeAssigned');
-       final String? userId=  prefs.getString('UserId');
-String initialRoute;
+//   SharedPreferences prefs = await SharedPreferences.getInstance();
+//      final String? workerId=  prefs.getString('EmployeAssigned');
+//        final String? userId=  prefs.getString('UserId');
+// String initialRoute;
 
-  if (userId != null) {
-    initialRoute = '/home';
-  } else if (workerId != null) {
-    initialRoute = '/employee_home';
-  } else {
-    initialRoute = '/login';
-  }
+//   if (userId != null) {
+//     initialRoute = '/home';
+//   } else if (workerId != null) {
+//     initialRoute = '/employee_home';
+//   } else {
+//     initialRoute = '/splash';
+//   }
   runApp(
     MyApp(
-      initialRoute: initialRoute,
+      // initialRoute: initialRoute,
     ),
   );
 }
@@ -76,9 +76,8 @@ String initialRoute;
 
 
 class MyApp extends StatelessWidget {
-    final String initialRoute;
-
-  const MyApp({super.key, required this.initialRoute});
+    
+  const MyApp({super.key, });
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -159,9 +158,10 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
           theme: ThemeData(fontFamily: GoogleFonts.poppins().fontFamily),
           debugShowCheckedModeBanner: false,
-            initialRoute: initialRoute,
+            initialRoute: '/splash',
         routes: {
-          '/login': (context) => const CommonLoginPage(),
+          '/splash':(context)=>const SplashScreen(),
+          '/login': (context) => const GestStartedOne(),
           '/home': (context) => const BottomNavigation(),
           '/employee_home': (context) => const WorkerBottomNavigation(),
         },

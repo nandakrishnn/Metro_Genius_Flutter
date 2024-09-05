@@ -44,88 +44,111 @@ class UserProfileDetails extends StatelessWidget {
               builder: (context, state) {
                 print(FirebaseAuth.instance.currentUser!.uid);
                 return Scaffold(
-                  body: SingleChildScrollView(
-                    child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            AppConstants.kheight10,
-                            GestureDetector(
-                              onTap: () async {
+                  appBar: AppBar(
+                    title: Text('User Details'),
+                    centerTitle: true,
+                  ),
 
-                                final img = await ProjectFunctionalites()
-                                    .imagePickercir();
-                                if (img != null) {
-                                  context
-                                      .read<UserSignupBloc>()
-                                      .add(UserImageChanges(img.path));
-                                }
-                                userImage = img.path;
-                              },
-                              child: SizedBox(
-                                height: 200,
-                                width: 200,
-                                child: userImage != null
-                                 ? Image.file(File(userImage!))
-                                    : orgImg != null && orgImg.isNotEmpty
-                                        ? Image.network(orgImg)
-                                        : Image.network(
-                                            'https://www.shutterstock.com/image-vector/add-photo-icon-vector-line-260nw-1039350133.jpg'),
+                  body: Column(
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Form(
+                              key: _formKey,
+                              child: Column(
+                                children: [
+                                  AppConstants.kheight10,
+                                  GestureDetector(
+                                    onTap: () async {
+                        
+                                      final img = await ProjectFunctionalites()
+                                          .imagePickercir();
+                                      if (img != null) {
+                                        context
+                                            .read<UserSignupBloc>()
+                                            .add(UserImageChanges(img.path));
+                                      }
+                                      userImage = img.path;
+                                    },
+                                    child: SizedBox(
+                                      height: 200,
+                                      width: 200,
+                                      child: userImage != null
+                                       ? ClipRRect(
+                                        borderRadius: BorderRadius.circular(30),
+                                        child: Image.file(File(userImage!)  , fit: BoxFit.cover,))
+                                          : orgImg != null && orgImg.isNotEmpty
+                                              ? ClipRRect(
+                                                        borderRadius: BorderRadius.circular(30),
+                                                child: Image.network(   fit: BoxFit.cover,orgImg))
+                                              : ClipRRect(
+                                                       borderRadius: BorderRadius.circular(30),
+                                                child: Image.network(
+                                                  fit: BoxFit.cover,
+                                                    'https://www.shutterstock.com/image-vector/add-photo-icon-vector-line-260nw-1039350133.jpg'),
+                                              ),
+                                    ),
+                                  ),
+                                  AppConstants.kheight10,
+                                  CustomTextFeild2(
+                                    heading: 'UserName',
+                                    onChanged: (p0) => context
+                                        .read<UserSignupBloc>()
+                                        .add(UserNameChanges(p0)),
+                                    hinttext: 'UserName',
+                                    obscure: false,
+                                    controller: namecontroller,
+                                  ),
+                                  AppConstants.kheight10,
+                                  CustomTextFeild2(
+                                    heading: 'Password',
+                                    onChanged: (p0) => context
+                                        .read<UserSignupBloc>()
+                                        .add(PassChanges(p0)),
+                                    hinttext: 'Password',
+                                    obscure: false,
+                                    controller: passcontroller,
+                                  ),
+                                  AppConstants.kheight10,
+                                         AppConstants.kheight10,
+                                  CustomTextFeild2(
+                                      heading: 'Email',
+                                      readOnly: true,
+                                    hinttext: 'Email',
+                                    obscure: false,
+                                    controller: emailcontroller,
+                                  ),
+                                 
+                                
+                                ],
                               ),
                             ),
-                            AppConstants.kheight10,
-                            CustomTextFeild2(
-                              heading: 'UserName',
-                              onChanged: (p0) => context
-                                  .read<UserSignupBloc>()
-                                  .add(UserNameChanges(p0)),
-                              hinttext: 'UserName',
-                              obscure: false,
-                              controller: namecontroller,
-                            ),
-                            AppConstants.kheight10,
-                            CustomTextFeild2(
-                              heading: 'Password',
-                              onChanged: (p0) => context
-                                  .read<UserSignupBloc>()
-                                  .add(PassChanges(p0)),
-                              hinttext: 'Password',
-                              obscure: false,
-                              controller: passcontroller,
-                            ),
-                            AppConstants.kheight10,
-                                   AppConstants.kheight10,
-                            CustomTextFeild2(
-                                heading: 'Email',
-                                readOnly: true,
-                              hinttext: 'Email',
-                              obscure: false,
-                              controller: emailcontroller,
-                            ),
-                            AppConstants.kheight15,
-                            LoginContainer(
-                                ontap: () async {
-                                   String? finalImage;
-                                // If a new image is picked, upload it; otherwise, use the original image
-                                if (userImage != null) {
-                                  finalImage = await uploadImageToFirebase(File(userImage!));
-                                } else {
-                                  finalImage = orgImg; 
-                                }
-
-                                context.read<UserSignupBloc>().add(UserNameChanges(namecontroller.text));
-                                context.read<UserSignupBloc>().add(UserImageChanges(finalImage!));
-                                context.read<UserSignupBloc>().add(PassChanges(passcontroller.text));
-                                context.read<UserSignupBloc>().add(UpdateFormSubmit());
-                                Navigator.of(context).pop();
-                                },
-                                content: 'Save Details')
-                          ],
+                          ),
                         ),
                       ),
-                    ),
+                        Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: LoginContainer(
+                              ontap: () async {
+                                 String? finalImage;
+                              // If a new image is picked, upload it; otherwise, use the original image
+                              if (userImage != null) {
+                                finalImage = await uploadImageToFirebase(File(userImage!));
+                              } else {
+                                finalImage = orgImg; 
+                              }
+                          
+                              context.read<UserSignupBloc>().add(UserNameChanges(namecontroller.text));
+                              context.read<UserSignupBloc>().add(UserImageChanges(finalImage!));
+                              context.read<UserSignupBloc>().add(PassChanges(passcontroller.text));
+                              context.read<UserSignupBloc>().add(UpdateFormSubmit());
+                              Navigator.of(context).pop();
+                              },
+                              content: 'Save Details'),
+                        )
+                    ],
                   ),
                 );
               },

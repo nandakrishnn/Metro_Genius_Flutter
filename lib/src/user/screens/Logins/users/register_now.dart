@@ -1,8 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:metrogeniusapp/animations/route_animations.dart';
 import 'package:metrogeniusapp/bloc/signup_bloc/bloc/user_signup_bloc.dart';
 import 'package:metrogeniusapp/services/auth.dart';
+import 'package:metrogeniusapp/services/auth_signin.dart';
+import 'package:metrogeniusapp/src/user/screens/Logins/users/google_button.dart';
 import 'package:metrogeniusapp/src/user/screens/Logins/users/login_user.dart';
+import 'package:metrogeniusapp/src/user/screens/bottomnavigation/bottom_nav.dart';
 import 'package:metrogeniusapp/src/user/widgets/social_login_container.dart';
 import 'package:metrogeniusapp/src/user/widgets/textfeild.dart';
 import 'package:metrogeniusapp/utils/colors.dart';
@@ -192,18 +197,11 @@ class RegisterNow extends StatelessWidget {
                             ],
                           ),
                           AppConstants.kheight30,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              SocialLoginContainer(
-                                imageurl:
-                                    'https://clipground.com/images/facebook-icon-logo-8.png',
-                              ),
-                              SocialLoginContainer(
-                                  imageurl:
-                                      'https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png')
-                            ],
-                          ),
+                         GoogleButton(
+                          onPressed: () async {
+                            _signInWithGoogle(context);
+                          },
+                        ),
                           AppConstants.kheight30,
                           AppConstants.kheight10,
                           GestureDetector(
@@ -242,4 +240,27 @@ class RegisterNow extends StatelessWidget {
       ),
     );
   }
+    _signInWithGoogle(context) async {
+    final GoogleSignIn _googleSignIn = GoogleSignIn();
+    final UserSigninAuth auth = UserSigninAuth();
+
+    try {
+      final GoogleSignInAccount? googleSignInAccount =
+          await _googleSignIn.signIn();
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication =
+            await googleSignInAccount.authentication;
+        final AuthCredential creadential = GoogleAuthProvider.credential(
+          idToken: googleSignInAuthentication.idToken,
+          accessToken: googleSignInAuthentication.accessToken,
+        );
+        await auth.signInWithGoogle(creadential);
+        Navigator.of(context).push(createRoute(BottomNavigation()));
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 }
+
+

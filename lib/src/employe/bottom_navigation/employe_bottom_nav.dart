@@ -11,26 +11,25 @@ class WorkerBottomNavigation extends StatefulWidget {
   const WorkerBottomNavigation({super.key});
 
   @override
-  State<WorkerBottomNavigation> createState() => _WorkerBottomNavigation();
+  State<WorkerBottomNavigation> createState() => _WorkerBottomNavigationState();
 }
 
-class _WorkerBottomNavigation extends State<WorkerBottomNavigation> {
+class _WorkerBottomNavigationState extends State<WorkerBottomNavigation> {
   int currentIndex = 1;
-  bool isBottomNavVisible = true;
-
-  final PageController _pageController = PageController();
+  
+  // Using ValueNotifier to manage the visibility of the bottom nav bar
+  final ValueNotifier<bool> bottomNavBarVisible = ValueNotifier(true);
 
   final List<Widget> screens = [
-  const  HistoryWorker(),
-  const  EmployeeHome(),
-  const  AnalyticsWorker(),
-  const  ProfileWorker1(),
+    const HistoryWorker(),
+    const EmployeeHome(),
+    const AnalyticsWorker(),
+    const ProfileWorker1(),
   ];
 
   void setPage(int index) {
     setState(() {
       currentIndex = index;
-      _pageController.jumpToPage(index);
     });
   }
 
@@ -38,35 +37,31 @@ class _WorkerBottomNavigation extends State<WorkerBottomNavigation> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: PageView(
-        controller: _pageController,
-        onPageChanged: (index) {
-          setState(() {
-            currentIndex = index;
-          });
+      body: NotificationListener<UserScrollNotification>(
+        onNotification: (notification) {
+          // Hide or show the bottom nav based on scroll direction
+          if (notification.direction == ScrollDirection.reverse) {
+            bottomNavBarVisible.value = false;
+          } else if (notification.direction == ScrollDirection.forward) {
+            bottomNavBarVisible.value = true;
+          }
+          return true;
         },
-        children: screens.map((screen) {
-          return NotificationListener<ScrollNotification>(
-            onNotification: (notification) {
-              if (notification is UserScrollNotification) {
-                setState(() {
-                  if (notification.direction == ScrollDirection.reverse) {
-                    isBottomNavVisible = false;
-                  } else if (notification.direction ==
-                      ScrollDirection.forward) {
-                    isBottomNavVisible = true;
-                  }
-                });
-              }
-              return true;
-            },
-            child: screen,
-          );
-        }).toList(),
+        // Using IndexedStack to keep the state of each screen
+        child: IndexedStack(
+          index: currentIndex,
+          children: screens,
+        ),
       ),
-      bottomNavigationBar: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        height: isBottomNavVisible ? kBottomNavigationBarHeight + 13 : 0,
+      bottomNavigationBar: ValueListenableBuilder<bool>(
+        valueListenable: bottomNavBarVisible,
+        builder: (context, isVisible, child) {
+          return AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            height: isVisible ? kBottomNavigationBarHeight + 15 : 0,
+            child: isVisible ? child : const SizedBox.shrink(),
+          );
+        },
         child: Padding(
           padding: const EdgeInsets.only(bottom: 15, left: 9, right: 9),
           child: Container(
@@ -91,6 +86,7 @@ class _WorkerBottomNavigation extends State<WorkerBottomNavigation> {
               padding: const EdgeInsets.all(16),
               textStyle: const TextStyle(color: Colors.white),
               tabBackgroundColor: AppColors.mainBlueColor,
+              selectedIndex: currentIndex, // Ensure correct tab is highlighted
               tabs: const [
                 GButton(
                   icon: Icons.history,

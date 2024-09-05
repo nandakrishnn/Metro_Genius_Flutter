@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:metrogeniusapp/animations/route_animations.dart';
 import 'package:metrogeniusapp/bloc/worker/workers_listing_user/workers_listing_user_bloc.dart';
+import 'package:metrogeniusapp/src/employe/bottom_navigation/profile/app_inffo.dart';
 import 'package:metrogeniusapp/src/employe/bottom_navigation/profile/details_worker.dart';
 import 'package:metrogeniusapp/src/user/screens/Logins/users/users_login.dart';
+import 'package:metrogeniusapp/src/user/screens/terms_conditons/privacy_policy.dart';
+import 'package:metrogeniusapp/src/user/screens/terms_conditons/terms_conditions.dart';
 import 'package:metrogeniusapp/src/user/widgets/profile/profile_container.dart';
 import 'package:metrogeniusapp/src/user/widgets/profile/profile_tiles.dart';
 import 'package:metrogeniusapp/utils/colors.dart';
@@ -146,6 +149,10 @@ class ProfileWorker1 extends StatelessWidget {
                                       'assets/refer-friend-badge-design-template-260nw-2082857296.jpg',
                                 ),
                                 ProfileContainers(
+                                  onTap: (){
+                                        Navigator.of(context).push(createRoute(  WorkerInfoPage()));
+                                  
+                                  },
                                   text: 'Settings',
                                   imgurl:
                                       'assets/settings-icon-gear-3d-render-png.webp',
@@ -160,19 +167,26 @@ class ProfileWorker1 extends StatelessWidget {
                                   Icons.privacy_tip,
                                   size: 25,
                                 ),
-                                action: () {}),
+                                ontap: (){
+                                  Navigator.of(context).push(createRoute(PrivacyPolicyPage()));
+                                },
+                                ),
                             ProfileTiles(
                               title: 'Terms And Conditions',
                               Subtitle: 'Terms and conditions',
                               icons: const Icon(
                                 Icons.terminal_sharp,
                               ),
-                              action: () {},
+                              ontap: () {
+                                  Navigator.of(context).push(createRoute(TermsAndConditionsScreen()));
+                              },
                             ),
                             ProfileTiles(
                               title: 'Logout',
+                            textcolor: Colors.red,
                               Subtitle: 'Logging Out From MetroGenius',
                               icons: const Icon(Icons.logout),
+                              
                               ontap: () {
                                 showDialog(
                                   context: context,
@@ -212,6 +226,27 @@ class ProfileWorker1 extends StatelessWidget {
                                       actionsAlignment:
                                           MainAxisAlignment.center,
                                       actions: [
+                                         ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.grey[300],
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 10),
+                                          ),
+                                          child: Text(
+                                            'No',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ),
                                         ElevatedButton(
                                           onPressed: () async {
                                             try {
@@ -241,27 +276,7 @@ class ProfileWorker1 extends StatelessWidget {
                                             ),
                                           ),
                                         ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.grey[300],
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 10),
-                                          ),
-                                          child: Text(
-                                            'No',
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                        ),
+                                       
                                       ],
                                     );
                                   },
@@ -285,24 +300,20 @@ class ProfileWorker1 extends StatelessWidget {
   Future<void> logoutUser(BuildContext context) async {
  try {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool removed = await prefs.remove('WorkerId');
+    bool removed = await prefs.remove('EmployeAssigned');
     
     if (removed) {
       print('WorkerId removed successfully');
     } else {
       print('Failed to remove WorkerId');
     }
-  bool exists = prefs.containsKey('WorkerId');
+  bool exists = prefs.containsKey('EmployeAssigned');
     print('WorkerId exists after removal attempt: $exists');
     // Ensure any BLoC or state management is reset
     context.read<WorkersListingUserBloc>().add(WorkersDataCleared());
 
     // Navigate to login page and clear the navigation stack
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => CommonLoginPage()),
-      (route) => false, // Clear all previous routes
-    );
+Navigator.pushReplacementNamed(context, '/login');
   } catch (e) {
     print('Error during logout: $e');
   }

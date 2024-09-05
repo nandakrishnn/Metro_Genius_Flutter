@@ -55,7 +55,7 @@ class HistoryWorker extends StatelessWidget {
                     }),
               );
             }
-            return Center(child: Text('Something went wrong'));
+            return Center(child: Text('Details are being fetched'));
           },  
         ),
       ),

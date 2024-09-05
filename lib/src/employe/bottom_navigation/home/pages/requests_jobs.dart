@@ -121,6 +121,20 @@ class EmployeRequests extends StatelessWidget {
                 onTap: ()async {
                       final SharedPreferences prefs = await SharedPreferences.getInstance();
                   String? employecode=await prefs.getString('EmployeAssigned');
+                  FirebaseFirestore.instance
+                                .collectionGroup("UserOrders")
+                                .where('Id', isEqualTo:id)
+                                .get()
+                                .then((QuerySnapshot) {
+                              for (var document in QuerySnapshot.docs) {
+                                document.reference.update({
+                                  'WorkerId': employecode,
+                                  'RequestStatus':
+                                      RequestStatus.accepted.toString(),
+                                });
+                              }
+                              print('data changed');
+                            });
                                  },
                 child: LoginContainer(
                   content: 'Accept',

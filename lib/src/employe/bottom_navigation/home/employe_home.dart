@@ -14,13 +14,11 @@ class EmployeeHome extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          leading: IconButton(onPressed: (){}, icon: const Icon(Icons.dashboard)),
+        
           centerTitle: true,
           elevation: 0,
           title: Text('My Tasks'),
-        actions: [
-          IconButton(onPressed: (){}, icon: Icon(Icons.notifications))
-        ],
+      
           automaticallyImplyLeading: false,
           backgroundColor: const Color.fromARGB(255, 255, 255, 255),
           toolbarHeight: 60,

@@ -23,6 +23,7 @@ class InsideSubCatgeory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(categoryType);
     List<String> _generateTimeSlots() {
       List<String> timeSlots = [];
       DateTime startTime = DateTime(0, 1, 1, 8, 0); // Start at 8:00 AM

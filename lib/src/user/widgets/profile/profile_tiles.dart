@@ -8,7 +8,9 @@ class ProfileTiles extends StatelessWidget {
   Icon icons;
   VoidCallback? action;
   void Function()?ontap;
+  Color? textcolor;
    ProfileTiles({
+    this.textcolor,
     required this.title,
     required this.Subtitle,
     required this.icons,
@@ -39,7 +41,7 @@ class ProfileTiles extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(6.0),
             child: ListTile(
-              title: Text(title,style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+              title: Text(title,style: TextStyle(color:textcolor?? Colors.black,fontWeight: FontWeight.bold),),
               subtitle: Text(Subtitle),
               trailing: icons,
               

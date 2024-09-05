@@ -28,9 +28,10 @@ class UserLoginPage extends StatelessWidget {
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
   final String adminUserName = 'nandakrishnn@gmail.com';
   final String adminPassCode = 'krishnn';
-
+ bool _snackBarShown = false;
   @override
   Widget build(BuildContext context) {
+    bool hasErrorShown = false;
     return BlocProvider(
       create: (context) => UserLoginBloc(UserSigninAuth()),
       child: GestureDetector(
@@ -45,6 +46,7 @@ class UserLoginPage extends StatelessWidget {
               child: BlocConsumer<UserLoginBloc, UserLoginState>(
                 listener: (context, state) async {
                   if (state.status == FormStatus.sucess) {
+                       _snackBarShown = false;
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -54,8 +56,10 @@ class UserLoginPage extends StatelessWidget {
 
                 await prefs.setString('UserId',
                         FirebaseAuth.instance.currentUser!.uid);
+                          hasErrorShown = false; 
 
-                  } else if (state.status == FormStatus.error) {
+                  } else if (state.status == FormStatus.error  && !_snackBarShown) {
+                _snackBarShown = true; 
                     ScaffoldMessenger.of(context).showSnackBar(customSnack(
                         'Invalid Login',
                         'Sorry,invalid login credentials',
@@ -65,6 +69,7 @@ class UserLoginPage extends StatelessWidget {
                           size: 28,
                         ),
                         Colors.red));
+                
                   }
                   if (state.status == FormStatus.pending)
                     const Padding(
@@ -140,6 +145,7 @@ class UserLoginPage extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             if (formkey.currentState!.validate()) {
+                              _snackBarShown = false; 
                               context.read<UserLoginBloc>().add(FormSubmit());
                             }
                             if (state.status == FormStatus.pending) {

@@ -33,6 +33,18 @@ class CommonLoginPage extends StatelessWidget {
               ),
             ],
           ),
+            Positioned(
+              left: 10,
+              right: 15,
+              child: Center(
+                  child: SizedBox(
+                width: 300,
+                height: 300,
+                child: Image.asset(
+              
+                  'assets/white_metro-removebg-preview.png',
+                ),
+              ))),
           Positioned(
               left: MediaQuery.of(context).size.width * 0.031,
               top: MediaQuery.of(context).size.height * 0.3,

@@ -36,7 +36,7 @@ class SubCatgeoryDetails extends StatelessWidget {
                   final data = state.data;
                   if (data.isEmpty) {
                     return const Center(
-                      child: Text('No Subcatgeories for this category'),
+                      child: Text('Comming soon :)'),
                     );
                   }
                   return Column(

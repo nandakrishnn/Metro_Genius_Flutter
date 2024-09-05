@@ -10,6 +10,7 @@ import 'package:metrogeniusapp/services/admin/applications/admin_services.dart';
 import 'package:metrogeniusapp/services/home/home_service.dart';
 import 'package:metrogeniusapp/src/user/screens/home/animated_text.dart';
 import 'package:metrogeniusapp/src/user/screens/home/categories/all_catgroies.dart';
+import 'package:metrogeniusapp/src/user/screens/home/refer_friends.dart';
 import 'package:metrogeniusapp/src/user/screens/home/sub_catgeories/details_subcatgeory.dart';
 import 'package:metrogeniusapp/src/user/screens/home/sub_catgeories/sub_category_view.dart';
 import 'package:metrogeniusapp/src/user/widgets/home/carousel.dart';
@@ -322,7 +323,7 @@ class _HomeState extends State<Home> {
                         fontSize: 19,
                         color: Color.fromARGB(255, 0, 0, 0)),
                   ),
-                  AppConstants.kheight10,
+                  AppConstants.kheight20,
                   BlocProvider(
                     create: (context) =>
                         NewNotableRatingsFetchBloc(HomeService())
@@ -375,7 +376,7 @@ class _HomeState extends State<Home> {
                   const Padding(
                     padding: EdgeInsets.only(left: 0),
                     child: Text(
-                      'Top Services',
+                      'Refer Friends',
                       style: TextStyle(
                         fontWeight: FontWeight.w800,
                         fontSize: 19,
@@ -383,7 +384,10 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                   ),
-                  AppConstants.kheight15,
+                  AppConstants.kheight20,
+                  ReferFriend()
+                  ,   AppConstants.kheight60,
+
                 ],
               ),
             ),

@@ -110,13 +110,13 @@ class RegisterContainer extends StatelessWidget {
                 Text(
                   maintext,
                   style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold),
+                      fontSize: 15, fontWeight: FontWeight.bold),
                 ),
                 AppConstants.kheight5,
                 Text(
                   subtext,
                   style: const TextStyle(
-                      fontSize: 14, fontWeight: FontWeight.w500,color: Color.fromRGBO(73, 76, 83, 0.984)),
+                      fontSize: 13, fontWeight: FontWeight.w500,color: Color.fromRGBO(73, 76, 83, 0.984)),
                 ),
               ],
             )

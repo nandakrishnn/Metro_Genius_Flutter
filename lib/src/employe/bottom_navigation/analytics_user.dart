@@ -8,6 +8,7 @@ import 'package:metrogeniusapp/animations/route_animations.dart';
 import 'package:metrogeniusapp/bloc/order_summary/order_summary_bloc_bloc.dart';
 import 'package:metrogeniusapp/bloc/worker/get_works/fetch_available_works_bloc.dart';
 import 'package:metrogeniusapp/src/employe/bottom_navigation/calender_top.dart';
+import 'package:metrogeniusapp/src/employe/bottom_navigation/graph_analytics.dart';
 import 'package:metrogeniusapp/src/employe/bottom_navigation/home/pages/chat_employe.dart';
 import 'package:metrogeniusapp/src/employe/bottom_navigation/text_analytics.dart';
 import 'package:metrogeniusapp/utils/colors.dart';
@@ -50,6 +51,8 @@ class _AnalyticsWorkerState extends State<AnalyticsWorker> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
+              FadeInUp(child: LineChartGraphWidget()),
+              AppConstants.kheight20,
               FadeInUp(
                 child: TimelineCalendar(
                   onDateChange: (date) {
@@ -89,7 +92,7 @@ class _AnalyticsWorkerState extends State<AnalyticsWorker> {
                         ),
                         SlideInUp(
                           child: Container(
-                            height: 600, // Height of the wheel
+                            height: 400, // Height of the wheel
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
                             ),
